@@ -240,8 +240,8 @@ The imaginary implementor code that prints body to STDOUT would be:
       for my $line (@$body) {
           $cb->($line);
       }
-  } elsif ($body->can('readline')) {
-      while (defined(my $line = $body->readline)) {
+  } elsif ($body->can('getline')) {
+      while (defined(my $line = $body->getline)) {
           $cb->($line);
       }
       $body->close if $body->can('close');
@@ -251,8 +251,8 @@ The imaginary implementor code that prints body to STDOUT would be:
   }
 
 This is very simple yet a little redundant. We could provide some
-helper utilities for that does exactly and absolutely this, and
-recommend implmentors to include it, like:
+helper utilities that does exactly and absolutely this without ANY
+dependencies, and recommend implmentors to include it, like:
 
   use PSGI::Util;
 
