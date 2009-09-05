@@ -241,7 +241,7 @@ The imaginary implementor code that prints body to STDOUT would be:
           $cb->($line);
       }
   } elsif ($body->can('readline')) {
-      for my $line ($body->readline) {
+      while (defined(my $line = $body->readline)) {
           $cb->($line);
       }
       $body->close if $body->can('close');
