@@ -137,7 +137,8 @@ four methods can all be handled as an iterator. Again, very clean.
 
 I'm not sure why Rack has a hook to call to_path in Body since the
 built-in I/O stream work as an Iterator anyway. Maybe some
-compatibility issues with old Ruby?
+compatibility issues with old Ruby, or maybe for optimizations using
+lighttpd's X-Sendfile and stuff?
 
 
 JavaScript JSGI
