@@ -215,17 +215,44 @@ Conclusion
 
 There doesn't seem to be a single, clean way to handle everything
 (array ref of strings, filehandle object, iterable classes and
-generator functions) with duck typing in Perl. Implementors are
-required to handle these three or four methods of returning body in a
-different way.
+generator functions) with duck typing in Perl without any
+transformation happening in the middle.
 
-We could possibly implement some helper utilities like PSGI::Util,
-which implements a helper function that does ABSOLUTELY just this
-(without ANY dependencies), so any PSGI implementors can include, like:
+So something should be done in between, either in application or PSGI
+implementation.
+
+Let's assume we let the body object to duck with foreach() method, and
+the PSGI implementors would call close() if the object can() do it.
+
+We could possibly implement some helper utilities in a module like
+PSGI::Util that does ABSOLUTELY only transform a body object to
+something that ducks (without ANY dependencies) so the application
+developers can include:
 
   use PSGI::Util;
-  my($status, $header, $body) = $app->($env);
-  PSGI::Util::each($body, sub { $req->print(shift) });
 
-Of course, the implementors have an option not to use PSGI::Util and
-do their own to branch those body passing methods.
+  sub simple_app {
+      my $env = shift;
+      return [
+          200,
+          { 'Content-Type' => 'text/plain' },
+          PSGI::Util::body([ 'Hello World' ]),
+      ];
+  }
+
+This body() function would take either an array ref of strings,
+filehandle, IO::Handle object or a generator-like coderef and turns it
+into an object that reacts to foreach() and close() where appropriate.
+
+Of course, the application developers have an option not to use
+PSGI::Util and do their own to create an object that ducks to
+foreach().
+
+Alternatively, lazy app developers can copy the following four lines:
+
+  use autobox::Core;
+  sub IO::Handle::foreach {
+      while (defined(my $line = $_[0]->getline)) { $_[1]->($line) }
+  }
+
+So the application can return any of three body types (besides generator-like functions).
