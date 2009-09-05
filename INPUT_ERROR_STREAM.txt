@@ -20,10 +20,7 @@ Errors:
 Input:
   Filehandles (GLOB or IO::Handle):
     $io->read($buf, $len), $io->close() = REQUIRED
-    $io->seek($pos) = OPTIONAL
-    
-  Object that ducks:
-    $io->foreach(sub { my $buf = shift }) = OPTIONAL
+    $io->seek($pos) = OPTIONAL (may die)
 
 Errors:
   $io->print(), $io->close()
@@ -41,8 +38,8 @@ seek() which is impossible in the case where the input stream is a
 socket or STDIN filehandle.
 
 Also, WSGI/Rack support iterator (__iter__ and .each) but Perl doesn't
-have such a thing, so we use the same convention as passing the
-response body: an object that ducks to foreach() method.
+have such a thing: The implementor can mock IO::Handle object, or use
+PerlIO to create an object that behaves like a real IO.
 
 
 
