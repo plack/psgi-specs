@@ -203,7 +203,7 @@ d) Can everything be handled as an object?
 
 If autobox::Core is in use, the implementor can do this:
 
-  my($status, $header, $body) = $app->($env);
+  my($status, $header, $body) = @{ $app->($env) };
   # ...
   $body->foreach(sub { $res->print($_[0]) });
 
@@ -231,7 +231,7 @@ it's there, or a generator-like coderef (#4).
 
 The imaginary implementor code that prints body to STDOUT would be:
 
-  my($status, $header, $body) = $app->($env);
+  my($status, $header, $body) = @{ $app->($env) };
 
   my $cb = sub { print STDOUT $_[0] };
 
@@ -259,7 +259,7 @@ ANY dependencies, and recommend implmentors to include it, like:
 
   use PSGI::Util;
 
-  my($status, $header, $body) = $app->($env);
+  my($status, $header, $body) = @{ $app->($env) };
   PSGI::Util::read_body($body, sub { print STDOUT $_[0] });
 
 Of course, the implementors have an option not to use PSGI::Util and
@@ -277,7 +277,7 @@ recommended to) do:
       while (defined(my $line = $_[0]->getline)) { $_[1]->($line) }
   }
 
-  my($status, $header, $body) = $app->($env);
+  my($status, $header, $body) = @{ $app->($env) };
 
   # thanks to autobox and IO::Handle magic, everything now duck types
   $body->foreach(sub { print STDOUT $_[0] });
