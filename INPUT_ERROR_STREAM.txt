@@ -19,9 +19,30 @@ Errors:
 
 Input:
   Filehandles (GLOB or IO::Handle):
-    $io->read($buf, $len), $io->seek($pos), $io->close()
+    $io->read($buf, $len), $io->close() = REQUIRED
+    $io->seek($pos) = OPTIONAL
+    
   Object that ducks:
-    $io->foreach(sub { my $buf = shift });
+    $io->foreach(sub { my $buf = shift }) = OPTIONAL
 
 Errors:
   $io->print(), $io->close()
+
+  
+Observation
+-----------
+
+Rack (which is an implementation as well as a specification) has a
+Rack::RewindableInput which implements rewind() method by saving the
+input into a temporary file.
+
+PSGI is a spec, so it doesn't require the Input stream to implement
+seek() which is impossible in the case where the input stream is a
+socket or STDIN filehandle.
+
+Also, WSGI/Rack support iterator (__iter__ and .each) but Perl doesn't
+have such a thing, so we use the same convention as passing the
+response body: an object that ducks to foreach() method.
+
+
+
