@@ -1,0 +1,27 @@
+== Python/WSGI
+
+Input:
+  read(size), readline(), readlines(hint), __iter__()
+
+Errors:
+  flush(), write(str), writelines(seq)
+  The input and error streams provided by the server must support the following methods:
+
+== Ruby/Rack
+
+Input:
+  gets(), read([length, [buffer]]), each(), rewind(), close()
+
+Errors:
+  puts(), write(), flush(), close()
+
+== Perl/PSGI
+
+Input:
+  Filehandles (GLOB or IO::Handle):
+    $io->read($buf, $len), $io->seek($pos), $io->close()
+  Object that ducks:
+    $io->foreach(sub { my $buf = shift });
+
+Errors:
+  $io->print(), $io->close()
