@@ -79,7 +79,7 @@ be:
 
   # $env is the big hash that contains everything
   # $app is a code ref that runs the application
-  my($status, $header, $body) = $app->($env);
+  my($status, $header, $body) = @{ $app->($env) };
 
   # read $body to response
   # print to STDOUT in CGI, or with $r->print in mod_perl etc.
