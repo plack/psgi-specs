@@ -35,7 +35,7 @@ Here's what we can think of:
       open my $fh, "<", "/path/to/video.mp4";
       return [
           200,
-          { 'Content-Type' => "video/mp4", 'Conetnt-Length' => -s $fh },
+          { 'Content-Type' => "video/mp4", 'Content-Length' => -s $fh },
           $fh,
       ];
   }
