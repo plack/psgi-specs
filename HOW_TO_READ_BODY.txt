@@ -219,40 +219,59 @@ generator functions) with duck typing in Perl without any
 transformation happening in the middle.
 
 So something should be done in between, either in application or PSGI
-implementation.
+implementation. We think this normalization MUST happen in the PSGI
+implementation, but an application MAY also do it, so the middleware
+chaining etc. can be implemented easier, but that's not a requirement.
 
-Let's assume we let the body object to duck with foreach() method, and
-the PSGI implementors would call close() if the object can() do it.
+So, let's assume we let the body object be either an array ref (#1),
+filehandle (#2) or or an object that reacts to foreach() method and
+optionally close() method (#3) which is called by PSGI implementor if
+it's there.
 
-We could possibly implement some helper utilities in a module like
-PSGI::Util that does ABSOLUTELY only transform a body object to
-something that ducks (without ANY dependencies) so the application
-developers can include:
+We don't require implementors to support generator-like function (#4).
+
+The imaginary implementor code that prints body to STDOUT would be:
+
+  my($status, $header, $body) = $app->($env);
+
+  my $cb = sub { print STDOUT $_[0] };
+
+  if (ref $body eq 'ARRAY') {
+      for my $line (@$body) {
+          $cb->($line);
+      }
+  } elsif ($body->can('readline')) {
+      for my $line ($body->readline) {
+          $cb->($line);
+      }
+      $body->close if $body->can('close');
+  } else {
+      $body->foreach($cb);
+      $body->close if $body->can('close');
+  }
+
+This is very simple yet a little redundant. We could provide some
+helper utilities for that does exactly and absolutely this, and
+recommend implmentors to include it, like:
 
   use PSGI::Util;
 
-  sub simple_app {
-      my $env = shift;
-      return [
-          200,
-          { 'Content-Type' => 'text/plain' },
-          PSGI::Util::body([ 'Hello World' ]),
-      ];
-  }
+  my($status, $header, $body) = $app->($env);
+  PSGI::Util::read_body($body, sub { print STDOUT $_[0] });
 
-This body() function would take either an array ref of strings,
-filehandle, IO::Handle object or a generator-like coderef and turns it
-into an object that reacts to foreach() and close() where appropriate.
-
-Of course, the application developers have an option not to use
-PSGI::Util and do their own to create an object that ducks to
-foreach().
-
-Alternatively, lazy app developers can copy the following four lines:
+The laziest implementor would also be able to (but not recommended to) do:
 
   use autobox::Core;
   sub IO::Handle::foreach {
       while (defined(my $line = $_[0]->getline)) { $_[1]->($line) }
   }
 
-So the application can return any of three body types (besides generator-like functions).
+  my($status, $header, $body) = $app->($env);
+
+  # thanks to autobox and IO::Handle magic, everything now duck types
+  $body->foreach(sub { print STDOUT $_[0] });
+
+Of course, the implementors have an option not to use PSGI::Util and
+do their own to handle reading from these $body variables for
+performance etc.
+
