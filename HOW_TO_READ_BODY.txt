@@ -226,9 +226,7 @@ chaining etc. can be implemented easier, but that's not a requirement.
 So, let's assume we let the body object be either an array ref (#1),
 filehandle (#2) or or an object that reacts to foreach() method and
 optionally close() method (#3) which is called by PSGI implementor if
-it's there.
-
-We don't require implementors to support generator-like function (#4).
+it's there, or a generator-like coderef (#4).
 
 The imaginary implementor code that prints body to STDOUT would be:
 
@@ -245,23 +243,35 @@ The imaginary implementor code that prints body to STDOUT would be:
           $cb->($line);
       }
       $body->close if $body->can('close');
+  } elsif (ref $body eq 'CODE') {
+      while (defined(my $line = $body->())) {
+          $cb->($line);
+      }
   } else {
       $body->foreach($cb);
       $body->close if $body->can('close');
   }
 
-This is very simple yet a little redundant. We could provide some
-helper utilities that does exactly and absolutely this without ANY
-dependencies, and recommend implmentors to include it, like:
+This is very simple yet a little tedious to write. We could provide
+some helper utilities that does exactly and absolutely this without
+ANY dependencies, and recommend implmentors to include it, like:
 
   use PSGI::Util;
 
   my($status, $header, $body) = $app->($env);
   PSGI::Util::read_body($body, sub { print STDOUT $_[0] });
 
-The laziest implementor would also be able to (but not recommended to) do:
+Of course, the implementors have an option not to use PSGI::Util and
+do their own to handle reading from these $body variables for
+performance etc.
+
+Actually, the laziest implementor would also be able to (but not
+recommended to) do:
 
   use autobox::Core;
+  sub autobox::Core::CODE::foreach {
+      while (defined(my $line = $_[0]->())) { $_[1]->($line) }
+  }
   sub IO::Handle::foreach {
       while (defined(my $line = $_[0]->getline)) { $_[1]->($line) }
   }
@@ -270,8 +280,4 @@ The laziest implementor would also be able to (but not recommended to) do:
 
   # thanks to autobox and IO::Handle magic, everything now duck types
   $body->foreach(sub { print STDOUT $_[0] });
-
-Of course, the implementors have an option not to use PSGI::Util and
-do their own to handle reading from these $body variables for
-performance etc.
 
