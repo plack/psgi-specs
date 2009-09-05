@@ -260,7 +260,7 @@ ANY dependencies, and recommend implmentors to include it, like:
   use PSGI::Util;
 
   my($status, $header, $body) = @{ $app->($env) };
-  PSGI::Util::read_body($body, sub { print STDOUT $_[0] });
+  PSGI::Util::foreach($body, sub { print STDOUT $_[0] });
 
 Of course, the implementors have an option not to use PSGI::Util and
 do their own to handle reading from these $body variables for
