@@ -9,6 +9,7 @@ PSGI::FAQ - Frquently Asked Questions and answers
 =head3 How do you prounce PSGI?
 
 We read it simply P-S-G-I, but you may be able to pronounce it "sky" :)
+
 =head3 Why do we need this?
 
 Perl has L<CGI> as a core module that abstracts the difference between
@@ -18,9 +19,9 @@ using it to maximize the performance and to access low-level APIs. So
 they end up writing adapters for all of those different environments,
 some of which may be well tested while others are not.
 
-PSGI allows web application developers to only write an adapter for
-PSGI and the end users can choose whichever implementation that
-supports the PSGI protocol.
+PSGI allows web application framework developers to only write an
+adapter for PSGI and the end users can choose whichever implementation
+that supports the PSGI protocol.
 
 =head3 What should I do to support PSGI?
 
