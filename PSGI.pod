@@ -137,7 +137,7 @@ One of C<SCRIPT_NAME> or C<PATH_INFO> MUST be set. C<PATH_INFO> should be / if C
 
 =head3 The Input Stream
 
-The input stream in C<psgi.input> is an IO::Handle-like object which streams the raw HTTP POST or PUT data. If it is a file handle then it MUST be opened in binary mode. The input stream MUST respond to C<read> and MAY implment C<seek>.
+The input stream in C<psgi.input> is an IO::Handle-like object which streams the raw HTTP POST or PUT data. If it is a file handle then it MUST be opened in binary mode. The input stream MUST respond to C<read> and MAY implement C<seek>.
 
 The built-in filehandle or IO::Handle based objects should work fine everywhere. Application developers SHOULD NOT inspect the type or class of the stream, but instead just call C<read> to duck type.
 
@@ -177,7 +177,7 @@ HTTP status code, is an integer and MUST be greater than or equal to 100.
 
 The header must be an array reference containing a pair of key and value. Its number of elements MUST be even. The header MUST NOT contain a C<Status> key, contain keys with C<:> or newlines in their name, contain keys that end in C<-> or C<_> but only contain keys that consist of letters, digits, C<_> or C<-> and start with a letter. The value of the header must be a scalar value that contains strings. The value string MUST NOT contain characters below chr(37).
 
-If the same key name appears multiple times in an array ref, those header lines MUST be sent to the client (e.g. multiple C<Set-Cookie> lines).
+If the same key name appears multiple times in an array ref, those header lines MUST be sent to the client separately (e.g. multiple C<Set-Cookie> lines).
 
 =head4 Content-Type
 
@@ -206,7 +206,7 @@ An IO::Handle-like object or a built-in filehandle.
   open my $body, "</path/to/file";
   my $body = IO::File->new("/path/to/file");
 
-Implementors SHOULD check if the body is whether a glob reference or an object that implements C<getline>, and call C<getline> to iterate the body and call C<close> when done.
+Implementors SHOULD NOT check if the type or class of body but instead just call C<getline> to iterate the body and call C<close> when done.
 
 =back
 
