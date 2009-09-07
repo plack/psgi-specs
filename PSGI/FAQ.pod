@@ -60,11 +60,16 @@ adapters.
 
 =head3 Is PSGI faster than (my framework)?
 
-Again, PSGI is not an implementation, so there could be a very fast
-PSGI implementation that preloads everything and runs fully optimized
-code under FastCGI. There could also be an implementation that doesn't
-load any modules at all and runs pretty quickly without eating so much
-memory under the CGI environment.
+Again, PSGI is not an implementation, but there's a potential for a
+very fast PSGI implementation that preloads everything and runs fully
+optimized code under FastCGI, an event-based tiny web server written
+in C and embedded perl that supports PSGI, or a plain-old CGI.pm based
+implementation that doesn't load any modules at all and runs pretty
+quickly without eating so much memory under the CGI environment.
+
+Users of your framwork can chose which implementation is the best for
+their needs. You don't need to think about lots of different user base
+with different needs.
 
 =head2 Plack
 
