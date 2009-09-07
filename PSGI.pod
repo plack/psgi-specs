@@ -1,0 +1,245 @@
+=head1 NAME
+
+PSGI - Perl Web Server Gateway Interface Specification
+
+=head1 ABSTRACT
+
+This document specifies a standard interface between web servers and Perl web applications or frameworks, to promote web application portability and reduce the duplicated efforts by web application framework developers.
+
+=head1 SPECIFICATION
+
+=head2 Applications
+
+A PSGI application is a Perl code reference. It takes exactly one argument, the environment and returns an array reference of exactly three values.
+
+  sub app {
+      my $env = shift;
+      return [
+          '200',
+          [ 'Content-Type' => 'text/plain' ],
+          [ "Hello World" ], # or IO::Handle-like objects
+      ];
+  }
+
+=head3 The Environment
+
+The environment MUST be a hash reference that includes CGI-like headers. The application is free to modify the environment. The environment is required to include these variables (adopted from PEP333, Rack and JSGI) except when they'd be empty, but see below:
+
+=over 4
+
+=item *
+
+C<REQUEST_METHOD>: The HTTP request method, such as "GET" or "POST". This cannot ever be an empty string, and so is always required.
+
+=item *
+
+C<SCRIPT_NAME>: The initial portion of the request URL's I<path> that corresponds to the application, so that the application knows its virtual "location". This may be an empty string, if the application corresponds to the "root" of the server.
+
+=item *
+
+C<PATH_INFO>: The remainder of the request URL's "path", designating the virtual "location" of the request's target within the application. This may be an empty string, if the request URL targets the application root and does not have a trailing slash. This value may be percent-encoded when I originating from a URL.
+
+=item *
+
+C<QUERY_STRING>: The portion of the request URL that follows the C<?>, if any. May be empty, but is always required.
+
+=item *
+
+C<SERVER_NAME>, C<SERVER_PORT>: When combined with C<SCRIPT_NAME> and C<PATH_INFO>, these variables can be used to complete the URL. Note, however, that C<HTTP_HOST>, if present, should be used in preference to C<SERVER_NAME> for reconstructing the request URL. C<SERVER_NAME> and C<SERVER_PORT> can never be empty strings, and so are always required.
+
+=item *
+
+C<SERVER_PROTOCOL>: The version of the protocol the client used to send the request. Typically this will be something like "HTTP/1.0" or "HTTP/1.1" and may be used by the application to determine how to treat any HTTP request headers.
+
+=item *
+
+C<HTTP_> Variables: Variables corresponding to the client-supplied HTTP request headers (i.e., variables whose names begin with C<HTTP_>). The presence or absence of these variables should correspond with the presence or absence of the appropriate HTTP header in the request.
+
+=back
+
+In addition to this, the PSGI environment MUST include these PSGI-specific variables:
+
+=over 4
+
+=item *
+
+C<psgi.version>: An array ref [1,0] representing this version of PSGI.
+
+=item *
+
+C<psgi.url_scheme>: A string C<http> or C<https>, depending on the request URL.
+
+=item *
+
+C<psgi.input>: the input stream. See blow.
+
+=item *
+
+C<psgi.errors>: the error stream. See below.
+
+=back
+
+The PSGI environment MAY include these optional PSGI variables:
+
+=over 4
+
+=item *
+
+C<psgi.run_once>: true if the server expects (but does not guarantee!) that the application will only be invoked this one time during the life of its containing process. Normally, this will only be true for a server based on CGI (or something similar).
+
+=item *
+
+C<psgi.async>: true if the server is calling the application in an asynchronous event loop. See L<PSGI Async extension|PSGI::Async>.
+
+=back
+
+The server or the application can store their own data in the environment, too. The keys MUST contain at least one dot, and should be prefixed uniquely. The prefix C<psgi.> is reserved for use with the PSGI core implementation and other accepted extensions and MUST NOT be used otherwise. The environment MUST NOT contain the keys C<HTTP_CONTENT_TYPE> or C<HTTP_CONTENT_LENGTH> (use the versions without C<HTTP_>). The CGI keys (named without a period) MUST have a scalar variable containing strings. There are the following restrictions:
+
+=over 4
+
+=item *
+
+C<psgi.version> MUST be an array of integers.
+
+=item *
+
+C<psgi.url_scheme> MUST either be a scalar variable containing a string C<http> or C<https>.
+
+=item *
+
+There MUST be a valid input stream in C<psgi.input>.
+
+=item *
+
+There MUST be a valid error stream in C<psgi.errors>.
+
+=item *
+
+The C<REQUEST_METHOD> MUST be a valid token.
+
+=item *
+
+The C<SCRIPT_NAME>, if non-empty, MUST start with C</>
+
+=item *
+
+The C<PATH_INFO>, if non-empty, MUST start with C</>
+
+=item *
+
+The C<CONTENT_LENGTH>, if given, MUST consist of digits only.
+
+=item *
+
+One of C<SCRIPT_NAME> or C<PATH_INFO> MUST be set. C<PATH_INFO> should be / if C<SCRIPT_NAME> is empty. C<SCRIPT_NAME> never should be /, but instead be empty.
+
+=back
+
+=head3 The Input Stream
+
+The input stream in C<psgi.input> is an IO::Handle-like object which streams the raw HTTP POST or PUT data. If it is a file handle then it MUST be opened in binary mode. The input stream MUST respond to C<read> and MAY implment C<seek>.
+
+The built-in filehandle or IO::Handle based objects should work fine everywhere. Application developers SHOULD NOT inspect the type or class of the stream, but instead just call C<read> to duck type.
+
+=over 4
+
+=item read
+
+  $input->read($buf, $len [, $offset ]);
+
+=item seek
+
+  $input->seek($pos, $whence);
+
+=back
+
+=head3 The Error Stream
+
+The error stream in C<psgi.errors> is an IO::Handle-like object to print errors. The error stream must implement C<print>.
+
+The built-in filehandle or IO::Handle based objects should work fine everywhere. Application developers SHOULD NOT inspect the type or class of the stream, but instead just call C<print> to duck type.
+
+=over 4
+
+=item print
+
+  $errors->print($error);
+
+=back
+
+=head3 The Response
+
+=head4 Status
+
+HTTP status code, is an integer and MUST be greater than or equal to 100.
+
+=head4 Headers
+
+The header must be an array reference containing a pair of key and value. Its number of elements MUST be even. The header MUST NOT contain a C<Status> key, contain keys with C<:> or newlines in their name, contain keys that end in C<-> or C<_> but only contain keys that consist of letters, digits, C<_> or C<-> and start with a letter. The value of the header must be a scalar value that contains strings. The value string MUST NOT contain characters below chr(37).
+
+If the same key name appears multiple times in an array ref, those header lines MUST be sent to the client (e.g. multiple C<Set-Cookie> lines).
+
+=head4 Content-Type
+
+There MUST be a C<Content-Type> except when the C<Status> is 1xx, 204 or 304, in which case there MUST be none given.
+
+=head4 Content-Length
+
+There MUST NOT be a C<Content-Length> header when the C<Status> is 1xx, 204 or 304.
+
+=head4 Body
+
+The response body is returned from the application in one of following two types of scalar variable.
+
+=over 4
+
+=item *
+
+An array reference containing body as lines.
+
+  my $body = [ "Hello\n", "World\n" ];
+
+=item *
+
+An IO::Handle-like object or a built-in filehandle.
+
+  open my $body, "</path/to/file";
+  my $body = IO::File->new("/path/to/file");
+
+Implementors SHOULD check if the body is whether a glob reference or an object that implements C<getline>, and call C<getline> to iterate the body and call C<close> when done.
+
+=back
+
+=head1 ACKNOWLEDGEMENTS
+
+Some parts of this specification are adopted from the following specifications.
+
+=over 4
+
+=item *
+
+PEP333 Python Web Server Gateway Interface L<http://www.python.org/dev/peps/pep-0333>
+
+=item *
+
+Rack L<http://rack.rubyforge.org/doc/SPEC.html>
+
+=item *
+
+JSGI Specification L<http://jackjs.org/jsgi-spec.html>
+
+=back
+
+I'd like to thank authors of these great documents.
+
+=head1 AUTHOR
+
+Tatsuhiko Miyagawa E<lt>miyagawa@bulknews.netE<gt>
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright Tatsuhiko Miyagawa, 2009.
+
+This document is licensed under the Creative Commons license by-sa.
+
+=cut
