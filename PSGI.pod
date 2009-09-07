@@ -192,6 +192,12 @@ The built-in filehandle or IO::Handle based objects should work fine
 everywhere. Application developers SHOULD NOT inspect the type or
 class of the stream, but instead just call C<read> to duck type.
 
+Application developers SHOULD NOT use the built-in C<read> function to
+read from the input stream, because C<read> function only works with
+the real IO object (glob ref based file handle or PerlIO) and makes
+the duck typing difficult.  Server implementors MAY, but are not
+required to, use PerlIO to work around with this problem.
+
 =over 4
 
 =item read
