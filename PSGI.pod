@@ -246,13 +246,14 @@ HTTP status code, is an integer and MUST be greater than or equal to 100.
 
 =head4 Headers
 
-The headers must be an array reference containing key and value pairs.
-Its number of elements MUST be even. The header MUST NOT contain a
-C<Status> key, contain keys with C<:> or newlines in their name,
-contain keys that end in C<-> or C<_> but only contain keys that
-consist of letters, digits, C<_> or C<-> and start with a letter. The
-value of the header must be a scalar value that contain a string. The
-value string MUST NOT contain characters below chr(37).
+The headers must be an array reference (and NOT a hash reference!)
+containing key and value pairs.  Its number of elements MUST be
+even. The header MUST NOT contain a C<Status> key, contain keys with
+C<:> or newlines in their name, contain keys that end in C<-> or C<_>
+but only contain keys that consist of letters, digits, C<_> or C<->
+and start with a letter. The value of the header must be a scalar
+value that contain a string. The value string MUST NOT contain
+characters below chr(37).
 
 If the same key name appears multiple times in an array ref, those
 header lines MUST be sent to the client separately (e.g. multiple
