@@ -48,8 +48,8 @@ write PSGI applications. Plack is a reference PSGI implementation that
 supports environments like CGI, FastCGI, mod_perl and AnyEvent (TBD).
 
 Plack also has useful APIs and helpers on top of PSGI, such as
-L<PlackX::Request> to provide a nice object-oriented API on request
-objects, and L<PlackX::Up> that defines the standard to run PSGI
+L<Plack::Request> to provide a nice object-oriented API on request
+objects, and L<Plack::Up> that defines the standard to run PSGI
 application from command line and configure using C<config.pu> (a la
 Rack's Rackup).
 
@@ -110,16 +110,20 @@ define.
 
 =head3 Why is application a code ref rather than an object with ->call method?
 
+(Still open to this topic: I think Plack should standardize this)
+
 Requiring an object L<in addition to> code ref would make ALL
 implementors code a few lines more tedious, while requiring an object
 L<instead of> code ref would make application developers to write
 another class and instantiate an object.
 
-L<PlackX::Up> will have a hook to allow your application to implement
+L<Plack::Up> will have a hook to allow your application to implement
 object based callback as an application though, which gives you an
 option to preload modules and setup parameters etc.
 
 =head3 Why is headers an array ref not hash ref?
+
+(Still open to this topic: I think Plack should standardize this)
 
 Short: In order to support multiple headers (e.g. C<Set-Cookie>).
 
@@ -141,6 +145,12 @@ and NOT about multiple header values (e.g. C<Accept: text/html,
 text/plain, *>). Joining the header values with C<, > is obviously
 applications' job. L<HTTP::Headers> does exactly that when it's passed
 an array reference as a header value, for instance.
+
+The other option is to always require application to set value as an
+array ref, even if there is only one entry: this would make
+implementors code less tedious, but, for the exact reason of multiple
+header values vs. multiple header lines with the same name mentioned
+in the paragraph before, I think it's confusing.
 
 =head3 No iterators support in $body?
 
