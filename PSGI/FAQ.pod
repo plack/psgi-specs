@@ -6,7 +6,7 @@ PSGI::FAQ - Frquently Asked Questions and answers
 
 =head2 General
 
-=head3 How do you prounce PSGI?
+=head3 How do you pronounce PSGI?
 
 We read it simply P-S-G-I, but you may be able to pronounce it "sky" :)
 
@@ -26,48 +26,48 @@ that supports the PSGI protocol.
 =head3 What should I do to support PSGI?
 
 If you're a web server developer, write a PSGI implemenation that
-calls PSGI application. Or join the development on Plack, the
-reference implementation of PSGI to add imlementations for more
+calls a PSGI application. Or join the development on Plack, the
+reference implementation of PSGI, to add implementations for more
 environments.
 
 If you're a web application framework developer, write an adapter for
-PSGI. Now you're free from supporting all different server
+PSGI. Now you're freed from supporting all different server
 environments.
 
 If you're a web application developer (or a web application framework
 user), chose the framework that supports PSGI, or ask the author to
-support it :)
+support it. :)
 
 See L<PSGI::Guide> how to write PSGI applications, implementations and
 adapters.
 
 =head3 What is Plack? What is the difference between PSGI and Plack?
 
-PSGI is a specification, so there's no software nor module called
+PSGI is a specification, so there's no software nor a module called
 PSGI. End users will need to choose one of PSGI implementations to
 write PSGI applications. Plack is a reference PSGI implementation that
 supports environments like CGI, FastCGI, mod_perl and AnyEvent (TBD).
 
 Plack also has useful APIs and helpers on top of PSGI, such as
 L<Plack::Request> to provide a nice object-oriented API on request
-objects, and L<Plack::Up> that defines the standard to run PSGI
-application from command line and configure using C<config.pu> (a la
-Rack's Rackup).
+objects, and L<Plack::Up> that defines the standard to run an PSGI
+application from the command line and configure it using C<config.pu>
+(a la Rack's Rackup).
 
 =head3 What namespaces should implementors use?
 
-B<Do not use PSGI:: namespace to implement PSGI implementations nor
-adapters>.
+B<Do not use the PSGI:: namespace to implement PSGI implementations
+nor adapters>.
 
-PSGI namespace is reserved for PSGI specifications and reference unit
-tests that implementors have to pass. It should not be used by
+The PSGI namespace is reserved for PSGI specifications and reference
+unit tests that implementors have to pass. It should not be used by
 particular implementations.
 
 If you write an adapter for an (imaginary) web application framework
-C<Camper>, name the adapter such as C<Camper::Adapter::PSGI>. If you
-write a PSGI implementation that runs on an imaginary pure perl web
-server called C<mightyd>, name it such as C<Mightyd::Handler::PSGI> or
-consider contributing the code to L<Plack> project as
+called C<Camper>, name the adapter such as C<Camper::Adapter::PSGI>.
+If you write a PSGI implementation that runs on an imaginary pure perl
+web server called C<mightyd>, name it such as C<Mightyd::Handler::PSGI>
+or consider contributing the code to L<Plack> project as
 C<Plack::Impl::Mightyd>.
 
 =head3 Is PSGI faster than (my framework)?
@@ -76,59 +76,59 @@ Again, PSGI is not an implementation, so there could be a very fast
 PSGI implementation that preloads everything and runs fully optimized
 code under FastCGI. There could also be an implementation that doesn't
 load any modules at all and runs pretty quickly without eating so much
-memory under CGI environment.
+memory under the CGI environment.
 
 =head2 API Design
 
-Keep in mind that most design choices made on PSGI spec is to minimize
-the requirements on implementors so they can optimize things. Adddig a
-fancy interface or allowing fleixbility on PSGI layer might sound
-catchy to end users, but it would just add things that implmentors
-have to support, which would end up getting in the way of
+Keep in mind that most design choices made in the PSGI spec are to
+minimize the requirements on implementors so they can optimize things.
+Adding a fancy interface or allowing flexibility on PSGI layers might
+sound catchy to end users, but it would just add things that
+implementors have to support, which would end up getting in the way of
 optimizations, or introducing more bugs. What makes a fancy API to
 attract web application developers is your framework, not PSGI.
 
 =head3 Why a big env hash instead of objects with APIs?
 
-The simplicity of protocol is the key that made WSGI and Rack
+The simplicity of the protocol is the key that made WSGI and Rack
 successful. PSGI is a low-level protocol between implementors and web
 application framework developers. If we define an API on what type of
 objects should be passed and which method they need to implement,
-there will be so many duplicated code in the implementations, some of
+there will be so much duplicated code in the implementations, some of
 which may be buggy.
 
 For instance, PSGI defines C<< $env->{REMOTE_ADDR} >> as a
-string. What if PSGI spec requires it to be an instance of Net::IP?
-Implementors would have to depend on Net::IP module, or have to write
-a mock object that implements ALL of Net::IP methods. Implementors
-depending on specific modules or having to reinvent lots of stuff is
-considered harmful and that's why the protocol is as minimal as
-possible.
+string. What if the PSGI spec required it to be an instance of Net::IP?
+Implementors would have to depend on the Net::IP module, or have to
+write a mock object that implements ALL of Net::IP's methods.
+Implementors depending on specific modules or having to reinvent lots
+of stuff is considered harmful and that's why the protocol is as minimal
+as possible.
 
 Making a nice API for the end users is a job that web application
 frameworks (adapter developers) should do, not something PSGI needs to
 define.
 
-=head3 Why is application a code ref rather than an object with ->call method?
+=head3 Why is the application a code ref rather than an object with a ->call method?
 
-(Still open to this topic: I think Plack should standardize this)
+(Still open to this topic)
 
-Requiring an object L<in addition to> code ref would make ALL
-implementors code a few lines more tedious, while requiring an object
-L<instead of> code ref would make application developers to write
+Requiring an object L<in addition to> a code ref would make ALL
+implementors' code a few lines more tedious, while requiring an object
+L<instead of> a code ref would make application developers write
 another class and instantiate an object.
 
 L<Plack::Up> will have a hook to allow your application to implement
-object based callback as an application though, which gives you an
+an object-based callback as an application though, which gives you an
 option to preload modules and setup parameters etc.
 
-=head3 Why is headers an array ref not hash ref?
+=head3 Why should the headers returned as an array ref and not a hash ref?
 
-(Still open to this topic: I think Plack should standardize this)
+(Still open to this topic)
 
 Short: In order to support multiple headers (e.g. C<Set-Cookie>).
 
-Long: In Python WSGI, response header is a list of (C<header_name>,
+Long: In Python WSGI, the response header is a list of (C<header_name>,
 C<header_value>) I<tuples> i.e. C<type(response_headers) is ListType>
 so there can be multiple entries for the same header key. In Rack and
 JSGI, header value is a String consisting of lines separated by
@@ -136,20 +136,21 @@ JSGI, header value is a String consisting of lines separated by
 
 We liked Python's specification here, and since Perl hashes don't
 allow multiple entries with the same key (unless it's C<tie>d), using
-an array reference to store [ key => value, key => value ] is the
-simplest solution to keep both framework adapters and implementations
-code simple. Other options, like allowing an array ref in addition to
-plain scalar, makes the either side of the code unnecessarily tedious.
+an array reference to store C<< [ key => value, key => value ] >> is
+the simplest solution to keep both framework adapters and
+implementations simple. Other options, like allowing an array ref
+in addition to a plain scalar, makes either side of the code
+unnecessarily tedious.
 
 Note that I'm talking about multiple header lines with the same key,
 and NOT about multiple header values (e.g. C<Accept: text/html,
 text/plain, *>). Joining the header values with C<, > is obviously
-applications' job. L<HTTP::Headers> does exactly that when it's passed
-an array reference as a header value, for instance.
+the applications' job. L<HTTP::Headers> does exactly that when it's
+passed an array reference as a header value, for instance.
 
-The other option is to always require application to set value as an
-array ref, even if there is only one entry: this would make
-implementors code less tedious, but, for the exact reason of multiple
+The other option is to always require the application to set value as
+an array ref, even if there is only one entry: this would make
+implementors' code less tedious, but, for the exact reason of multiple
 header values vs. multiple header lines with the same name mentioned
 in the paragraph before, I think it's confusing.
 
@@ -160,33 +161,33 @@ Ruby's language beauty, which are iterable objects in Python or
 iterators in Ruby.
 
 Rack, for instance, expects the body as an object that responds to
-C<each> method and then yield the buffer, so
+the C<each> method and then yields the buffer, so
 
   body.each { |buf| request.write(buf) }
 
 would just magically work whether body is an Array, FileIO object or
-an object that implmenets iterators. Perl doesn't have such a
+an object that implements iterators. Perl doesn't have such a
 beautiful thing in the language unless L<autobox> is loaded. And PSGI
 should not make autobox as a requirement, hence we only support a
 simple array ref or file handles.
 
-Writing a IO::Handle-like object is pretty easy since it's only
+Writing an IO::Handle-like object is pretty easy since it's only
 C<getline> and C<close>. You can also use PerlIO to write such an
-object behaves like filehandle, even though it might be considered a
-little unstable.
+object that behaves like filehandle, even though it might be considered
+a little unstable.
 
 =head3 What if I want to stream content or do a long-poll Comet?
 
-Callback based API is supported with L<psgi.async extension|PSGI::Async>.
+A callback-based API is supported with L<psgi.async extension|PSGI::Async>.
 
 =head3 Why CGI-style environment variables instead of HTTP headers as a hash?
 
-Most existent web application frameworks already have a code or
-handler to run under the CGI environment. Using CGI style hash keys
-instead of HTTP headers lets it so easy for the framework developers
+Most existent web application frameworks already have code or a
+handler to run under the CGI environment. Using CGI-style hash keys
+instead of HTTP headers makes it so easy for the framework developers
 to implement an adapter to support PSGI. For instance,
-L<Catalyst::Engine::PSGI> only differs a few dozens of lines from
-L<Catalyst::Engine::CGI> and was written in less tha an hour.
+L<Catalyst::Engine::PSGI> only differs in a few dozens of lines from
+L<Catalyst::Engine::CGI> and was written in less than an hour.
 
 =head2 MISC.
 
@@ -194,7 +195,7 @@ L<Catalyst::Engine::CGI> and was written in less tha an hour.
 
 No.
 
-=head3 Is Plack part of Plagger (miyagawa's RSS/Atom aggregator)?
+=head3 Is Plack a part of Plagger (miyagawa's RSS/Atom aggregator)?
 
 No.
 
@@ -213,7 +214,7 @@ irc.perl.org or mailing list
 L<http://groups.google.com/group/psgi-plack>. Be sure you clarify
 which hat you're wearing: application developers, server implementors
 or middleware developers. And don't criticize the spec just to
-criticize it: show your exact code that don't work or get too messy
+criticize it: show your exact code that doesn't work or get too messy
 because of spec restrictions etc. We'll ignore all nitpicks and
 bikeshed discussion.
 
