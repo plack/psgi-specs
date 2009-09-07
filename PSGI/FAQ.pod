@@ -187,6 +187,16 @@ to implement an adapter to support PSGI. For instance,
 L<Catalyst::Engine::PSGI> only differs a few dozens of lines from
 L<Catalyst::Engine::CGI> and was written in less tha an hour.
 
+=head2 MISC.
+
+=head3 Is Plack like ack (Andy Lester's better grep)?
+
+No.
+
+=head3 Is Plack part of Plagger (miyagawa's RSS/Atom aggregator)?
+
+No.
+
 =head1 SEE ALSO
 
 WSGI's FAQ which clearly answers lots of questions about how some API
