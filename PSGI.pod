@@ -30,7 +30,7 @@ three values.
       return [
           '200',
           [ 'Content-Type' => 'text/plain' ],
-          [ "Hello World" ], # or IO::Handle-like objects
+          [ "Hello World" ], # or IO::Handle-like object
       ];
   }
 
