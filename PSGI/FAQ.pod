@@ -163,16 +163,28 @@ define.
 
 =head3 Why is the application a code ref rather than an object with a ->call method?
 
-(Still open to this topic)
-
 Requiring an object L<in addition to> a code ref would make ALL
 implementors' code a few lines more tedious, while requiring an object
 L<instead of> a code ref would make application developers write
 another class and instantiate an object.
 
+Requiring an object ALWAYS be an object instead of a code ref would
+also work, but then application developers always have to define a
+class and instanciate the object. The benefit of requiring an object
+instead of a code ref would be that it gives middleware developers a
+chance to call some methods on the application instead of the standard
+C<call> method. However, that can also be done also by setting values
+or callbacks in the environments hash reference.
+
+The problem still remains to fill the gap of how the application
+should be initialized and by who.
+
+This is a solved problem in Ruby's Rack and we'll clone that:
 L<Plack::Up> will have a hook to allow your application to implement
 an object-based callback as an application though, which gives you an
-option to preload modules and setup parameters etc.
+option to preload modules and setup parameters etc. And then we also
+have a standard set of L<Plack::Adapter> that auto-selects the
+appropriate adapter based on a given class.
 
 =head3 Why should the headers returned as an array ref and not a hash ref?
 
