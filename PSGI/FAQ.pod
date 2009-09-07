@@ -12,19 +12,19 @@ We read it simply P-S-G-I, but you may be able to pronounce it "sky" :)
 
 =head3 Why do we need this?
 
-Perl has L<CGI> as a core module that abstracts the difference between CGI, mod_perl and FastCGI. However, most web application framework developers (e.g. Catalyst, Jifty and CGI::Application) usually avoid using it to maximize the performance and to access low-level APIs. So they end up writing adaptors for all of those different environments, some of which may be well tested while others are not.
+Perl has L<CGI> as a core module that abstracts the difference between CGI, mod_perl and FastCGI. However, most web application framework developers (e.g. Catalyst, Jifty and CGI::Application) usually avoid using it to maximize the performance and to access low-level APIs. So they end up writing adapters for all of those different environments, some of which may be well tested while others are not.
 
-PSGI allows web application developers to only write an adaptor for PSGI and the end users can choose whichever implementation that supports the PSGI protocol.
+PSGI allows web application developers to only write an adapter for PSGI and the end users can choose whichever implementation that supports the PSGI protocol.
 
 =head3 What should I do to support PSGI?
 
 If you're a web server developer, write a PSGI implemenation that calls PSGI application. Or join the development on Plack, the reference implementation of PSGI to add imlementations for more environments.
 
-If you're a web application framework developer, write an adaptor for PSGI. Now you're free from supporting all different server environments. 
+If you're a web application framework developer, write an adapter for PSGI. Now you're free from supporting all different server environments. 
 
 If you're a web application developer (or a web application framework user), chose the framework that supports PSGI, or ask the author to support it :)
 
-See L<PSGI::Guide> how to write PSGI applications, implementations and adaptors.
+See L<PSGI::Guide> how to write PSGI applications, implementations and adapters.
 
 =head3 What is Plack? What is the difference between PSGI and Plack?
 
@@ -34,11 +34,11 @@ Plack also has useful APIs and helpers on top of PSGI, such as L<PlackX::Request
 
 =head3 What namespaces should implementors use?
 
-B<Do not use PSGI:: namespace to implement PSGI implementations nor adaptors>.
+B<Do not use PSGI:: namespace to implement PSGI implementations nor adapters>.
 
 PSGI namespace is reserved for PSGI specifications and reference unit tests that implementors have to pass. It should not be used by particular implementations.
 
-If you write an adaptor for an (imaginary) web application framework C<Camper>, name the adaptor such as C<Camper::Adaptor::PSGI>. If you write a PSGI implementation that runs on an imaginary pure perl web server called C<mightyd>, name it such as C<Mightyd::Handler::PSGI> or consider contributing the code to L<Plack> project as C<Plack::Impl::Mightyd>.
+If you write an adapter for an (imaginary) web application framework C<Camper>, name the adapter such as C<Camper::Adapter::PSGI>. If you write a PSGI implementation that runs on an imaginary pure perl web server called C<mightyd>, name it such as C<Mightyd::Handler::PSGI> or consider contributing the code to L<Plack> project as C<Plack::Impl::Mightyd>.
 
 =head3 Is PSGI faster than (my framework)?
 
@@ -54,7 +54,7 @@ The simplicity of protocol is the key that made WSGI and Rack successful. PSGI i
 
 For instance, PSGI defines C<< $env->{REMOTE_ADDR} >> as a string. What if PSGI spec requires it to be an instance of Net::IP? Implementors would have to depend on Net::IP module, or have to write a mock object that implements ALL of Net::IP methods. Implementors depending on specific modules or having to reinvent lots of stuff is considered harmful and that's why the protocol is as minimal as possible.
 
-Making a nice API for the end users is a job that web application frameworks (adaptor developers) should do, not something PSGI needs to define.
+Making a nice API for the end users is a job that web application frameworks (adapter developers) should do, not something PSGI needs to define.
 
 =head3 Why is application a code ref rather than an object with ->call method?
 
@@ -68,7 +68,7 @@ Short: In order to support multiple headers (e.g. C<Set-Cookie>).
 
 Long: In Python WSGI, response header is a list of (C<header_name>, C<header_value>) I<tuples> i.e. C<type(response_headers) is ListType> so there can be multiple entries for the same header key. In Rack and JSGI, header value is a String consisting of lines separated by "C<\n>".
 
-We liked Python's specification here, and since Perl hashes don't allow multiple entries with the same key (unless it's C<tie>d), using an array reference to store [ key => value, key => value ] is the simplest solution to keep both framework adaptors and implementations code simple. Other options, like allowing an array ref in addition to plain scalar, makes the either side of the code unnecessarily tedious.
+We liked Python's specification here, and since Perl hashes don't allow multiple entries with the same key (unless it's C<tie>d), using an array reference to store [ key => value, key => value ] is the simplest solution to keep both framework adapters and implementations code simple. Other options, like allowing an array ref in addition to plain scalar, makes the either side of the code unnecessarily tedious.
 
 Note that I'm talking about multiple header lines with the same key, and NOT about multiple header values (e.g. C<Accept: text/html, text/plain, *>). Joining the header values with C<, > is obviously applications' job. L<HTTP::Headers> does exactly that when it's passed an array reference as a header value, for instance.
 
@@ -90,7 +90,7 @@ Callback based API is supported with L<psgi.async extension|PSGI::Async>.
 
 =head3 Why CGI-style environment variables instead of HTTP headers as a hash?
 
-Most existent web application frameworks already have a code or handler to run under the CGI environment. Using CGI style hash keys instead of HTTP headers lets it so easy for the framework developers to implement an adaptor to support PSGI. For instance, L<Catalyst::Engine::PSGI> only differs a few dozens of lines from L<Catalyst::Engine::CGI> and was written in less tha an hour.
+Most existent web application frameworks already have a code or handler to run under the CGI environment. Using CGI style hash keys instead of HTTP headers lets it so easy for the framework developers to implement an adapter to support PSGI. For instance, L<Catalyst::Engine::PSGI> only differs a few dozens of lines from L<Catalyst::Engine::CGI> and was written in less tha an hour.
 
 =head1 SEE ALSO
 
