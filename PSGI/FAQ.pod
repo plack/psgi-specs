@@ -14,10 +14,10 @@ We read it simply P-S-G-I, but you may be able to pronounce it "sky" :)
 
 Perl has L<CGI> as a core module that abstracts the difference between
 CGI, mod_perl and FastCGI. However, most web application framework
-developers (e.g. Catalyst, Jifty and CGI::Application) usually avoid
-using it to maximize the performance and to access low-level APIs. So
-they end up writing adapters for all of those different environments,
-some of which may be well tested while others are not.
+developers (e.g. Catalyst and Jifty) usually avoid using it to
+maximize the performance and to access low-level APIs. So they end up
+writing adapters for all of those different environments, some of
+which may be well tested while others are not.
 
 PSGI allows web application framework developers to only write an
 adapter for PSGI and the end users can choose whichever implementation
