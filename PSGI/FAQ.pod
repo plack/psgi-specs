@@ -23,6 +23,23 @@ PSGI allows web application framework developers to only write an
 adapter for PSGI and the end users can choose whichever implementation
 that supports the PSGI protocol.
 
+=head3 My framework already does CGI, FCGI and mod_perl. Why do I want to support PSGI?
+
+If your web application framework already does most of server
+environments and they perfome really good and are well tested, there's
+no direct benefit as of today for you to support PSGI. But if a CGI
+environment is already supported, supporting PSGI in addition should
+be extremely easy, and the benefit you and your framework users will
+enjoy is huge.
+
+=head3 I'm writing a web application that supports PSGI. What's the benefit of this for me?
+
+If the framework you're using supports PSGI, that means your
+application can run on any of existent and feature PSGI
+implementations. Also, if you use the Plack standard API, the end
+users of your application should be able to configure and run your
+application in a bunch of different ways.
+
 =head3 What should I do to support PSGI?
 
 If you're a web server developer, write a PSGI implemenation that
@@ -41,18 +58,43 @@ support it. :)
 See L<PSGI::Guide> how to write PSGI applications, implementations and
 adapters.
 
+=head3 Is PSGI faster than (my framework)?
+
+Again, PSGI is not an implementation, so there could be a very fast
+PSGI implementation that preloads everything and runs fully optimized
+code under FastCGI. There could also be an implementation that doesn't
+load any modules at all and runs pretty quickly without eating so much
+memory under the CGI environment.
+
+=head2 Plack
+
 =head3 What is Plack? What is the difference between PSGI and Plack?
 
 PSGI is a specification, so there's no software nor a module called
 PSGI. End users will need to choose one of PSGI implementations to
 write PSGI applications. Plack is a reference PSGI implementation that
-supports environments like CGI, FastCGI, mod_perl and AnyEvent (TBD).
+supports environments like CGI, FastCGI, mod_perl and AnyEvent.
 
 Plack also has useful APIs and helpers on top of PSGI, such as
 L<Plack::Request> to provide a nice object-oriented API on request
 objects, and L<Plack::Up> that defines the standard to run an PSGI
 application from the command line and configure it using C<config.pu>
 (a la Rack's Rackup).
+
+=head3 What kind of server implementations would be available?
+
+We already support most web servers that support the standard CGI or
+FastCGI, but also want to support special web servers that can embed
+perl, like ngix. We think it would be really nice if Apache module
+mod_perlite and Google AppEngine support PSGI too. You can run on your
+PSGI/Plack based perl app in the cloud.
+
+=head3 Ruby is Rack and JavaScript is Jack. Why is it not called Pack?
+
+Well Pack indeed is a cute name, but Perl has a built-in function pack
+so it's a little confusing. At least when you start talking like
+I<I've been toying with Pack in perl and it's awesome> people would
+think you're dealing with data and string conversions.
 
 =head3 What namespaces should implementors use?
 
@@ -70,13 +112,23 @@ web server called C<mightyd>, name it such as C<Mightyd::Handler::PSGI>
 or consider contributing the code to L<Plack> project as
 C<Plack::Impl::Mightyd>.
 
-=head3 Is PSGI faster than (my framework)?
+=head2 HTTP::Engine
 
-Again, PSGI is not an implementation, so there could be a very fast
-PSGI implementation that preloads everything and runs fully optimized
-code under FastCGI. There could also be an implementation that doesn't
-load any modules at all and runs pretty quickly without eating so much
-memory under the CGI environment.
+=head3 Why PSGI/Plack instead of HTTP::Engine?
+
+HTTP::Engine was a great experiment, but it mixed the specification
+with implementations, and the monolithic class hierarchy and role
+based interfaces makes it really hard to write a new
+impelementation. We kept the existent HTTP::Engine and broke it into
+three parts: The Spec (PSGI), Reference implementations (Plack::Impl)
+and Standard APIs and Tools (Plack).
+
+=head3 Will HTTP::Engine be dead?
+
+It won't be dead but won't be actively developed anymore. Instead,
+HTTP::Engine will become a I<very> thin API on top of Plack. Your
+application written in HTTP::Engine should continue to work, but
+switching to Plack API would be recommended.
 
 =head2 API Design
 
