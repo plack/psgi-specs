@@ -195,8 +195,10 @@ class of the stream, but instead just call C<read> to duck type.
 Application developers SHOULD NOT use the built-in C<read> function to
 read from the input stream, because C<read> function only works with
 the real IO object (glob ref based file handle or PerlIO) and makes
-the duck typing difficult.  Server implementors MAY, but are not
-required to, use PerlIO to work around with this problem.
+the duck typing difficult. Web application framework developers, if
+they know the input stream will be called built-in read() in the
+upstream code they can't touch, SHOULD use PerlIO or tie handle to
+work around with this problem.
 
 =over 4
 
