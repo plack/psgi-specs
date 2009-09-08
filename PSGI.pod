@@ -289,7 +289,7 @@ An IO::Handle-like object or a built-in filehandle.
   open my $body, "</path/to/file";
   my $body = IO::File->new("/path/to/file");
 
-Implementors SHOULD NOT check the type or class of the body but instead
+Servers SHOULD NOT check the type or class of the body but instead
 just call C<getline> to iterate over the body and call C<close> when done.
 
 =back

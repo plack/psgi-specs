@@ -20,7 +20,7 @@ writing adapters for all of those different environments, some of
 which may be well tested while others are not.
 
 PSGI allows web application framework developers to only write an
-adapter for PSGI and the end users can choose whichever implementation
+adapter for PSGI and the end users can choose whichever backends
 that supports the PSGI protocol.
 
 =head3 My framework already does CGI, FCGI and mod_perl. Why do I want to support PSGI?
@@ -44,8 +44,7 @@ application in a bunch of different ways.
 
 If you're a web server developer, write a PSGI implemenation that
 calls a PSGI application. Or join the development on Plack, the
-reference implementation of PSGI, to add implementations for more
-environments.
+reference implementation of PSGI, to add backends for more web servers.
 
 If you're a web application framework developer, write an adapter for
 PSGI. Now you're freed from supporting all different server
@@ -55,7 +54,7 @@ If you're a web application developer (or a web application framework
 user), chose the framework that supports PSGI, or ask the author to
 support it. :)
 
-See L<PSGI::Guide> how to write PSGI applications, implementations and
+See L<PSGI::Guide> how to write PSGI applications, backends and
 adapters.
 
 =head3 Is PSGI faster than (my framework)?
@@ -64,10 +63,10 @@ Again, PSGI is not an implementation, but there's a potential for a
 very fast PSGI implementation that preloads everything and runs fully
 optimized code under FastCGI, an event-based tiny web server written
 in C and embedded perl that supports PSGI, or a plain-old CGI.pm based
-implementation that doesn't load any modules at all and runs pretty
+backend that doesn't load any modules at all and runs pretty
 quickly without eating so much memory under the CGI environment.
 
-Users of your framwork can chose which implementation is the best for
+Users of your framework can chose which backend is the best for
 their needs. You don't need to think about lots of different user base
 with different needs.
 
@@ -86,7 +85,7 @@ objects, and L<Plack::Up> that defines the standard to run an PSGI
 application from the command line and configure it using C<config.pu>
 (a la Rack's Rackup).
 
-=head3 What kind of server implementations would be available?
+=head3 What kind of server backends would be available?
 
 We already support most web servers that support the standard CGI or
 FastCGI, but also want to support special web servers that can embed
@@ -101,21 +100,24 @@ so it's a little confusing. At least when you start talking like
 I<I've been toying with Pack in perl and it's awesome> people would
 think you're dealing with data and string conversions.
 
-=head3 What namespaces should implementors use?
+=head3 What namespaces should I use to implement PSGI support?
 
-B<Do not use the PSGI:: namespace to implement PSGI implementations
+B<Do not use the PSGI:: namespace to implement PSGI backends
 nor adapters>.
 
 The PSGI namespace is reserved for PSGI specifications and reference
 unit tests that implementors have to pass. It should not be used by
 particular implementations.
 
-If you write an adapter for an (imaginary) web application framework
-called C<Camper>, name the adapter such as C<Camper::Adapter::PSGI>.
-If you write a PSGI implementation that runs on an imaginary pure perl
-web server called C<mightyd>, name it such as C<Mightyd::Handler::PSGI>
-or consider contributing the code to L<Plack> project as
-C<Plack::Impl::Mightyd>.
+If you write a plugin or an extension to support PSGI for an
+(imaginary) web application framework called C<Camper>, name the code
+such as C<Camper::Engine::PSGI>. And then consider writing a few lines
+of code in C<Plack::Adapter::Camper> to glue the API difference
+between frameworks. If you write a PSGI backend that runs on an
+imaginary pure perl web server called C<mightyd>, name it such as
+C<Mightyd::Handler::PSGI> or consider contributing the code to
+L<Plack> project as C<Plack::Impl::Mightyd> (by doing so you don't
+need to worry about how to run/load PSGI applications).
 
 =head2 HTTP::Engine
 
@@ -123,10 +125,10 @@ C<Plack::Impl::Mightyd>.
 
 HTTP::Engine was a great experiment, but it mixed the specification
 with implementations, and the monolithic class hierarchy and role
-based interfaces makes it really hard to write a new
-impelementation. We kept the existent HTTP::Engine and broke it into
-three parts: The Spec (PSGI), Reference implementations (Plack::Impl)
-and Standard APIs and Tools (Plack).
+based interfaces makes it really hard to write a new backend. We kept
+the existent HTTP::Engine and broke it into three parts: The Spec
+(PSGI), Reference implementations (Plack::Impl) and Standard APIs and
+Tools (Plack).
 
 =head3 Will HTTP::Engine be dead?
 
@@ -138,27 +140,27 @@ switching to Plack API would be recommended.
 =head2 API Design
 
 Keep in mind that most design choices made in the PSGI spec are to
-minimize the requirements on implementors so they can optimize things.
+minimize the requirements on backends so they can optimize things.
 Adding a fancy interface or allowing flexibility on PSGI layers might
 sound catchy to end users, but it would just add things that
-implementors have to support, which would end up getting in the way of
+backends have to support, which would end up getting in the way of
 optimizations, or introducing more bugs. What makes a fancy API to
 attract web application developers is your framework, not PSGI.
 
 =head3 Why a big env hash instead of objects with APIs?
 
 The simplicity of the protocol is the key that made WSGI and Rack
-successful. PSGI is a low-level protocol between implementors and web
+successful. PSGI is a low-level protocol between backends and web
 application framework developers. If we define an API on what type of
 objects should be passed and which method they need to implement,
-there will be so much duplicated code in the implementations, some of
+there will be so much duplicated code in the backends, some of
 which may be buggy.
 
 For instance, PSGI defines C<< $env->{REMOTE_ADDR} >> as a
 string. What if the PSGI spec required it to be an instance of Net::IP?
-Implementors would have to depend on the Net::IP module, or have to
+Backend code would have to depend on the Net::IP module, or have to
 write a mock object that implements ALL of Net::IP's methods.
-Implementors depending on specific modules or having to reinvent lots
+Backends depending on specific modules or having to reinvent lots
 of stuff is considered harmful and that's why the protocol is as minimal
 as possible.
 
@@ -169,7 +171,7 @@ define.
 =head3 Why is the application a code ref rather than an object with a ->call method?
 
 Requiring an object L<in addition to> a code ref would make ALL
-implementors' code a few lines more tedious, while requiring an object
+backend's code a few lines more tedious, while requiring an object
 L<instead of> a code ref would make application developers write
 another class and instantiate an object.
 
@@ -184,12 +186,18 @@ or callbacks in the environments hash reference.
 The problem still remains to fill the gap of how the application
 should be initialized and by who.
 
-This is a solved problem in Ruby's Rack and we'll clone that:
-L<Plack::Up> will have a hook to allow your application to implement
-an object-based callback as an application though, which gives you an
-option to preload modules and setup parameters etc. And then we also
-have a standard set of L<Plack::Adapter> that auto-selects the
-appropriate adapter based on a given class.
+This is a solved problem in Ruby's Rack and we'll clone that with a
+little additions of the adapter concept: L<Plack::Adapter> allows you
+to write a code to turn your application's runner code into a PSGI
+application (code ref), which gives you an option to preload modules
+and setup parameters etc.
+
+Writing an L<Plack::Adapter> for your web application framework also
+allows the end users of your framework to use Plack's L<plackup>
+standard utility, that makes use of L<Plack::Adapter> to work with
+many web application frameworks as well as L<Plack::Loader> to
+auto-select the appropriate backends given command line options or
+environment variables.
 
 =head3 Why should the headers returned as an array ref and not a hash ref?
 
@@ -207,7 +215,7 @@ We liked Python's specification here, and since Perl hashes don't
 allow multiple entries with the same key (unless it's C<tie>d), using
 an array reference to store C<< [ key => value, key => value ] >> is
 the simplest solution to keep both framework adapters and
-implementations simple. Other options, like allowing an array ref
+backends simple. Other options, like allowing an array ref
 in addition to a plain scalar, makes either side of the code
 unnecessarily tedious.
 
@@ -219,7 +227,7 @@ passed an array reference as a header value, for instance.
 
 The other option is to always require the application to set value as
 an array ref, even if there is only one entry: this would make
-implementors' code less tedious, but, for the exact reason of multiple
+backend's code less tedious, but, for the exact reason of multiple
 header values vs. multiple header lines with the same name mentioned
 in the paragraph before, I think it's confusing.
 
