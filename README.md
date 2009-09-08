@@ -2,11 +2,11 @@ This is PSGI, Perl Web Server Gateway Interface -- ala Python's WSGI and Ruby's 
 
 [PSGI protocol specification](http://github.com/miyagawa/psgi-specs/blob/master/PSGI.pod) is currently in draft. We're reviewing feedbacks before making it final. See also [FAQ](http://github.com/miyagawa/psgi-specs/blob/master/PSGI/FAQ.pod)
 
-== Reference Implementation
+## Reference Implementation
 
 * [Plack](http://github.com/miyagawa/Plack) implements server side implementations such as CGI, FastCGI, mod_perl and perl-based web servers like HTTP::Server::Simple, AnyEvent and Mojo.
 
-== Supported Web Applications
+## Supported Web Applications
 
 * [Catalyst::Engine::PSGI](http://github.com/miyagawa/Catalyst-Engine-PSGI) lets Catalyst application run under any PSGI implementations
 * [Angelos](http://github.com/dann/angelos) is the first web application framework who successfully converted from Plack's ancestor, HTTP::Engine :)
