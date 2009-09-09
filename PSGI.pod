@@ -117,6 +117,16 @@ C<psgi.input>: the input stream. See below.
 
 C<psgi.errors>: the error stream. See below.
 
+=item *
+
+C<psgi.multithread>: true if the application may be simultaneously
+invoked by another thread in the same process, false otherwise.
+
+=item *
+
+C<psgi.multiprocess>: true if an equivalent application object may be
+simultaneously invoked by another process, false otherwise.
+
 =back
 
 The PSGI environment MAY include these optional PSGI variables:
@@ -132,8 +142,9 @@ server based on CGI (or something similar).
 
 =item *
 
-C<psgi.async>: true if the server is calling the application in an
-asynchronous event loop. See L<PSGI Async extension|PSGI::Async>.
+C<psgi.async>: Integer 1 or 2 if the server is calling the application
+in an asynchronous event loop. See L<PSGI Async
+extension|PSGI::Async>.
 
 =back
 
