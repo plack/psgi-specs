@@ -14,17 +14,17 @@ Following web servers are planned to be supported, or authors are in contact to 
 
 ## Supported Web Application Frameworks
 
-* [Catalyst::Engine::PSGI](http://github.com/miyagawa/Catalyst-Engine-PSGI) lets Catalyst application run under any PSGI implementations
+* [Catalyst](http://www.catalystframework.org/) runs as a PSGI application using [Catalyst::Engine::PSGI](http://github.com/miyagawa/Catalyst-Engine-PSGI).
 * [Angelos](http://github.com/dann/angelos) has a Plack support by default
 * [Ark](http://github.com/typester/aerk-perl) has a PSGI/Plack support branch
 * [HTTP::Engine](http://github.com/http-engine/HTTP-Engine) now has a thin wrapper interface to write a new micro web server on PSGI
 * [Dancer](http://github.com/sukria/Dancer) Work in progress
 * [Schenker](http://github/com/spiritloose/Schenker) runs fine as PSGI app since it uses HTTP::Engine
-* [CGI::Application](http://cgi-app.org/) runs under the standard CGI envrironment via CGI::Emulate::PSGI
+* [CGI::Application](http://cgi-app.org/) runs as a PSGI application using [CGI::Application::PSGI]
+* [CGI.pm](http://search.cpan.org/dist/CGI) has a native PSGI support to get parameters in [miyagawa's fork](http://github.com/miyagawa/CGI.pm)
 
 Planned frameworks:
 
-* [CGI.pm](http://search.cpan.org/dist/CGI) will have a native PSGI support to get parameters. You still need to return headers and body as an array ref, instead of printing to STDOUT.
 * [Squatting](http://github.com/beppu/squatting)
 * [Jifty](http://jifty.org/)
 * [Sledge](http://sl.edge.jp/)
