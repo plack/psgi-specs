@@ -5,7 +5,7 @@ This is PSGI, Perl Web Server Gateway Interface -- ala Python's WSGI and Ruby's 
 ## Web Servers
 
 * [Plack](http://github.com/miyagawa/Plack) contains server side implementations such as CGI, FastCGI, mod_perl and perl-based web servers like HTTP::Server::Simple, AnyEvent, FastCGI::EV and Mojo.
-* [nginx](http://github.com/Yappo/p5-Plack-Impl-Nginx) is a nginx module (and a patch) to run PSGI application on Perl embedded in the nginx web server.
+* [nginx](http://www.nginx.eu) with [Yappo's patches](http://github.com/Yappo/nginx-psgi-patches) can run a PSGI application on Perl embedded in the nginx web server.
 
 Following web servers are planned to be supported, or authors are in contact to support PSGI:
 
