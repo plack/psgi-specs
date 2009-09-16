@@ -464,6 +464,9 @@ order):
   Masayoshi Sekimura
   Brock Wilcox
   Piers Cawley
+  Daisuke Maki
+  Kang-min Liu
+  Yukihiro Matsumoto
 
 =head1 COPYRIGHT AND LICENSE
 
