@@ -18,6 +18,48 @@ interface, but instead are encouraged to use frameworks that
 support PSGI, or use the helper implementations like Plack (more on
 that later).
 
+=head1 TERMINOLOGIES
+
+=over 4
+
+=item Servers
+
+Servers are web servers that accepts HTTP requests, dispatch the
+requests to the web appilcations and return the HTTP response to the
+clients. In PSGI specification it's a Perl process that's running
+inside an HTTP server (e.g. mod_perl in Apache) or a daemon process
+called from a web server (e.g. FastCGI daemon) or a pure perl HTTP
+server.
+
+Servers are often called I<PSGI implementations> as well as
+I<Backends>.
+
+=item Applications
+
+Applications are a web application that actually gets HTTP requests
+and returns HTTP response. In PSGI it's a code reference: see below.
+
+=item Middleware
+
+Middleware is a PSGI application, which is a code reference, but also
+runs like a server to run other applications. It can be thought of a
+I<plugin> to extend PSGI application: see below.
+
+=item Framework developers
+
+Framework developers are an authors of web application
+frameworks. They need to write adapters (or engines) to read PSGI
+input, then run the application logic and returns PSGI response to the
+server.
+
+=item Web application developers
+
+Web application developers are developers who write code that uses one
+of the web application framework that uses PSGI interface. They
+usually don't need to deal with PSGI protocol at all.
+
+=cut
+
 =head1 SPECIFICATION
 
 =head2 Applications
@@ -94,6 +136,10 @@ C<HTTP_>). The presence or absence of these variables should
 correspond to the presence or absence of the appropriate HTTP header
 in the request.
 
+If there are multiple header lines sent with the same key, the server
+should treat them as if they're sent in one line, i.e. combine them
+with C<, > as in RFC 2616.
+
 =back
 
 In addition to this, the PSGI environment MUST include these
@@ -142,9 +188,8 @@ server based on CGI (or something similar).
 
 =item *
 
-C<psgi.async>: Integer 1 or 2 if the server is calling the application
-in an asynchronous event loop. See L<PSGI Async
-extension|PSGI::Async>.
+C<psgi.async>: true if the server is calling the application in an
+asynchronous event loop. See L<PSGI Async extension|PSGI::Async>.
 
 =back
 
@@ -280,6 +325,10 @@ or 304, in which case there MUST be none given.
 There MUST NOT be a C<Content-Length> header when the C<Status> is
 1xx, 204 or 304.
 
+If the Status is not 1xx, 204 or 304 and there is no C<Content-Length>
+header, servers SHOULD calculate the content length by looking at
+Body, in case it can be calculated, and append to the outgoing headers.
+
 =head4 Body
 
 The response body is returned from the application in one of following
@@ -293,17 +342,67 @@ An array reference containing body as lines.
 
   my $body = [ "Hello\n", "World\n" ];
 
+Note that the elements in an array reference are NOT REQUIRED to end
+in a newline. The servers SHOULD just write each elements as is to the
+client, and SHOULD NOT care if the line ends with newline or not.
+
+So, when you have a big chunk of HTML in a single scalar C<$body>,
+
+  [ $body ]
+
+is a valie response body.
+
 =item *
 
 An IO::Handle-like object or a built-in filehandle.
 
   open my $body, "</path/to/file";
+  open my $body, "<:via(SomePerlIO)", ...;
   my $body = IO::File->new("/path/to/file");
+
+  my $body = SomeClass->new(); # mock class that implements getline() and close()
 
 Servers SHOULD NOT check the type or class of the body but instead
 just call C<getline> to iterate over the body and call C<close> when done.
 
+Servers MAY check if the body is a real filehandle using C<fileno> and
+C<Scalar::Util::reftype> and if it's a real filehandle that has a file
+descriptor, it MAY optimize the file serving using techniques like
+I<sendfile(2)>.
+
+Servers are RECOMMENDED to set C<$/> special variable to the buffer
+size when reading content from C<$body> using C<getline> method, in
+case it's a binary filehandle. Applications, when it returns a mock
+object that implements C<getline> are NOT REQUIRED to respect the
+C<$/> value.
+
 =back
+
+=head2 Middleware
+
+Middleware is itself a PSGI application but it takes an existent PSGI
+application and run it like a server, mostly to do pre-processing on
+C<$env> or post-processing on the response objects.
+
+Here's a simple example that appends special HTTP header
+I<X-PSGI-Used> to any PSGI application.
+
+  # $app is a simple PSGI application
+  my $app = sub {
+      my $env = shift;
+      return [ '200', [ 'Content-Type' => 'text/plain' ], [ "Hello World" ] ];
+  };
+
+  # $xheader is a middleware to wrap $app
+  my $xheader = sub {
+      my $env = shift;
+      my $res = $app->($env);
+      push @{$res->[1]}, 'X-PSGI-Used' => 1;
+      return $res;
+  };
+
+Middleware itself MUST behave exactly like a PSGI application: take
+C<$env> and return C<$res>.
 
 =head1 ACKNOWLEDGEMENTS
 
@@ -330,6 +429,42 @@ I'd like to thank authors of these great documents.
 =head1 AUTHOR
 
 Tatsuhiko Miyagawa E<lt>miyagawa@bulknews.netE<gt>
+
+=head1 CONTRIBUTORS
+
+The following people have contributed to the PSGI specification and
+Plack implementation by commiting their code, sending patches,
+reporting bugs, asking questions, suggesting useful advices,
+nitpicking, chatting on IRC or commenting on my blog (in no particular
+order):
+
+  Tokuhiro Matsuno
+  Kazuhiro Osawa
+  Yuval Kogman
+  Kazuho Oku
+  Alexis Sukrieh
+  dann
+  Stevan Little
+  Daisuke Murase
+  mala
+  Pedro Melo
+  Jesse Luehrs
+  John Beppu
+  Shawn M Moore
+  Mark Stosberg
+  Matt S Trout
+  Jesse Vincent
+  Chia-liang Kao
+  Dave Rolsky
+  Hans Dieter Pearcey
+  Randy J Ray
+  Benjamin Trott
+  Max Maischein
+  Slaven Rezić
+  Marcel Grünauer
+  Masayoshi Sekimura
+  Brock Wilcox
+  Piers Cawley
 
 =head1 COPYRIGHT AND LICENSE
 
