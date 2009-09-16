@@ -211,14 +211,14 @@ define.
 
 =head3 Why is the application a code ref rather than an object with a ->call method?
 
-Requiring an object L<in addition to> a code ref would make ALL
+Requiring an object I<in addition to> a code ref would make ALL
 backend's code a few lines more tedious, while requiring an object
-L<instead of> a code ref would make application developers write
+I<instead of> a code ref would make application developers write
 another class and instantiate an object.
 
-Requiring an object ALWAYS be an object instead of a code ref would
-also work, but then application developers always have to define a
-class and instanciate the object. The benefit of requiring an object
+Requiring an application ALWAYS be an object instead of a code ref
+would also work, but then application developers always have to define
+a class and instanciate the object. The benefit of requiring an object
 instead of a code ref would be that it gives middleware developers a
 chance to call some methods on the application instead of the standard
 C<call> method. However, that can also be done also by setting values
@@ -227,18 +227,11 @@ or callbacks in the environments hash reference.
 The problem still remains to fill the gap of how the application
 should be initialized and by who.
 
-This is a solved problem in Ruby's Rack and we'll clone that with a
-little additions of the adapter concept: L<Plack::Adapter> allows you
-to write a code to turn your application's runner code into a PSGI
-application (code ref), which gives you an option to preload modules
-and setup parameters etc.
-
-Writing an L<Plack::Adapter> for your web application framework also
-allows the end users of your framework to use Plack's L<plackup>
-standard utility, that makes use of C<app.psgi> file to load the
-application code reference as well as L<Plack::Loader> to auto-select
-the appropriate backends given command line options or environment
-variables.
+This is a solved problem in Ruby's Rack and Python's WSGI and we'll
+clone that: L<plackup> takes a C<app.psgi> file where users can
+preloads their framework code, setup anything they need, add
+middleware, and then return a code reference that is a PSGI
+application.
 
 =head3 Why should the headers returned as an array ref and not a hash ref?
 
