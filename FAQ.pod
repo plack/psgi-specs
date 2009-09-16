@@ -12,12 +12,12 @@ We read it simply P-S-G-I, but you may be able to pronounce it "sky" :)
 
 =head3 Why do we need this?
 
-Perl has L<CGI> as a core module that abstracts the difference between
-CGI, mod_perl and FastCGI. However, most web application framework
-developers (e.g. Catalyst and Jifty) usually avoid using it to
-maximize the performance and to access low-level APIs. So they end up
-writing adapters for all of those different environments, some of
-which may be well tested while others are not.
+Perl has L<CGI> as a core module that somewhat abstracts the
+difference between CGI, mod_perl and FastCGI. However, most web
+application framework developers (e.g. Catalyst and Jifty) usually
+avoid using it to maximize the performance and to access low-level
+APIs. So they end up writing adapters for all of those different
+environments, some of which may be well tested while others are not.
 
 PSGI allows web application framework developers to only write an
 adapter for PSGI and the end users can choose whichever backends
@@ -26,11 +26,50 @@ that supports the PSGI protocol.
 =head3 My framework already does CGI, FCGI and mod_perl. Why do I want to support PSGI?
 
 If your web application framework already does most of server
-environments and they perfome really good and are well tested, there's
-no direct benefit as of today for you to support PSGI. But if a CGI
-environment is already supported, supporting PSGI in addition should
-be extremely easy, and the benefit you and your framework users will
-enjoy is huge.
+environments and they perfome really good and are well tested, there
+may not be a direct benefit as of today for you to support PSGI
+immediately. But if a CGI environment is already supported, supporting
+PSGI in addition should be extremely easy, and the benefit you and
+your framework users will enjoy is huge.
+
+=head3 How is PSGI protocol different from CGI
+
+PSGI protocol is designed to be very similar to that of CGI
+intentionally, so supporting PSGI in addition to CGI would be
+extremely easy. Here's a highlight of the key differences between CGI
+and PSGI:
+
+=over 4
+
+=item *
+
+In CGI, servers are the actual web servers written in any languages
+but mostly in C, and script is a script that can be written in any
+language such as C or Python.
+
+In PSGI, servers are still web servers, but they're perl process that
+are usually embedded in the web server (like mod_perl) or a perl
+daemon process called by web server (like FastCGI), or an entirely
+perl based web servers.
+
+=item *
+
+In CGI, we use STDIN, STDERR and environment variables to read
+parameters and HTTP request body and send errors from the application.
+
+In PSGI, we use the C<$env> hash references and I<psgi.input> and
+I<psgi.output> stream to pass those between servers and applications.
+
+=item *
+
+In CGI, applications are supposed to print HTTP headers and body to
+STDOUT to pass it back to the web server.
+
+In PSGI, applications are supposed to return HTTP status code, headers
+and body (as an array ref or a filehandle-like object) to the
+application as an array reference.
+
+=back
 
 =head3 I'm writing a web application that supports PSGI. What's the benefit of this for me?
 
