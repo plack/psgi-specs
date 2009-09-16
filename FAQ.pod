@@ -45,7 +45,7 @@ and PSGI:
 
 In CGI, servers are the actual web servers written in any languages
 but mostly in C, and script is a script that can be written in any
-language such as C or Python.
+language such as C, Perl, Shell scripts, Ruby or Python.
 
 In PSGI, servers are still web servers, but they're perl process that
 are usually embedded in the web server (like mod_perl) or a perl
@@ -71,7 +71,7 @@ application as an array reference.
 
 =back
 
-=head3 I'm writing a web application that supports PSGI. What's the benefit of this for me?
+=head3 I'm writing a web application. What's the benefit of PSGI for me?
 
 If the framework you're using supports PSGI, that means your
 application can run on any of existent and feature PSGI
@@ -105,6 +105,9 @@ in C and embedded perl that supports PSGI, or a plain-old CGI.pm based
 backend that doesn't load any modules at all and runs pretty
 quickly without eating so much memory under the CGI environment.
 
+The reference implementation Plack already has a very fast backends
+like Standalone::Prefork and Coro.
+
 Users of your framework can chose which backend is the best for
 their needs. You don't need to think about lots of different user base
 with different needs.
@@ -116,28 +119,28 @@ with different needs.
 PSGI is a specification, so there's no software nor a module called
 PSGI. End users will need to choose one of PSGI implementations to
 write PSGI applications. Plack is a reference PSGI implementation that
-supports environments like CGI, FastCGI, mod_perl and AnyEvent.
+supports environments like prefork standalone server, CGI, FastCGI,
+mod_perl, AnyEvent and Coro.
 
 Plack also has useful APIs and helpers on top of PSGI, such as
 L<Plack::Request> to provide a nice object-oriented API on request
-objects, and L<Plack::Up> that defines the standard to run an PSGI
-application from the command line and configure it using C<config.pu>
-(a la Rack's Rackup).
+objects, and L<plackup> that allows you to run an PSGI application
+from the command line and configure it using C<app.psgi> (a la Rack's
+Rackup).
 
 =head3 What kind of server backends would be available?
 
-We already support most web servers that support the standard CGI or
-FastCGI, but also want to support special web servers that can embed
-perl, like ngix. We think it would be really nice if Apache module
-mod_perlite and Google AppEngine support PSGI too. You can run on your
-PSGI/Plack based perl app in the cloud.
+In Plack, we already support most web servers like Apache2, and also
+the ones that supports standard CGI or FastCGI, but also want to
+support special web servers that can embed perl, like ngix. We think
+it would be really nice if Apache module mod_perlite and Google
+AppEngine support PSGI too, so you can run on your PSGI/Plack based
+perl app in the cloud.
 
 =head3 Ruby is Rack and JavaScript is Jack. Why is it not called Pack?
 
 Well Pack indeed is a cute name, but Perl has a built-in function pack
-so it's a little confusing. At least when you start talking like
-I<I've been toying with Pack in perl and it's awesome> people would
-think you're dealing with data and string conversions.
+so it's a little confusing, especially in the speech.
 
 =head3 What namespaces should I use to implement PSGI support?
 
@@ -150,11 +153,9 @@ particular implementations.
 
 If you write a plugin or an extension to support PSGI for an
 (imaginary) web application framework called C<Camper>, name the code
-such as C<Camper::Engine::PSGI>. And then consider writing a few lines
-of code in C<Plack::Adapter::Camper> to glue the API difference
-between frameworks. If you write a PSGI backend that runs on an
-imaginary pure perl web server called C<mightyd>, name it such as
-C<Mightyd::Handler::PSGI> or consider contributing the code to
+such as C<Camper::Engine::PSGI>. If you write a PSGI backend that runs
+on an imaginary pure perl web server called C<mightyd>, name it such
+as C<Mightyd::Handler::PSGI> or consider contributing the code to
 L<Plack> project as C<Plack::Impl::Mightyd> (by doing so you don't
 need to worry about how to run/load PSGI applications).
 
@@ -173,8 +174,8 @@ Tools (Plack).
 
 It won't be dead but won't be actively developed anymore. Instead,
 HTTP::Engine will become a I<very> thin API on top of Plack. Your
-application written in HTTP::Engine should continue to work, but
-switching to Plack API would be recommended.
+application written in HTTP::Engine should continue to work using
+L<HTTP::Engine::Interface::PSGI>.
 
 =head2 API Design
 
@@ -233,14 +234,12 @@ and setup parameters etc.
 
 Writing an L<Plack::Adapter> for your web application framework also
 allows the end users of your framework to use Plack's L<plackup>
-standard utility, that makes use of L<Plack::Adapter> to work with
-many web application frameworks as well as L<Plack::Loader> to
-auto-select the appropriate backends given command line options or
-environment variables.
+standard utility, that makes use of C<app.psgi> file to load the
+application code reference as well as L<Plack::Loader> to auto-select
+the appropriate backends given command line options or environment
+variables.
 
 =head3 Why should the headers returned as an array ref and not a hash ref?
-
-(Still open to this topic)
 
 Short: In order to support multiple headers (e.g. C<Set-Cookie>).
 
@@ -304,16 +303,6 @@ instead of HTTP headers makes it so easy for the framework developers
 to implement an adapter to support PSGI. For instance,
 L<Catalyst::Engine::PSGI> only differs in a few dozens of lines from
 L<Catalyst::Engine::CGI> and was written in less than an hour.
-
-=head2 MISC.
-
-=head3 Is Plack like ack (Andy Lester's better grep)?
-
-No.
-
-=head3 Is Plack a part of Plagger (miyagawa's RSS/Atom aggregator)?
-
-No.
 
 =head1 SEE ALSO
 
