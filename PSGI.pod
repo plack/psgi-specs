@@ -24,20 +24,20 @@ that later).
 
 =item Servers
 
-Servers are web servers that accepts HTTP requests, dispatch the
+Servers are web servers that accept HTTP requests, dispatch the
 requests to the web appilcations and return the HTTP response to the
 clients. In PSGI specification it's a Perl process that's running
-inside an HTTP server (e.g. mod_perl in Apache) or a daemon process
+inside an HTTP server (e.g. mod_perl in Apache), a daemon process
 called from a web server (e.g. FastCGI daemon) or a pure perl HTTP
 server.
 
-Servers are often called I<PSGI implementations> as well as
+Servers are also called I<PSGI implementations> as well as
 I<Backends>.
 
 =item Applications
 
-Applications are a web application that actually gets HTTP requests
-and returns HTTP response. In PSGI it's a code reference: see below.
+Applications are web applications that actually get HTTP requests
+and return HTTP response. In PSGI it's a code reference: see below.
 
 =item Middleware
 
@@ -47,16 +47,15 @@ I<plugin> to extend PSGI application: see below.
 
 =item Framework developers
 
-Framework developers are an authors of web application
-frameworks. They need to write adapters (or engines) to read PSGI
-input, then run the application logic and returns PSGI response to the
-server.
+Framework developers are authors of web application frameworks. They
+need to write adapters (or engines) to read PSGI input, then run the
+application logic and returns PSGI response to the server.
 
 =item Web application developers
 
 Web application developers are developers who write code that uses one
 of the web application framework that uses PSGI interface. They
-usually don't need to deal with PSGI protocol at all.
+usually don't need to deal with nor care about PSGI protocol at all.
 
 =cut
 
@@ -381,7 +380,7 @@ C<$/> value.
 =head2 Middleware
 
 Middleware is itself a PSGI application but it takes an existent PSGI
-application and run it like a server, mostly to do pre-processing on
+application and runs it like a server, mostly to do pre-processing on
 C<$env> or post-processing on the response objects.
 
 Here's a simple example that appends special HTTP header
