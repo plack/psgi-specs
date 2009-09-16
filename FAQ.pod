@@ -26,7 +26,7 @@ that supports the PSGI protocol.
 =head3 My framework already does CGI, FCGI and mod_perl. Why do I want to support PSGI?
 
 If your web application framework already does most of server
-environments and they perfome really good and are well tested, there
+environments and they perform really good and are well tested, there
 may not be a direct benefit as of today for you to support PSGI
 immediately. But if a CGI environment is already supported, supporting
 PSGI in addition should be extremely easy, and the benefit you and
@@ -100,10 +100,11 @@ adapters.
 
 Again, PSGI is not an implementation, but there's a potential for a
 very fast PSGI implementation that preloads everything and runs fully
-optimized code under FastCGI, an event-based tiny web server written
-in C and embedded perl that supports PSGI, or a plain-old CGI.pm based
-backend that doesn't load any modules at all and runs pretty
-quickly without eating so much memory under the CGI environment.
+optimized code as a preforked standalone with XS parsers and
+sendfile(2) kernel call, an event-based tiny web server written in C
+and embedded perl that supports PSGI, or a plain-old CGI.pm based
+backend that doesn't load any modules at all and runs pretty quickly
+without eating so much memory under the CGI environment.
 
 The reference implementation Plack already has a very fast backends
 like Standalone::Prefork and Coro.
