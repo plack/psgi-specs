@@ -325,8 +325,8 @@ There MUST NOT be a C<Content-Length> header when the C<Status> is
 1xx, 204 or 304.
 
 If the Status is not 1xx, 204 or 304 and there is no C<Content-Length>
-header and there is no C<Content-Transfer-Encoding> header, servers
-MAY calculate the content length by looking at Body, in case it can be
+header and there is no C<Transfer-Encoding> header, servers MAY
+calculate the content length by looking at Body, in case it can be
 calculated (i.e. if it's an array ref of body chunk or a real file
 handle), and append to the outgoing headers.
 
