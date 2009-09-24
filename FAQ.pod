@@ -10,6 +10,11 @@ PSGI::FAQ - Frquently Asked Questions and answers
 
 We read it simply P-S-G-I, but you may be able to pronounce it "sky" :)
 
+=head3 So what is this?
+
+PSGI is a protocol interface between web servers and perl-based web
+applications akin to what CGI does for web servers and CGI scripts.
+
 =head3 Why do we need this?
 
 Perl has L<CGI> as a core module that somewhat abstracts the
@@ -23,16 +28,7 @@ PSGI allows web application framework developers to only write an
 adapter for PSGI and the end users can choose whichever backends
 that supports the PSGI protocol.
 
-=head3 My framework already does CGI, FCGI and mod_perl. Why do I want to support PSGI?
-
-If your web application framework already does most of server
-environments and they perform really good and are well tested, there
-may not be a direct benefit as of today for you to support PSGI
-immediately. But if a CGI environment is already supported, supporting
-PSGI in addition should be extremely easy, and the benefit you and
-your framework users will enjoy is huge.
-
-=head3 How is PSGI protocol different from CGI
+=head3 You said PSGI is similar to CGI. How is PSGI protocol different from CGI?
 
 PSGI protocol is designed to be very similar to that of CGI
 intentionally, so supporting PSGI in addition to CGI would be
@@ -70,6 +66,15 @@ and body (as an array ref or a filehandle-like object) to the
 application as an array reference.
 
 =back
+
+=head3 My framework already does CGI, FCGI and mod_perl. Why do I want to support PSGI?
+
+If your web application framework already does most of server
+environments and they perform really good and are well tested, there
+may not be a direct benefit as of today for you to support PSGI
+immediately. But if a CGI environment is already supported, supporting
+PSGI in addition should be extremely easy, and the benefit you and
+your framework users will enjoy is huge.
 
 =head3 I'm writing a web application. What's the benefit of PSGI for me?
 
