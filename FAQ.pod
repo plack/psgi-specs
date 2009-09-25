@@ -95,7 +95,7 @@ PSGI. Now you're freed from supporting all different server
 environments.
 
 If you're a web application developer (or a web application framework
-user), chose the framework that supports PSGI, or ask the author to
+user), choose the framework that supports PSGI, or ask the author to
 support it. :)
 
 See L<PSGI::Guide> how to write PSGI applications, backends and
@@ -114,9 +114,9 @@ without eating so much memory under the CGI environment.
 The reference implementation Plack already has a very fast backends
 like Standalone::Prefork and Coro.
 
-Users of your framework can chose which backend is the best for
-their needs. You don't need to think about lots of different user base
-with different needs.
+Users of your framework can chose which backend is the best for their
+needs. You, as a web application framework developer, don't need to
+think about lots of different user base with different needs.
 
 =head2 Plack
 
@@ -124,7 +124,7 @@ with different needs.
 
 PSGI is a specification, so there's no software nor a module called
 PSGI. End users will need to choose one of PSGI implementations to
-write PSGI applications. Plack is a reference PSGI implementation that
+run PSGI applications on. Plack is a reference PSGI implementation that
 supports environments like prefork standalone server, CGI, FastCGI,
 mod_perl, AnyEvent and Coro.
 
@@ -178,10 +178,13 @@ Tools (Plack).
 
 =head3 Will HTTP::Engine be dead?
 
-It won't be dead but won't be actively developed anymore. Instead,
-HTTP::Engine will become a I<very> thin API on top of Plack. Your
-application written in HTTP::Engine should continue to work using
-L<HTTP::Engine::Interface::PSGI>.
+It won't be dead. HTTP::Engine will become a I<very> thin API on top
+of Plack. Your application written in HTTP::Engine should continue to
+work using L<HTTP::Engine::Interface::PSGI>.
+
+HTTP::Engine would still be useful if you quickly want to write a
+micro web server application, instead of writing a web application
+framework.
 
 =head2 API Design
 
@@ -312,8 +315,8 @@ L<Catalyst::Engine::CGI> and was written in less than an hour.
 
 =head1 SEE ALSO
 
-WSGI's FAQ which clearly answers lots of questions about how some API
-design decisions were made, some of which can directly apply to PSGI.
+WSGI's FAQ clearly answers lots of questions about how some API design
+decisions were made, some of which can directly apply to PSGI.
 
 L<http://www.python.org/dev/peps/pep-0333/#questions-and-answers>
 
