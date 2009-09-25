@@ -292,7 +292,14 @@ a little unstable.
 
 =head3 What if I want to stream content or do a long-poll Comet?
 
-A callback-based API is supported with L<psgi.async extension|PSGI::Async>.
+For the server push, your application can return a IO::Handle-like
+object as a content body that implements C<getline> to return pushed
+content. Some implementations are also allowed to do an optimized
+non-blocking read from special filehandle-like objects like
+L<IO::Writer>.
+
+Fo the long poll comet you can also use co-routine based
+implementations like L<Plack::Impl::Coro> and do your own threading.
 
 =head3 Why CGI-style environment variables instead of HTTP headers as a hash?
 

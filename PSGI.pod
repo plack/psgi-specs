@@ -187,8 +187,8 @@ server based on CGI (or something similar).
 
 =item *
 
-C<psgi.async>: true if the server is calling the application in an
-asynchronous event loop. See L<PSGI Async extension|PSGI::Async>.
+C<psgi.nonblocking>: true if the server is calling the application in an
+non-blocking event loop.
 
 =back
 
