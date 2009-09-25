@@ -20,6 +20,7 @@ Following web servers are planned to be supported, or authors are in contact to 
 * [Dancer](http://github.com/sukria/Dancer)
 * [CGI::Application](http://cgi-app.org/) with [CGI::Application::PSGI](http://github.com/miyagawa/CGI-Application-PSGI)
 * [CGI::PSGI](http://github.com/miyagawa/CGI-PSGI) is a CGI.pm subclass that runs under PSGI environments
+* [Continuity](http://github.com/awwaiid/continuity)
 * [Angelos](http://github.com/dann/angelos)
 * [Ark](http://github.com/typester/aerk-perl)
 * [Schenker](http://github/com/spiritloose/Schenker)
