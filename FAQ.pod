@@ -1,6 +1,6 @@
 =head1 NAME
 
-PSGI::FAQ - Frquently Asked Questions and answers
+PSGI::FAQ - Frequently Asked Questions and answers
 
 =head1 QUESTIONS
 
@@ -86,7 +86,7 @@ application in a bunch of different ways.
 
 =head3 What should I do to support PSGI?
 
-If you're a web server developer, write a PSGI implemenation that
+If you're a web server developer, write a PSGI implementation that
 calls a PSGI application. Or join the development on Plack, the
 reference implementation of PSGI, to add backends for more web servers.
 
@@ -138,7 +138,7 @@ Rackup).
 
 In Plack, we already support most web servers like Apache2, and also
 the ones that supports standard CGI or FastCGI, but also want to
-support special web servers that can embed perl, like ngix. We think
+support special web servers that can embed perl, like nginx. We think
 it would be really nice if Apache module mod_perlite and Google
 AppEngine support PSGI too, so you can run on your PSGI/Plack based
 perl app in the cloud.
@@ -219,7 +219,7 @@ define.
 Requiring an object I<in addition to> a code ref would make ALL
 backend's code a few lines more tedious, while requiring an object
 I<instead of> a code ref would make application developers write
-another class and instantiate an object.
+another class and instanciate an object.
 
 Requiring an application ALWAYS be an object instead of a code ref
 would also work, but then application developers always have to define
@@ -234,7 +234,7 @@ should be initialized and by who.
 
 This is a solved problem in Ruby's Rack and Python's WSGI and we'll
 clone that: L<plackup> takes a C<app.psgi> file where users can
-preloads their framework code, setup anything they need, add
+preload their framework code, setup anything they need, add
 middleware, and then return a code reference that is a PSGI
 application.
 
