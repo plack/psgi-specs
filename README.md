@@ -22,7 +22,7 @@ Following web servers are planned to be supported, or authors are in contact to 
 * [Schenker](http://github/com/spiritloose/Schenker) runs fine as PSGI app since it uses HTTP::Engine
 * [CGI::Application](http://cgi-app.org/) runs as a PSGI application using [CGI::Application::PSGI](http://github.com/miyagawa/CGI-Application-PSGI)
 * [CGI.pm](http://search.cpan.org/dist/CGI) is planned to have a native PSGI support to get parameters in [psgi_support branch](http://github.com/markstos/CGI.pm/commits/psgi_support)
-* [CGI::PSGI](http://github.com/miyagawa/CGI-PSGI) is an alternative approach to quickly adapt CGI.pm based applications to support PSGI with a slight modification of the code
+* [CGI::PSGI](http://github.com/miyagawa/CGI-PSGI) is a CGI.pm subclass that runs under PSGI environments with minimal modification of your web application framework adapters.
 * [Squatting](http://github.com/beppu/squatting) runs as a PSGI application using [Squatting::On::PSGI](http://github.com/miyagawa/Squatting-On-PSGI)
 * Arbitrary plain CGI scripts can be run as a PSGI application using CGI::Emulate::PSGI emulation layer.
 
