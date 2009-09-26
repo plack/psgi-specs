@@ -162,7 +162,7 @@ If you write a plugin or an extension to support PSGI for an
 such as C<Camper::Engine::PSGI>. If you write a PSGI backend that runs
 on an imaginary pure perl web server called C<mightyd>, name it such
 as C<Mightyd::Handler::PSGI> or consider contributing the code to
-L<Plack> project as C<Plack::Impl::Mightyd> (by doing so you don't
+L<Plack> project as C<Plack::Server::Mightyd> (by doing so you don't
 need to worry about how to run/load PSGI applications).
 
 =head2 HTTP::Engine
@@ -173,7 +173,7 @@ HTTP::Engine was a great experiment, but it mixed the specification
 with implementations, and the monolithic class hierarchy and role
 based interfaces makes it really hard to write a new backend. We kept
 the existent HTTP::Engine and broke it into three parts: The Spec
-(PSGI), Reference implementations (Plack::Impl) and Standard APIs and
+(PSGI), Reference implementations (Plack::Server) and Standard APIs and
 Tools (Plack).
 
 =head3 Will HTTP::Engine be dead?
@@ -302,7 +302,7 @@ non-blocking read from special filehandle-like objects like
 L<IO::Writer>.
 
 Fo the long poll comet you can also use co-routine based
-implementations like L<Plack::Impl::Coro> and do your own threading.
+implementations like L<Plack::Server::Coro> and do your own threading.
 
 =head3 Why CGI-style environment variables instead of HTTP headers as a hash?
 
