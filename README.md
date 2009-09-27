@@ -23,7 +23,7 @@ Following web servers are planned to be supported, or authors are in contact to 
 * [Continuity](http://github.com/awwaiid/continuity)
 * [Angelos](http://github.com/dann/angelos)
 * [Ark](http://github.com/typester/aerk-perl)
-* [Schenker](http://github/com/spiritloose/Schenker)
+* [Schenker](http://github.com/spiritloose/Schenker)
 * [Noe](http://github.com/yusukebe/Noe)
 * [Kamui](http://github.com/nekokak/p5-Kamui)
 * Arbitrary plain CGI scripts can be run as a PSGI application using CGI::Emulate::PSGI emulation layer.
