@@ -313,6 +313,28 @@ to implement an adapter to support PSGI. For instance,
 L<Catalyst::Engine::PSGI> only differs in a few dozens of lines from
 L<Catalyst::Engine::CGI> and was written in less than an hour.
 
+=head3 Why is PATH_INFO URI decoded?
+
+To be compatible to CGI spec (RFC 3875) and most web servers
+implementations like Apache and lighttpd.
+
+I understand it could be inconvenient that you can't distinguish
+C<foo%2fbar> from C<foo/bar> in the trailing path, but CGI spec
+clearly says C<PATH_INFO> should be decoded by servers, and that web
+servers can deny such requests containing C<%2f> since that way
+there's an information loss in PATH_INFO. Leaving those reserved
+characters undecoded (partial decoding) would make things worse, since
+then you can't tell C<foo%2fbar> from C<foo%252fbar> and could be a
+security hole with double encoding or decoding.
+
+For the record, WSGI (PEP-333) defines both C<SCRIPT_NAME> and
+C<PATH_INFO> be decoded and Rack leaves it implementation dependent,
+while L<fixing> most of PATH_INFO left encoded in Ruby web server
+implementations.
+
+L<http://www.python.org/dev/peps/pep-0333/#url-reconstruction>
+L<http://groups.google.com/group/rack-devel/browse_thread/thread/ddf4622e69bea53f>
+
 =head1 SEE ALSO
 
 WSGI's FAQ clearly answers lots of questions about how some API design

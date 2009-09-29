@@ -104,7 +104,7 @@ C<PATH_INFO>: The remainder of the request URL's "path", designating
 the virtual "location" of the request's target within the
 application. This may be an empty string if the request URL targets
 the application root and does not have a trailing slash. This value
-may be percent-encoded when it originates from a URL.
+should be URI decoded by servers to be compatible to RFC 3875.
 
 =item *
 
