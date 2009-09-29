@@ -469,6 +469,7 @@ order):
   Kang-min Liu
   Yukihiro Matsumoto
   Ash Berlin
+  Artur Bergman
 
 =head1 COPYRIGHT AND LICENSE
 
