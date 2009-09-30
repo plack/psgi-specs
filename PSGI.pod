@@ -445,7 +445,7 @@ order):
   Yuval Kogman
   Kazuho Oku
   Alexis Sukrieh
-  dann
+  Takatoshi Kitano
   Stevan Little
   Daisuke Murase
   mala
