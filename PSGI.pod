@@ -1,3 +1,5 @@
+=encoding utf-8
+
 =head1 NAME
 
 PSGI - Perl Web Server Gateway Interface Specification
@@ -57,7 +59,7 @@ Web application developers are developers who write code that uses one
 of the web application framework that uses PSGI interface. They
 usually don't need to deal with nor care about PSGI protocol at all.
 
-=cut
+=back
 
 =head1 SPECIFICATION
 

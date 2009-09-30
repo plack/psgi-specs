@@ -329,7 +329,7 @@ security hole with double encoding or decoding.
 
 For the record, WSGI (PEP-333) defines both C<SCRIPT_NAME> and
 C<PATH_INFO> be decoded and Rack leaves it implementation dependent,
-while L<fixing> most of PATH_INFO left encoded in Ruby web server
+while I<fixing> most of PATH_INFO left encoded in Ruby web server
 implementations.
 
 L<http://www.python.org/dev/peps/pep-0333/#url-reconstruction>
