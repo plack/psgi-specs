@@ -173,8 +173,9 @@ HTTP::Engine was a great experiment, but it mixed the application
 interface (the C<request_handler> interface) with implementations, and
 the monolithic class hierarchy and role based interfaces makes it
 really hard to write a new backend. We kept the existent HTTP::Engine
-and broke it into three parts: The Spec (PSGI), Reference server
-implementations (Plack::Server) and Standard APIs and Tools (Plack).
+and broke it into three parts: The interface specification (PSGI),
+Reference server implementations (Plack::Server) and Standard APIs and
+Tools (Plack).
 
 =head3 Will HTTP::Engine be dead?
 
@@ -206,7 +207,7 @@ L<HTTP::Engine::Response>:
       return $res->finalize;
   }
 
-=head3 What's the benefit of converting HTTP::Engine to run on PSGI?
+=head3 What's the benefit of converting my HTTP::Engine app to run on PSGI?
 
 As of today most web server implementations and middlewares
 implemented by Plack are also available on HTTP::Engine, so there
