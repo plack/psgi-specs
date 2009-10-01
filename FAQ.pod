@@ -207,6 +207,8 @@ L<HTTP::Engine::Response>:
       return $res->finalize;
   }
 
+And this C<request_handler> is a PSGI application now.
+
 =head3 What's the benefit of converting my HTTP::Engine app to run on PSGI?
 
 As of today most web server implementations and middlewares
