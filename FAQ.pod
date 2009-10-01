@@ -169,23 +169,56 @@ need to worry about how to run/load PSGI applications).
 
 =head3 Why PSGI/Plack instead of HTTP::Engine?
 
-HTTP::Engine was a great experiment, but it mixed the specification
-with implementations, and the monolithic class hierarchy and role
-based interfaces makes it really hard to write a new backend. We kept
-the existent HTTP::Engine and broke it into three parts: The Spec
-(PSGI), Reference implementations (Plack::Server) and Standard APIs and
-Tools (Plack).
+HTTP::Engine was a great experiment, but it mixed the application
+interface (the C<request_handler> interface) with implementations, and
+the monolithic class hierarchy and role based interfaces makes it
+really hard to write a new backend. We kept the existent HTTP::Engine
+and broke it into three parts: The Spec (PSGI), Reference server
+implementations (Plack::Server) and Standard APIs and Tools (Plack).
 
 =head3 Will HTTP::Engine be dead?
 
-It won't be dead. HTTP::Engine will become a I<very> thin API on top
-of Plack. Your application written in HTTP::Engine should continue to
-work using L<HTTP::Engine::Interface::PSGI>.
+It won't be dead. HTTP::Engine will stay as it is and still be useful
+if you want to write a micro webserver application rather than a
+framework.
 
 HTTP::Engine would still be useful if you quickly want to write a
 micro web server application, instead of writing a web application
 framework.
 
+=head3 Do I have to rewrite my HTTP::Engine application to follow PSGI interface?
+
+No, you don't need to rewrite your existent HTTP::Engine
+application. Your existent application can be easily turned into a
+PSGI application using L<HTTP::Engine::Interface::PSGI>.
+
+Alternatively, you can use L<Plack::Request> and L<Plack::Response>
+which gives compatible APIs to L<HTTP::Engine::Request> and
+L<HTTP::Engine::Response>:
+
+  use Plack::Request;
+  use Plack::Response;
+
+  sub request_handler {
+      my $req = Plack::Request->new(shift);
+      my $res = Plack::Response->new;
+      # ...
+      return $res->finalize;
+  }
+
+=head3 What's the benefit of converting HTTP::Engine to run on PSGI?
+
+As of today most web server implementations and middlewares
+implemented by Plack are also available on HTTP::Engine, so there
+might not be direct immediate benefit of switching to PSGI. But PSGI
+is more future proof, and there are high hope that in the near future
+we'll have a pretty fast server environments (think of Passenger for
+Ruby Rack) and/or plenty of useful middlewares that HTTP::Engine
+doesn't have today.
+
+See the question I<My framework already does CGI, FCGI and
+mod_perl. Why do I want to support PSGI?> for more details.
+  
 =head2 API Design
 
 Keep in mind that most design choices made in the PSGI spec are to

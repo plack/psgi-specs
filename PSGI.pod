@@ -472,6 +472,8 @@ order):
   Yukihiro Matsumoto
   Ash Berlin
   Artur Bergman
+  Simon Cozens
+  Scott McWhirter
 
 =head1 COPYRIGHT AND LICENSE
 
