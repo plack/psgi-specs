@@ -12,7 +12,7 @@ We read it simply P-S-G-I, but you may be able to pronounce it "sky" :)
 
 =head3 So what is this?
 
-PSGI is a protocol interface between web servers and perl-based web
+PSGI is an interface between web servers and perl-based web
 applications akin to what CGI does for web servers and CGI scripts.
 
 =head3 Why do we need this?
@@ -26,11 +26,11 @@ environments, some of which may be well tested while others are not.
 
 PSGI allows web application framework developers to only write an
 adapter for PSGI.  End users can choose from among all the backends that
-support the PSGI protocol.
+support the PSGI interface.
 
-=head3 You said PSGI is similar to CGI. How is the PSGI protocol different from CGI?
+=head3 You said PSGI is similar to CGI. How is the PSGI interaface different from CGI?
 
-The PSGI protocol is intentionally designed to be very similar to CGI so
+The PSGI interface is intentionally designed to be very similar to CGI so
 that supporting PSGI in addition to CGI would be extremely easy. Here's
 a highlight of the key differences between CGI and PSGI:
 
@@ -266,8 +266,8 @@ attract web application developers is your framework, not PSGI.
 
 =head3 Why a big env hash instead of objects with APIs?
 
-The simplicity of the protocol is the key that made WSGI and Rack
-successful. PSGI is a low-level protocol between backends and web
+The simplicity of the interface is the key that made WSGI and Rack
+successful. PSGI is a low-level interface between backends and web
 application framework developers. If we define an API on what type of
 objects should be passed and which method they need to implement,
 there will be so much duplicated code in the backends, some of
@@ -278,7 +278,7 @@ string. What if the PSGI spec required it to be an instance of Net::IP?
 Backend code would have to depend on the Net::IP module, or have to
 write a mock object that implements ALL of Net::IP's methods.
 Backends depending on specific modules or having to reinvent lots
-of stuff is considered harmful and that's why the protocol is as minimal
+of stuff is considered harmful and that's why the interface is as minimal
 as possible.
 
 Making a nice API for the end users is a job that web application
