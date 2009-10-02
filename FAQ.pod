@@ -98,9 +98,6 @@ If you're a web application developer (or a web application framework
 user), choose the framework that supports PSGI, or ask the author to
 support it. :)
 
-See L<PSGI::Guide> how to write PSGI applications, backends and
-adapters.
-
 =head3 Is PSGI faster than (my framework)?
 
 Again, PSGI is not an implementation, but there's a potential for a
