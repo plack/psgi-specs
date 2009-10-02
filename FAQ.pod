@@ -54,7 +54,7 @@ parameters and the HTTP request body and to send errors from the
 application.
 
 In PSGI, we use the C<$env> hash references and the I<psgi.input> and
-I<psgi.output> streams to pass that data between servers and applications.
+I<psgi.errors> streams to pass that data between servers and applications.
 
 =item *
 
@@ -79,11 +79,11 @@ framework users will enjoy is huge.
 
 =head3 I'm writing a web application. What's the benefit of PSGI for me?
 
-If the framework you're using supports PSGI, that means your application
-can run on any of existent and feature PSGI implementations. Also, if
-you use the Plack standard API, the end users of your application should
-be able to configure and run your application in a bunch of different
-ways.
+If the framework you're using supports PSGI, that means your
+application can run on any of existent and future PSGI
+implementations. Also, if you provide a C<.psgi> file that returns
+PSGI application, the end users of your application should be able to
+configure and run your application in a bunch of different ways.
 
 =head3 What should I do to support PSGI?
 
@@ -112,7 +112,7 @@ without eating so much memory under the CGI environment.
 The reference implementation Plack already has very fast backends like
 Standalone::Prefork and Coro.
 
-Users of your framework can chose which backend is the best for their
+Users of your framework can choose which backend is the best for their
 needs.  You, as a web application framework developer, don't need to
 think about lots of different users with different needs.
 
@@ -121,16 +121,18 @@ think about lots of different users with different needs.
 =head3 What is Plack? What is the difference between PSGI and Plack?
 
 PSGI is a specification, so there's no software or module called PSGI.
-End users will need to choose one of PSGI implementations to run PSGI
-applications on. Plack is a reference PSGI implementation that supports
-environments like prefork standalone server, CGI, FastCGI, mod_perl,
-AnyEvent and Coro.
+End users will need to choose one of PSGI server implementations to
+run PSGI applications on. Plack is a reference PSGI implementation
+that supports environments like prefork standalone server, CGI,
+FastCGI, mod_perl, AnyEvent and Coro.
 
 Plack also has useful APIs and helpers on top of PSGI, such as
 L<Plack::Request> to provide a nice object-oriented API on request
-objects, and L<plackup> that allows you to run an PSGI application
-from the command line and configure it using C<app.psgi> (a la Rack's
-Rackup).
+objects, L<plackup> that allows you to run an PSGI application from
+the command line and configure it using C<app.psgi> (a la Rack's
+Rackup), and L<Plack::Test> that allows you to test your application
+using standard L<HTTP::Request> and L<HTTP::Response> pair through
+mocked HTTP or live HTTP servers. See L<Plack> for details.
 
 =head3 What kind of server backends would be available?
 
@@ -179,9 +181,10 @@ headers and body, but the rest of your code will work unchanged.
 =item CGI::Emulate::PSGI
 
 If you have a dead old CGI script that you want to change as little as
-possible, then L<CGI::Emulate::PSGI> can wrap it up as a PSGI
-application.  Compared to L<CGI::PSGI>, this is less efficient, but
-should work with any CGI implementation, not just CGI.pm.
+possible (or even no change at all, by running it with C<do>), then
+L<CGI::Emulate::PSGI> can wrap it up as a PSGI application.  Compared
+to L<CGI::PSGI>, this is less efficient, but should work with any CGI
+implementation, not just CGI.pm.
 
 =item Plack::Request and Plack::Response
 
@@ -244,11 +247,11 @@ And this C<request_handler> is a PSGI application now.
 =head3 What's the benefit of converting my HTTP::Engine app to run on PSGI?
 
 As of today most web server implementations and middlewares
-implemented by Plack are also available on HTTP::Engine, so there
-might not be direct immediate benefit of switching to PSGI. But PSGI
-is more future proof, and there are high hope that in the near future
-we'll have a pretty fast server environments (think of Passenger for
-Ruby Rack) and/or plenty of useful middlewares that HTTP::Engine
+implemented by Plack are mostly available on HTTP::Engine as well, so
+there might not be direct immediate benefit of switching to PSGI. But
+PSGI is more future proof, and there are high hope that in the near
+future we'll have a pretty fast server environments (think of Passenger
+for Ruby Rack) and/or plenty of useful middlewares that HTTP::Engine
 doesn't have today.
 
 See the question I<My framework already does CGI, FCGI and
@@ -360,6 +363,9 @@ Writing an IO::Handle-like object is pretty easy since it's only
 C<getline> and C<close>. You can also use PerlIO to write an object that
 behaves like a filehandle, though it might be considered a little
 unstable.
+
+See also L<IO::Handle::Util> to turn anything iterators-like into
+IO::Handle-like.
 
 =head3 What if I want to stream content or do a long-poll Comet?
 
