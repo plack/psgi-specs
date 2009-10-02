@@ -404,6 +404,11 @@ characters undecoded (partial decoding) would make things worse, since
 then you can't tell C<foo%2fbar> from C<foo%252fbar> and could be a
 security hole with double encoding or decoding.
 
+For web application frameworks that need more controls over the actual
+raw URI (such as L<Catalyst>), we made C<REQUEST_URI> environment hash
+key REQUIRED. The servers should set the undecoded (unparsed) original
+URI, containing query strings to this key.
+
 For the record, WSGI (PEP-333) defines both C<SCRIPT_NAME> and
 C<PATH_INFO> be decoded and Rack leaves it implementation dependent,
 while I<fixing> most of PATH_INFO left encoded in Ruby web server
