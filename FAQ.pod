@@ -165,6 +165,41 @@ as C<Mightyd::Handler::PSGI> or consider contributing the code to
 L<Plack> project as C<Plack::Server::Mightyd> (by doing so you don't
 need to worry about how to run/load PSGI applications).
 
+=head3 I have CGI/mod_perl application that I want to run on Plack. What should I do?
+
+There are multiple choices that you can make to convert your CGI
+script or Apache handler application to PSGI app and then run on Plack
+(or any other PSGI compatible) servers.
+
+=over 4
+
+=item CGI::PSGI
+
+If you have a web application (framework) that utilizes CGI.pm to
+handle query parameters, L<CGI::PSGI> helps you to migrate to
+PSGI. You still need to change a few lines of code where CGI instance
+is created, and how to return response headers and body, but anything
+else would stay the same.
+
+=item CGI::Emulate::PSGI
+
+If you have a dead old CGI script that you don't like to modify any
+single line of code, then L<CGI::Emulate::PSGI> allows you to turn the
+script into a PSGI application. Note that if your application uses
+some package variables or nested closures or some sort, that might
+cause problems when running on persistent processes, and that's not
+our problem but yours to fix.
+
+=item Plack::Request and Plack::Response
+
+If you have an L<HTTP::Engine> based application (framework), or want
+to write from scratch and need a better interface than L<CGI> or have
+used L<Apache::Request> wrappers, then L<Plack::Request> and
+L<Plack::Response> might be what you want. It allows you to access
+nice Request/Response API over PSGI env hash and response array refs.
+
+=back
+
 =head2 HTTP::Engine
 
 =head3 Why PSGI/Plack instead of HTTP::Engine?
