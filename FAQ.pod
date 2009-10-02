@@ -340,6 +340,47 @@ L<IO::Writer>.
 Fo the long poll comet you can also use co-routine based
 implementations like L<Plack::Server::Coro> and do your own threading.
 
+=head3 Which framework should I use to do streaming though?
+
+We have servers that support non-blocking (where C<psgi.nonblocking>
+is set to true), but the problem is that framework side doesn't
+necessary support streaming. For instance Catalyst has C<write> method
+on the response object:
+
+  while ($cond) {
+      $c->res->write($some_stuff);
+  }
+
+But it obviously blocks in the application unless you run your
+application in multithread (or Coro)
+environments. L<Catalyst::Engine::PSGI> also supports setting an
+IO::Handle-like object that supports C<getline>, so using
+L<IO::Handle::Util>
+
+  my $io = io_from_getline sub {
+       return $data; # or undef when done()
+  };
+  $c->res->body($io);
+
+And that works fine to do streaming, but it's blocking so you should
+be careful not to run on non-blocking (and non-multiprocess) server
+environments.
+
+For the nonblocking single process server (like AnyEvent or Perlbal)
+the solution we're working on is a non-blocking IO handle that falls
+back to blocking, called L<IO::Writer>. Once we figure that out, then
+you can set the writer object to response body, like:
+
+  my $io = writer {
+      my $handle = shift;
+      $handle->print($stuff);
+  };
+
+  $c->res->body($io);
+
+And it will do the right thing in blocking and non-blocking server
+environments transparently.
+
 =head3 Why CGI-style environment variables instead of HTTP headers as a hash?
 
 Most existent web application frameworks already have code or a
