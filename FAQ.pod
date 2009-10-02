@@ -295,22 +295,10 @@ backend's code a few lines more tedious, while requiring an object
 I<instead of> a code ref would make application developers write
 another class and instanciate an object.
 
-Requiring an application ALWAYS be an object instead of a code ref
-would also work, but then application developers would always have to define
-a class and instantiate the object. The benefit of requiring an object
-instead of a code ref is that it would give middleware developers a
-chance to call some methods on the application instead of the standard
-C<call> method. However, that can also be done also by setting values
-or callbacks in the environments hash reference.
-
-The problem still remains to fill the gap of how the application
-should be initialized and by who.
-
-This is a solved problem in Ruby's Rack and Python's WSGI and we'll
-clone that: L<plackup> takes a C<app.psgi> file where users can
-preload their framework code, setup anything they need, add
-middleware, and then return a code reference that is a PSGI
-application.
+In other words, yes an object with a C<call> method could work, but
+again PSGI was designed to be as simple as possible, and making a code
+reference out of class/object is no brainer but the other way round
+always requires a few lines of code and possibly a new file.
 
 =head3 Why are the headers returned as an array ref and not a hash ref?
 
