@@ -81,9 +81,11 @@ framework users will enjoy is huge.
 
 If the framework you're using supports PSGI, that means your
 application can run on any of existent and future PSGI
-implementations. Also, if you provide a C<.psgi> file that returns
-PSGI application, the end users of your application should be able to
-configure and run your application in a bunch of different ways.
+implementations.
+
+if you provide a C<.psgi> file that returns PSGI application,
+the end users of your application should be able to configure and run
+your application in a bunch of different ways.
 
 =head3 What should I do to support PSGI?
 
@@ -97,7 +99,11 @@ environments.
 
 If you're a web application developer (or a web application framework
 user), choose the framework that supports PSGI, or ask the author to
-support it. :)
+support it. :) If your application is a large scale installable
+application that doesn't use any existent frameworks (e.g. WebGUI or
+Movable Type) you're considered as a framework developer instead from
+the PSGI point of view. So, writing an adapter for PSGI on your
+application would make more sense.
 
 =head3 Is PSGI faster than (my framework)?
 
