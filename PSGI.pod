@@ -272,9 +272,14 @@ work around with this problem.
 
   $input->read($buf, $len [, $offset ]);
 
+Returns the number of characters actually read, 0 at end of file, or
+undef if there was an error.
+
 =item seek
 
   $input->seek($pos, $whence);
+
+Returns 1 on success, 0 otherwise.
 
 =back
 
@@ -292,6 +297,8 @@ class of the stream, but instead just call C<print> to duck type.
 =item print
 
   $errors->print($error);
+
+Returns true if successful.
 
 =back
 
@@ -474,6 +481,7 @@ order):
   Artur Bergman
   Simon Cozens
   Scott McWhirter
+  Jiro Nishiguchi
 
 =head1 COPYRIGHT AND LICENSE
 
