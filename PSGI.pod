@@ -389,7 +389,7 @@ C<$/> value.
 
 =head2 Middleware
 
-Middleware is itself a PSGI application but it takes an existent PSGI
+Middleware is itself a PSGI application but it takes an existing PSGI
 application and runs it like a server, mostly to do pre-processing on
 C<$env> or post-processing on the response objects.
 

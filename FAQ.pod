@@ -80,7 +80,7 @@ framework users will enjoy is huge.
 =head3 I'm writing a web application. What's the benefit of PSGI for me?
 
 If the framework you're using supports PSGI, that means your
-application can run on any of existent and future PSGI
+application can run on any of existing and future PSGI
 implementations.
 
 if you provide a C<.psgi> file that returns PSGI application,
@@ -100,7 +100,7 @@ environments.
 If you're a web application developer (or a web application framework
 user), choose the framework that supports PSGI, or ask the author to
 support it. :) If your application is a large scale installable
-application that doesn't use any existent frameworks (e.g. WebGUI or
+application that doesn't use any existing frameworks (e.g. WebGUI or
 Movable Type) you're considered as a framework developer instead from
 the PSGI point of view. So, writing an adapter for PSGI on your
 application would make more sense.
