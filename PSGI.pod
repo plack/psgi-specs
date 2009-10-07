@@ -372,12 +372,18 @@ An IO::Handle-like object or a built-in filehandle.
   my $body = SomeClass->new(); # mock class that implements getline() and close()
 
 Servers SHOULD NOT check the type or class of the body but instead
-just call C<getline> to iterate over the body and call C<close> when done.
+just call C<getline> (i.e. duck type) to iterate over the body and
+call C<close> when done.
 
 Servers MAY check if the body is a real filehandle using C<fileno> and
 C<Scalar::Util::reftype> and if it's a real filehandle that has a file
 descriptor, it MAY optimize the file serving using techniques like
 I<sendfile(2)>.
+
+The body object MAY respond to C<path> method to return the local file
+system path, which MAY be used by some servers to switch to more
+efficient file serving method using the file path instead of a file
+descriptor.
 
 Servers are RECOMMENDED to set C<$/> special variable to the buffer
 size when reading content from C<$body> using C<getline> method, in
@@ -482,6 +488,7 @@ order):
   Simon Cozens
   Scott McWhirter
   Jiro Nishiguchi
+  Naoki Chiba
 
 =head1 COPYRIGHT AND LICENSE
 

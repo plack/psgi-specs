@@ -361,6 +361,48 @@ unstable.
 See also L<IO::Handle::Util> to turn anything iterators-like into
 IO::Handle-like.
 
+=head3 How should server determine to switch to sendfile(2) based serving?
+
+First of all, an application SHOULD always set a IO::Handle-like
+object (or an array of chunks) that responds to C<getline> and
+C<close> as a body. That is guaranteed to work with any servers.
+
+Optionally, if the server is written in perl or can tell a file
+descriptor number to the C-land to serve the file, then the server MAY
+check if the body is a real filehandle (possibly using
+L<Plack::Util>'s C<is_real_fh> function), then get a file descriptor
+with C<fileno> and call sendfile(2) or equivalent zero-copy data
+transfer using that.
+
+Otherwise, if the server can't send a file using the file descriptor
+but needs a local file path (like mod_perl or nginx), the application
+can return an IO::Handle-like object that also responds to C<path>
+method. This type of IO-like object can easily be created using
+L<IO::File::WithPath>, L<IO::Handle::Util> or L<Plack::Util>'s
+C<set_io_path> function.
+
+Middlewares can also look to see if the body has C<path> method and
+does something interesting with it, like setting C<X-Sendfile>
+headers.
+
+To summarize:
+
+=over 4
+
+=item *
+
+When to serve static files, applications should always return a real
+filehandle or IO::Handle object. That should work everywhere, and can
+be optimized in some environments.
+
+=item *
+
+Applications can also set IO::Handle like object with an additional
+C<path> method, then it should work everywhere again, and can be
+optimized in even more environments.
+
+=back
+
 =head3 What if I want to stream content or do a long-poll Comet?
 
 For the server push, your application can return a IO::Handle-like
