@@ -482,7 +482,7 @@ order):
   Piers Cawley
   Daisuke Maki
   Kang-min Liu
-  Yukihiro Matsumoto
+  Yasuhiro Matsumoto
   Ash Berlin
   Artur Bergman
   Simon Cozens
