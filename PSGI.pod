@@ -488,7 +488,7 @@ order):
   Simon Cozens
   Scott McWhirter
   Jiro Nishiguchi
-  Naoki Chiba
+  Masahiro Chiba
 
 =head1 COPYRIGHT AND LICENSE
 
