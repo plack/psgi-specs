@@ -317,7 +317,7 @@ C<:> or newlines in their name, contain keys that end in C<-> or C<_>
 but only contain keys that consist of letters, digits, C<_> or C<->
 and start with a letter. The value of the header must be a scalar
 value that contain a string. The value string MUST NOT contain
-characters below chr(37).
+characters below chr(37) except chr(32) (whitespace).
 
 If the same key name appears multiple times in an array ref, those
 header lines MUST be sent to the client separately (e.g. multiple
