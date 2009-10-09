@@ -370,7 +370,7 @@ So, when you have a big chunk of HTML in a single scalar C<$body>,
 
   [ $body ]
 
-is a valie response body.
+is a valid response body.
 
 =item *
 
