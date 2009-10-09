@@ -27,7 +27,7 @@ that later).
 =item Servers
 
 Servers are web servers that accept HTTP requests, dispatch the
-requests to the web appilcations and return the HTTP response to the
+requests to the web applications and return the HTTP response to the
 clients. In PSGI specification it's a Perl process that's running
 inside an HTTP server (e.g. mod_perl in Apache), a daemon process
 called from a web server (e.g. FastCGI daemon) or a pure perl HTTP
