@@ -481,7 +481,9 @@ with double encoding or decoding.
 For web application frameworks that need more control over the actual
 raw URI (such as L<Catalyst>), we made the C<REQUEST_URI> environment
 hash key REQUIRED. The servers should set the undecoded (unparsed)
-original URI (containing the query string) to this key.
+original URI (containing the query string) to this key. Note that
+C<REQUEST_URI> is completely raw even if the encoded entities are
+URI-safe.
 
 For comparison, WSGI (PEP-333) defines both C<SCRIPT_NAME> and
 C<PATH_INFO> be decoded and Rack leaves it implementation dependent,

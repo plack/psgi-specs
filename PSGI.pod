@@ -110,6 +110,17 @@ should be URI decoded by servers to be compatible to RFC 3875.
 
 =item *
 
+C<REQUEST_URI>: The undecoded, raw request URL line. It is the raw URI
+path and query part that appears in the HTTP C<GET /... HTTP/1.x> line
+and doesn't contain URI scheme and host names.
+
+Unlike C<PATH_INFO>, this value SHOULD NOT be decoded by servers and
+hence it is an application's responsibility to properly decode paths
+to map URL to application handlers, when using C<REQUEST_URI> over
+C<PATH_INFO>.
+
+=item *
+
 C<QUERY_STRING>: The portion of the request URL that follows the C<?>,
 if any. May be empty, but is always required.
 
