@@ -500,6 +500,7 @@ order):
   Scott McWhirter
   Jiro Nishiguchi
   Masahiro Chiba
+  Patrick Donelan
 
 =head1 COPYRIGHT AND LICENSE
 
