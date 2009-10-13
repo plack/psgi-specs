@@ -1,4 +1,5 @@
 .shipit
+Changes
 inc/Module/Install.pm
 inc/Module/Install/Base.pm
 inc/Module/Install/Can.pm
@@ -11,6 +12,7 @@ inc/Module/Install/WriteAll.pm
 Makefile.PL
 MANIFEST			This list of files
 META.yml
+PSGI.pm
 PSGI.pod
 PSGI/FAQ.pod
 README.md
