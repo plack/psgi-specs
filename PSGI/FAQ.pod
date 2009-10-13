@@ -163,13 +163,21 @@ The PSGI namespace is reserved for PSGI specifications and reference
 unit tests that implementors have to pass. It should not be used by
 particular implementations.
 
-If you write a plugin or an extension to support PSGI for an (imaginary)
-web application framework called C<Camper>, name the code such as
-C<Camper::Engine::PSGI>. If you write a PSGI backend that runs on an
-imaginary pure perl web server called C<mightyd>, name it such as
-C<Mightyd::Handler::PSGI> or consider contributing the code to L<Plack>
-project as C<Plack::Server::Mightyd> (so that you don't need to worry
-about how to run/load PSGI applications).
+If you write a plugin or an extension to support PSGI for an
+(imaginary) web application framework called C<Camper>, name the code
+such as C<Camper::Engine::PSGI>.
+
+If you write a web server that supports PSGI interface, then name it
+however you want. You can optionally support L<Plack::Server>'s
+abstract interface, which is:
+
+  my $server = Plack::Server::FooBar->new(%opt);
+  $server->run($app);
+
+By supporting this C<new> and C<run> in your server, it becomes
+plackup compatible, so users can run your app via C<plackup>. You're
+recommended to, but not required to follow this API, in which case you
+have to provide your own PSGI app launcher.
 
 =head3 I have a CGI or mod_perl application that I want to run on PSGI/Plack. What should I do?
 
