@@ -501,6 +501,7 @@ order):
   Jiro Nishiguchi
   Masahiro Chiba
   Patrick Donelan
+  Paul Driver
 
 =head1 COPYRIGHT AND LICENSE
 
