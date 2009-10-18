@@ -81,11 +81,30 @@ framework users will enjoy is huge.
 
 If the framework you're using supports PSGI, that means your
 application can run on any of existing and future PSGI
-implementations.
+implementations. You can provide a C<.psgi> file that returns PSGI
+application, the end users of your application should be able to
+configure and run your application in a bunch of different ways.
 
-if you provide a C<.psgi> file that returns PSGI application,
-the end users of your application should be able to configure and run
-your application in a bunch of different ways.
+=head3 But I'm writing a web application in CGI and it works well. Should I switch to PSGI?
+
+If you're writing a web application with a plain CGI.pm and without
+using any web frameworks, you're limiting your application in the
+plain CGI environments, along with mod_perl and FastCGI with some
+tweaks. If you're the only one developer and user of your application
+then that's probably fine.
+
+One day you want to deploy your application in the shared hosting for
+your clients, or run your server in the standalone mode, or distribute
+your application as an open source software. Limiting your application
+in the CGI environment by using CGI.pm will bite you then.
+
+You can start using one of PSGI compatible frameworks (either
+full-stack ones or micro ones), or use L<Plack::Request> if you are
+anti frameworks, to make your application PSGI aware, to be more
+future proof.
+
+Even if you ignore PSGI today and write applications in palin CGI, you
+can always later switch to PSGI with the L<CGI::PSGI> wrapper.
 
 =head3 What should I do to support PSGI?
 
