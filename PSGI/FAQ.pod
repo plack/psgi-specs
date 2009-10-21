@@ -530,7 +530,7 @@ L<http://www.python.org/dev/peps/pep-0333/#questions-and-answers>
 =head1 MORE QUESTIONS?
 
 If you have a question that is not answered here, or things you totally
-disagree with, come join the IRC channel #http-engine on irc.perl.org or
+disagree with, come join the IRC channel #plack on irc.perl.org or
 mailing list L<http://groups.google.com/group/psgi-plack>. Be sure you
 clarify which hat you're wearing: application developers, server
 implementors or middleware developers. And don't criticize the spec just
