@@ -435,7 +435,7 @@ optimized in even more environments.
 The most straightforward way to implement server push is for your
 application to return a IO::Handle-like object as a content body that
 implements C<getline> to return pushed content. This is guaranteed to
-work everywhere, but it's more like L<pull> than L<push>, and it's
+work everywhere, but it's more like I<pull> than I<push>, and it's
 hard to do non-blocking I/O unless you use Coro.
 
 If you want to do server push, where your application runs in an event
@@ -515,7 +515,7 @@ object that supports C<getline>, so using L<IO::Handle::Util>
   };
   $c->res->body($io);
 
-And that works fine to do streaming, but it's blocking (L<pull>)
+And that works fine to do streaming, but it's blocking (I<pull>)
 rather than server push, so you should be careful not to run this
 application on non-blocking (and non-multiprocess) server
 environments.
