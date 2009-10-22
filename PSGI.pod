@@ -321,9 +321,11 @@ Returns true if successful.
 =head3 The Response
 
 The response MUST be a three element array reference if the
-application wants to directly return the HTTP response. An
-application MAY choose to delay the response only if the server
-supports the streaming (See below).
+application wants to directly return the HTTP response.
+
+An application MAY choose to return other type of responses such as a
+code reference, to delay the response only if the server supports the
+streaming (See below).
 
 =head4 Status
 
@@ -441,7 +443,7 @@ first argument, and pass the three element response to the callback.
 
 Similarly, an application MAY omit the third element (the body) in the
 callback to get a response writer object, that implements C<write>,
-C<poll_cb> and C<close> method to push content.
+C<poll_cb> and C<close> method to push the response body.
 
   my $app = sub {
       my $env = shift;
@@ -466,8 +468,8 @@ C<poll_cb> and C<close> method to push content.
 
 Delayed response and streaming should be useful if you want to
 implement non-blocking I/O based server streaming or long-poll Comet
-push technology. IO::Handle-like object is pull, and the streaming
-response is the push.
+push technology. IO::Handle-like object is I<pull>, while this
+streaming response implements I<push>.
 
 This interface is optional: An applciation SHOULD check if the server
 supports streaming. Servers MAY decide to not accept this streaming
@@ -500,7 +502,7 @@ I<X-PSGI-Used> to any PSGI application.
   };
 
 Middleware itself MUST behave exactly like a PSGI application: take
-C<$env> and return C<$res>. Middleware MAY decide not to support
+C<$env> and return C<$res>. Middleware MAY decide not to support the
 streaming interface (see above) but SHOULD pass through the response
 types that it doesn't understand.
 
