@@ -203,6 +203,11 @@ server based on CGI (or something similar).
 C<psgi.nonblocking>: true if the server is calling the application in an
 non-blocking event loop.
 
+=item *
+
+C<psgi.streaming>: true if the server supports callback style delayed
+response and streaming writer object.
+
 =back
 
 The server or the application can store its own data in the
@@ -315,6 +320,11 @@ Returns true if successful.
 
 =head3 The Response
 
+The response MUST be a three element array reference if the
+application wants to directly return the HTTP response. An
+application MAY choose to delay the response only if the server
+supports the streaming (See below).
+
 =head4 Status
 
 HTTP status code, is an integer and MUST be greater than or equal to 100.
@@ -404,6 +414,68 @@ C<$/> value.
 
 =back
 
+=head2 Delayed Reponse and Streaming Body
+
+PSGI interface allows applications and servers optionally handle
+callback-style response (instead of three-element array reference) to
+delay the HTTP response and stream content (server push).
+
+To enable delayed response, an application SHOULD check if
+C<psgi.streaming> environment is true, and in that case, MAY return a
+callback that is passed another callback (response starter) as its
+first argument, and pass the three element response to the callback.
+
+  my $app = sub {
+      my $env = shift;
+
+      # Delays response until it fetches content from the network
+      return sub {
+          my $respond = shift;
+          fetch_content_from_server(sub {
+              my $content = shift;
+              # ...
+              $respond->([ 200, $headers, [ $content ] ]);
+          });
+      };
+  };
+
+Similarly, an application MAY omit the third element (the body) in the
+callback to get a response writer object, that implements C<write>,
+C<poll_cb> and C<close> method to push content.
+
+  my $app = sub {
+      my $env = shift;
+
+      # immediately starts the response and stream the content
+      return sub {
+          my $respond = shift;
+          my $writer = $respond->([ 200, [ 'Content-Type', 'application/json' ]]);
+
+          wait_for_events(sub {
+              my $new_event = shift;
+              if ($new_event) {
+                  $writer->write($new_event->as_json . "\n");
+                  # Or:
+                  # $writer->poll_cb(sub { $_[0]->write($new_event->as_json . "\n") });
+              } else {
+                  $writer->close;
+              }
+          });
+      };
+  };
+
+Delayed response and streaming should be useful if you want to
+implement non-blocking I/O based server streaming or long-poll Comet
+push technology. IO::Handle-like object is pull, and the streaming
+response is the push.
+
+This interface is optional: An applciation SHOULD check if the server
+supports streaming. Servers MAY decide to not accept this streaming
+response and throws an exception. Servers MUST set C<psgi.streaming>
+to true if this interface is supported. Servers MUST return a writer
+object if the third argument (response body) is omitted or not
+defined in the response starter callback arguments.
+
 =head2 Middleware
 
 Middleware is itself a PSGI application but it takes an existing PSGI
@@ -428,7 +500,9 @@ I<X-PSGI-Used> to any PSGI application.
   };
 
 Middleware itself MUST behave exactly like a PSGI application: take
-C<$env> and return C<$res>.
+C<$env> and return C<$res>. Middleware MAY decide not to support
+streaming interface (see above) but SHOULD pass through the response
+types that it doesn't understand.
 
 =head1 ACKNOWLEDGEMENTS
 
