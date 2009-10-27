@@ -13,7 +13,7 @@ framework developers.
 
 Please keep in mind that PSGI is not Yet Another web application
 framework. PSGI is a specification to decouple web server environments
-from web application framework code. Nor is PSGI is a web
+from web application framework code. Nor is PSGI a web
 application API. Web application developers (end users) will not
 run their web applications directly using the PSGI
 interface, but instead are encouraged to use frameworks that
