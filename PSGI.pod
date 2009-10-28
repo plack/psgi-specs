@@ -91,7 +91,7 @@ empty.
 When an environment key is described as a boolean, its value B<MUST> conform
 to Perl's notion of boolean-ness. This means that an empty string or an
 explicit C<0> are both valid false values. If a boolean key is not present, an
-application B<MUST> treat this as a false value.
+application B<MAY> treat this as a false value.
 
 The values for all CGI keys (named without a period) B<MUST> be a scalar
 string.
