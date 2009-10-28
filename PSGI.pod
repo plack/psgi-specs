@@ -158,13 +158,15 @@ treat any HTTP request headers.
 
 =item *
 
-C<CONTENT_LENGTH>: The length of the content in bytes, as an integer. This key
-B<MAY> be omitted.
+C<CONTENT_LENGTH>: The length of the content in bytes, as an
+integer. The presence or absence of this key should correspond to the
+presence or absence of HTTP Content-Length header in the request.
 
 =item *
 
-C<CONTENT_TYPE>: The request's MIME type, as specified by the client. This key
-B<MAY> be omitted.
+C<CONTENT_TYPE>: The request's MIME type, as specified by the client.
+The presence or absence of this key should correspond to the presence
+or absence of HTTP Content-Type header in the request.
 
 =item *
 
