@@ -88,13 +88,13 @@ L<Rack|http://rack.rubyforge.org/doc/files/SPEC.html> and
 L<JSGI|http://jackjs.org/jsgi-spec.html>) except when they would normally be
 empty.
 
-When an environment key is described as a boolean, itss value B<MUST> conform
-to Perl's notion of boolean-ness. These variables B<SHOULD> contain a C<0> or
-C<1>. An empty value or the absence of a key B<MAY> also be used to indicate a
-false value.
+When an environment key is described as a boolean, its value B<MUST> conform
+to Perl's notion of boolean-ness. This means that an empty string or an
+explicit C<0> are both valid false values. If a boolean key is not present, an
+application B<MUST> treat this as a false value.
 
 The values for all CGI keys (named without a period) B<MUST> be a scalar
-string except where otherwise specified.
+string.
 
 See below for details.
 
@@ -186,7 +186,9 @@ PSGI-specific keys:
 
 =item *
 
-C<psgi.version>: An array reference [1,0] representing this version of PSGI. The first number is the major version and the second it the minor version.
+C<psgi.version>: An array reference [1,0] representing this version of
+PSGI. The first number is the major version and the second it the minor
+version.
 
 =item *
 
@@ -202,13 +204,15 @@ C<psgi.errors>: the error stream. See below for details.
 
 =item *
 
-C<psgi.multithread>: This is a boolean value, which I<MUST> be true if the application may be simultaneously
-invoked by another thread in the same process, false otherwise.
+C<psgi.multithread>: This is a boolean value, which I<MUST> be true if the
+application may be simultaneously invoked by another thread in the same
+process, false otherwise.
 
 =item *
 
-C<psgi.multiprocess>: This is a boolean value, which I<MUST> be true if an equivalent application object may be
-simultaneously invoked by another process, false otherwise.
+C<psgi.multiprocess>: This is a boolean value, which I<MUST> be true if an
+equivalent application object may be simultaneously invoked by another
+process, false otherwise.
 
 =back
 
@@ -218,27 +222,27 @@ The PSGI environment B<MAY> also include these optional PSGI keys:
 
 =item *
 
-C<psgi.run_once>: A boolean which is true if the server expects (but does not guarantee!)
-that the application will only be invoked this one time during the
-life of its containing process. Normally, this will only be true for a
+C<psgi.run_once>: A boolean which is true if the server expects (but does not
+guarantee!)  that the application will only be invoked this one time during
+the life of its containing process. Normally, this will only be true for a
 server based on CGI (or something similar).
 
 =item *
 
-C<psgi.nonblocking>: A boolean which is true if the server is calling the application in an
-non-blocking event loop.
+C<psgi.nonblocking>: A boolean which is true if the server is calling the
+application in an non-blocking event loop.
 
 =item *
 
-C<psgi.streaming>: A boolean which is true if the server supports callback style delayed
-response and streaming writer object.
+C<psgi.streaming>: A boolean which is true if the server supports callback
+style delayed response and streaming writer object.
 
 =back
 
-The server or the application can store its own data in the
-environment as well. These keys B<MUST> contain at least one dot, and B<SHOULD>
-be prefixed uniquely. The C<psgi.> prefix is reserved for use with the
-PSGI core implementation and officially blessed extensions. This prefix B<MUST NOT> be
+The server or the application can store its own data in the environment as
+well. These keys B<MUST> contain at least one dot, and B<SHOULD> be prefixed
+uniquely. The C<psgi.> prefix is reserved for use with the PSGI core
+implementation and officially blessed extensions. This prefix B<MUST NOT> be
 used by other servers or application.
 
 The environment B<MUST NOT> contain keys named C<HTTP_CONTENT_TYPE> or
@@ -247,8 +251,6 @@ C<HTTP_CONTENT_LENGTH>.
 One of C<SCRIPT_NAME> or C<PATH_INFO> B<MUST> be set. C<PATH_INFO> should be
 C</> if C<SCRIPT_NAME> is empty. C<SCRIPT_NAME> B<MUST NOT> be C</>, but
 B<MAY> be empty.
-
-=back
 
 =head3 The Input Stream
 
@@ -262,7 +264,7 @@ in a PSGI server. Application developers B<SHOULD NOT> inspect the type or
 class of the stream. Instead, they B<SHOULD> simply call C<read> on the object.
 
 Application developers B<SHOULD NOT> use Perl's built-in C<read> or iterator
-(C<< <$fh> >>) to read from the input stream, because. Instead, application
+(C<< <$fh> >>) to read from the input stream. Instead, application
 developers should call C<read> as a method (C<< $fh->read >>) to allow for
 duck typing.
 
@@ -305,8 +307,8 @@ print errors. The error stream must implement a C<print> method.
 
 As with the input stream, Perl's built-in filehandles or L<IO::Handle> based
 objects should work as-is in a PSGI server. Application developers B<SHOULD
-NOT> inspect the type or class of the stream. Instead, they B<SHOULD> simply call C<print>
-on the object.
+NOT> inspect the type or class of the stream. Instead, they B<SHOULD> simply
+call C<print> on the object.
 
 =over 4
 
@@ -339,13 +341,14 @@ and B<SHOULD> be an HTTP status code as documented in L<RFC
 The headers B<MUST> be an array reference (B<not> a hash reference)
 of key/value pairs. This means it B<MUST> contain an even number of elements.
 
-The header B<MUST NOT> contain a key named C<Status>, onr any keys with
-C<:> or newlines in their name. It B<MUST NOT> contain any keys that end in C<-> or C<_>.
+The header B<MUST NOT> contain a key named C<Status>, onr any keys with C<:>
+or newlines in their name. It B<MUST NOT> contain any keys that end in C<-> or
+C<_>.
 
 All keys B<MUST> consist only of letters, digits, C<_> or C<->. All keys
 B<MUST> start with a letter. The value of the header must be a scalar
-string. The value string B<MUST NOT> contain characters below ASCII chr(37) except for
-chr(32) (whitespace).
+string. The value string B<MUST NOT> contain characters below ASCII chr(37)
+except for chr(32) (whitespace).
 
 If the same key name appears multiple times in an array ref, those
 header lines B<MUST> be sent to the client separately (e.g. multiple
@@ -361,8 +364,9 @@ or 304, in which case there B<MUST NOT> be a content type.
 There B<MUST NOT> be a C<Content-Length> header when the C<Status> is
 1xx, 204 or 304.
 
-If the Status is not 1xx, 204 or 304 and there is no C<Content-Length>
-header, a PSGI server B<MAY> calculate the content length by looking at the Body. This value can then be appended to the list of headers returned by the application.
+If the Status is not 1xx, 204 or 304 and there is no C<Content-Length> header,
+a PSGI server B<MAY> calculate the content length by looking at the Body. This
+value can then be appended to the list of headers returned by the application.
 
 =head4 Body
 
@@ -373,7 +377,8 @@ reference or a handle.
 
 =item *
 
-If it an array reference, it is expected to contain an array of lines which make up the body.
+If the body is an array reference, it is expected to contain an array of lines
+which make up the body.
 
   my $body = [ "Hello\n", "World\n" ];
 
@@ -424,12 +429,12 @@ The PSGI interface allows applications and servers to provide a callback-style
 response instead of the three-element array reference. This allows for a
 delayed response and a streaming body (server push).
 
-To enable a delayed response, an application B<SHOULD> check if
-the C<psgi.streaming> environment is true. If it is, the application B<MAY> return a
-callback as its response.
+To enable a delayed response, an application B<SHOULD> check if the
+C<psgi.streaming> environment is true. If it is, the application B<MAY> return
+a callback as its response.
 
 This callback will be called with I<another> subroutine reference (referred to
-as the I<responder> from now on) as it's only argument. The I<responder>
+as the I<responder> from now on) as its only argument. The I<responder>
 should in turn be called with the standard three element array reference
 response. This is best illustrated with an example:
 
@@ -481,14 +486,18 @@ This interface is optional: An application B<SHOULD> check if the server
 supports streaming before attempting to use it. Servers B<MAY> throw an
 exception if they do not support streaming a response.
 
-Servers B<MUST> set C<psgi.streaming> to true if this interface is
-supported, and if it is supported, servers B<MUST> return a writer object when the third argument
-(response body) to the I<responder> is omitted.
+Servers B<MUST> set C<psgi.streaming> to true if this interface is supported,
+and if it is supported, servers B<MUST> return a writer object when the third
+argument (response body) to the I<responder> is omitted.
 
 =head2 Middleware
 
-A piece of I<middleware> is itself a PSGI application, one which takes an existing PSGI
-application and runs it like a server. Generally, this will be done in order to implement some sort of pre-processing on the PSGI environment has or  post-processing on the response.
+A I<middleware> component takes another PSGI application and runs it. From the
+perspective of a server, a middleware component is a PSGI application. From
+the perspective of the application being run by the middleware component, the
+middleware is the server. Generally, this will be done in order to implement
+some sort of pre-processing on the PSGI environment hash or post-processing on
+the response.
 
 Here's a simple example that appends a special HTTP header
 I<X-PSGI-Used> to any PSGI application.
