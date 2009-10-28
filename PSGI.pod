@@ -388,7 +388,7 @@ Note that the elements in an array reference are B<NOT REQUIRED> to end
 in a newline. A server B<SHOULD> write each elements as-is to the
 client, and B<SHOULD NOT> care if the line ends with newline or not.
 
-An array reference with a single value is valid. So C<[ $body ]> is a valid
+An array reference with a single value is valid. So C<[ $html ]> is a valid
 response body.
 
 =item *
