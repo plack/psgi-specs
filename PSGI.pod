@@ -69,14 +69,14 @@ A PSGI application is a Perl code reference. It takes exactly one
 argument, the environment, and returns an array reference containing exactly
 three values.
 
-  sub app {
+  my $app = sub {
       my $env = shift;
       return [
           '200',
           [ 'Content-Type' => 'text/plain' ],
           [ "Hello World" ], # or IO::Handle-like object
       ];
-  }
+  };
 
 =head3 The Environment
 
@@ -413,7 +413,7 @@ optimize using techniques like I<sendfile(2)>.
 The body object B<MAY> also respond to a C<path> method. This method is
 expected to return the path to a file accessible by the server. This allows
 the server to use this information instead of a file descriptor number to
-server the file.
+serve the file.
 
 Servers B<SHOULD> set the C<$/> special variable to the buffer size when
 reading content from C<$body> using the C<getline> method. This is done by
