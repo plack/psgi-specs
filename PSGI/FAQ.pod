@@ -354,18 +354,6 @@ backends simple. Other options, like allowing an array ref
 in addition to a plain scalar, make either side of the code
 unnecessarily tedious.
 
-Note that I'm talking about multiple header lines with the same key,
-and NOT about multiple header values (e.g. C<Accept: text/html,
-text/plain, *>). Joining the header values with C<, > is obviously
-the application's job. L<HTTP::Headers> does exactly that when it's
-passed an array reference as a header value, for instance.
-
-The other option is to always require the application to set a value as
-an array ref, even if there is only one entry: this would make backend
-code less tedious, but, for the exact reason of multiple header values
-vs. multiple header lines with the same name mentioned in the paragraph
-before, I think it's confusing.
-
 =head3 No iterators support in $body?
 
 We learned that WSGI and Rack really enjoy the benefit of Python and
