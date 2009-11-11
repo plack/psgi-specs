@@ -28,7 +28,7 @@ PSGI allows web application framework developers to only write an
 adapter for PSGI.  End users can choose from among all the backends that
 support the PSGI interface.
 
-=head3 You said PSGI is similar to CGI. How is the PSGI interaface different from CGI?
+=head3 You said PSGI is similar to CGI. How is the PSGI interface different from CGI?
 
 The PSGI interface is intentionally designed to be very similar to CGI so
 that supporting PSGI in addition to CGI would be extremely easy. Here's
@@ -71,11 +71,14 @@ application as an array reference.
 
 If your web application framework already supports most server
 environments, performance is good, and the backends are well tested,
-there may not be a direct benefit for you to support PSGI immediately --
-though you would be able to remove any code that overlaps with PSGI
-backends. But if only CGI environment is currently supported, supporting
-PSGI in addition should be extremely easy, and the benefit you and your
-framework users will enjoy is huge.
+there may not be a direct benefit for you to support PSGI immediately
+-- though you would be able to remove any code that overlaps with PSGI
+backends. But if only CGI environment is currently supported,
+supporting PSGI in addition should be extremely easy, and the benefit
+you and your framework users will enjoy is huge: being able to run
+your application on new PSGI compatible servers, being able to use
+utilitles like I<plackup> and I<Plack::Test> and plenty of
+L<Plack::Middleware> components.
 
 =head3 I'm writing a web application. What's the benefit of PSGI for me?
 
@@ -95,15 +98,15 @@ then that's probably fine.
 
 One day you want to deploy your application in the shared hosting for
 your clients, or run your server in the standalone mode, or distribute
-your application as an open source software. Limiting your application
-in the CGI environment by using CGI.pm will bite you then.
+your application as open source software. Limiting your application in
+the CGI environment by using CGI.pm will bite you then.
 
 You can start using one of PSGI compatible frameworks (either
 full-stack ones or micro ones), or use L<Plack::Request> if you are
 anti frameworks, to make your application PSGI aware, to be more
 future proof.
 
-Even if you ignore PSGI today and write applications in palin CGI, you
+Even if you ignore PSGI today and write applications in plain CGI, you
 can always later switch to PSGI with the L<CGI::PSGI> wrapper.
 
 =head3 What should I do to support PSGI?
