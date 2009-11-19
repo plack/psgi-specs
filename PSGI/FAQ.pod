@@ -470,20 +470,13 @@ Flash socket or multipart XMLHTTPRequest):
           wait_for_new_message(sub {
               my $message = shift;
               if ($message) {
-                  $writer->poll_cb(sub {
-                      $_[0]->write($message->to_json);
-                  });
+                  $writer->write($message->to_json);
               } else {
                   $writer->close;
               }
           });
       };
   };
-
-C<poll_cb> pushes the callback to the buffer to write your content
-whenever a client is ready to receive the content. You can just use
-C<write> instead of C<poll_cb> but that might cause a problem if you
-stream a massive streaming content against a slow HTTP client.
 
 =head3 Which framework should I use to do streaming though?
 

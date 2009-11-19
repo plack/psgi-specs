@@ -469,8 +469,6 @@ methods. Again, an example illustrates this best.
               my $new_event = shift;
               if ($new_event) {
                   $writer->write($new_event->as_json . "\n");
-                  # Or:
-                  # $writer->poll_cb(sub { $_[0]->write($new_event->as_json . "\n") });
               } else {
                   $writer->close;
               }
