@@ -214,13 +214,17 @@ query parameters, L<CGI::PSGI> can help you migrate to PSGI.  You'll
 need to change how you create CGI objects and how to return the response
 headers and body, but the rest of your code will work unchanged.
 
-=item CGI::Emulate::PSGI
+=item CGI::Emulate::PSGI and CGI::Compile
 
 If you have a dead old CGI script that you want to change as little as
-possible (or even no change at all, by running it with C<do>), then
-L<CGI::Emulate::PSGI> can wrap it up as a PSGI application.  Compared
-to L<CGI::PSGI>, this is less efficient, but should work with any CGI
-implementation, not just CGI.pm.
+possible (or even no change at all), then L<CGI::Emulate::PSGI> and
+L<CGI::Compile> can compile and wrap them up as a PSGI application.
+
+Compared to L<CGI::PSGI>, this might be less efficient because of
+STDIN/STDOUT capturing and environment variable mangling, but should
+work with any CGI implementation, not just CGI.pm, and L<CGI::Compile>
+does the job of compiling a CGI script into a code reference just like
+mod_perl's Registry does.
 
 =item Plack::Request and Plack::Response
 
