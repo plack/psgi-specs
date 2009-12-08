@@ -45,7 +45,7 @@ language such as C, Perl, Shell scripts, Ruby or Python.
 In PSGI, servers are still web servers, but they're perl processes that
 are usually embedded in the web server (like mod_perl) or a perl daemon
 process called by a web server (like FastCGI), or an entirely perl based
-web server.
+web server. And PSGI application is a perl code reference.
 
 =item *
 
