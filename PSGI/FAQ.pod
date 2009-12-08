@@ -8,7 +8,7 @@ PSGI::FAQ - Frequently Asked Questions and answers
 
 =head3 How do you pronounce PSGI?
 
-We read it simply P-S-G-I, but you may be able to pronounce it "sky" :)
+We read it simply P-S-G-I.
 
 =head3 So what is this?
 
