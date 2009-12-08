@@ -96,10 +96,11 @@ plain CGI environments, along with mod_perl and FastCGI with some
 tweaks. If you're the only one developer and user of your application
 then that's probably fine.
 
-One day you want to deploy your application in the shared hosting for
-your clients, or run your server in the standalone mode, or distribute
-your application as open source software. Limiting your application in
-the CGI environment by using CGI.pm will bite you then.
+One day you want to deploy your application in a shared hosting
+environment for your clients, or run your server in the standalone
+mode rather than as a CGI script, or distribute your application as
+open source software. Limiting your application in the CGI environment
+by using CGI.pm will bite you then.
 
 You can start using one of PSGI compatible frameworks (either
 full-stack ones or micro ones), or use L<Plack::Request> if you are
