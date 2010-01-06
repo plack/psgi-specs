@@ -146,7 +146,7 @@ C<SERVER_NAME>, C<SERVER_PORT>: When combined with C<SCRIPT_NAME> and
 C<PATH_INFO>, these keys can be used to complete the URL. Note,
 however, that C<HTTP_HOST>, if present, should be used in preference
 to C<SERVER_NAME> for reconstructing the request URL. C<SERVER_NAME>
-and C<SERVER_PORT> I<MUST NOT> be empty strings, and are always
+and C<SERVER_PORT> B<MUST NOT> be empty strings, and are always
 required.
 
 =item *
@@ -206,13 +206,13 @@ C<psgi.errors>: the error stream. See below for details.
 
 =item *
 
-C<psgi.multithread>: This is a boolean value, which I<MUST> be true if the
+C<psgi.multithread>: This is a boolean value, which B<MUST> be true if the
 application may be simultaneously invoked by another thread in the same
 process, false otherwise.
 
 =item *
 
-C<psgi.multiprocess>: This is a boolean value, which I<MUST> be true if an
+C<psgi.multiprocess>: This is a boolean value, which B<MUST> be true if an
 equivalent application object may be simultaneously invoked by another
 process, false otherwise.
 
