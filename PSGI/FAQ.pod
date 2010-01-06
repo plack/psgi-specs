@@ -436,9 +436,7 @@ hard to do non-blocking I/O unless you use Coro.
 
 If you want to do server push, where your application runs in an event
 loop and push content body to the client as it's ready, you should
-first check if the server supports the delayed response, by looking at
-C<psgi.streaming> env hash, and then return a callback to delay the
-response.
+return a callback to delay the response.
 
   # long-poll comet like a chat application
   my $app = sub {
@@ -458,8 +456,11 @@ response.
 
 C<wait_for_new_message> can be blocking or non-blocking: it's up to
 you. Most of the case you want to run it non-blockingly and should use
-event loops like L<AnyEvent>. You're suggested to check
-C<psgi.nonblocking> value to see that it's possible.
+event loops like L<AnyEvent>. You may also check C<psgi.nonblocking>
+value to see that it's possible and fallback to a blocking call
+otherwise to be compatible with non streaming capable servers, but
+you're not required to, since it's defined as SHOULD in the
+specification now.
 
 Also, to stream the content body (like streaming messages over the
 Flash socket or multipart XMLHTTPRequest):
@@ -487,15 +488,17 @@ Flash socket or multipart XMLHTTPRequest):
 
 We have servers that support non-blocking (where C<psgi.nonblocking>
 is set to true), but the problem is that framework side doesn't
-necessary support streaming. For instance Catalyst has C<write> method
-on the response object:
+necessarily support asynchronous event loop. For instance Catalyst has
+C<write> method on the response object:
 
   while ($cond) {
       $c->res->write($some_stuff);
   }
 
-But it obviously blocks in the application unless you run your
-application in multithread (or Coro) environments.
+This should work with all servers with C<psgi.streaming> support even
+if they are blocking, and it should be fine if they're running in
+multiple processes (C<psgi.multiprocess> is true).
+
 L<Catalyst::Engine::PSGI> also supports setting an IO::Handle-like
 object that supports C<getline>, so using L<IO::Handle::Util>
 
@@ -505,9 +508,9 @@ object that supports C<getline>, so using L<IO::Handle::Util>
   $c->res->body($io);
 
 And that works fine to do streaming, but it's blocking (I<pull>)
-rather than server push, so you should be careful not to run this
-application on non-blocking (and non-multiprocess) server
-environments.
+rather than asynchronous server push, so again you should be careful
+not to run this application on non-blocking (and non-multiprocess)
+server environments.
 
 We expect that more web frameworks will appear that is focused on, or
 existent frameworks will add support for, asynchronous and

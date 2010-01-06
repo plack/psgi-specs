@@ -324,11 +324,8 @@ Returns true if successful.
 
 =head3 The Response
 
-Applications B<MUST> return a response as  a three element array reference.
-
-B<IF> the server supports the streaming (see below), an application B<MAY>
-choose to return other type of responses such as a code reference to delay the
-response.
+Applications B<SHOULD> return a response as either a three element
+array reference, or a code reference for a delayed/streaming response.
 
 The response array reference consists of the following elements:
 
@@ -427,13 +424,18 @@ B<MAY> also respect this special variable, but are not required to do so.
 
 =head2 Delayed Response and Streaming Body
 
-The PSGI interface allows applications and servers to provide a callback-style
-response instead of the three-element array reference. This allows for a
-delayed response and a streaming body (server push).
+The PSGI interface allows applications and servers to provide a
+callback-style response instead of the three-element array
+reference. This allows for a delayed response and a streaming body
+(server push).
 
-To enable a delayed response, an application B<SHOULD> check if the
-C<psgi.streaming> environment is true. If it is, the application B<MAY> return
-a callback as its response.
+This interface B<SHOULD> be implemented by PSGI servers, and
+C<psgi.streaming> environment B<MUST> be set to true in such servers.
+
+To enable a delayed response, the application B<SHOULD> return a
+callback as its response. An application B<MAY>check if the
+C<psgi.streaming> environment is true and falls back to the direct
+response if it isn't.
 
 This callback will be called with I<another> subroutine reference (referred to
 as the I<responder> from now on) as its only argument. The I<responder>
@@ -447,14 +449,16 @@ response. This is best illustrated with an example:
       return sub {
           my $responder = shift;
 
-          my $content = fetch_content_from_server();
-          $responder->([ 200, $headers, [ $content ] ]);
+          fetch_content_from_server(sub {
+              my $content = shift;
+              $responder->([ 200, $headers, [ $content ] ]);
+          });
       };
   };
 
-An application B<MAY> omit the third element (the body) when calling the
-I<responder>. If the body is omitted, the I<responder> will return I<yet
-another> an object which implements C<write>, C<poll_cb> and C<close>
+An application B<MAY> omit the third element (the body) when calling
+the I<responder>. If the body is omitted, the I<responder> B<MUST>
+return I<yet another> object which implements C<write> and C<close>
 methods. Again, an example illustrates this best.
 
   my $app = sub {
@@ -476,19 +480,10 @@ methods. Again, an example illustrates this best.
       };
   };
 
-B<XXX: still need detalis on write, poll_cb, and close API methods.>
-
 This delayed response and streaming API is useful if you want to
 implement a non-blocking I/O based server streaming or long-poll Comet
-push technology.
-
-This interface is optional: An application B<SHOULD> check if the server
-supports streaming before attempting to use it. Servers B<MAY> throw an
-exception if they do not support streaming a response.
-
-Servers B<MUST> set C<psgi.streaming> to true if this interface is supported,
-and if it is supported, servers B<MUST> return a writer object when the third
-argument (response body) to the I<responder> is omitted.
+push technology, but could also be used to write unbuffered write in a
+blocking server.
 
 =head2 Middleware
 
