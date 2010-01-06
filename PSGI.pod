@@ -433,7 +433,7 @@ This interface B<SHOULD> be implemented by PSGI servers, and
 C<psgi.streaming> environment B<MUST> be set to true in such servers.
 
 To enable a delayed response, the application B<SHOULD> return a
-callback as its response. An application B<MAY>check if the
+callback as its response. An application B<MAY> check if the
 C<psgi.streaming> environment is true and falls back to the direct
 response if it isn't.
 
@@ -482,8 +482,8 @@ methods. Again, an example illustrates this best.
 
 This delayed response and streaming API is useful if you want to
 implement a non-blocking I/O based server streaming or long-poll Comet
-push technology, but could also be used to write unbuffered write in a
-blocking server.
+push technology, but could also be used to implement unbuffered writes
+in a blocking server.
 
 =head2 Middleware
 
