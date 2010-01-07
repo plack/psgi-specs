@@ -514,6 +514,22 @@ We expect that more web frameworks will appear that is focused on, or
 existent frameworks will add support for, asynchronous and
 non-blocking streaming interface.
 
+=head3 Is psgi.streaming interface a requirement for the servers?
+
+It is specified as B<SHOULD>, so unless there is a strong reason not
+to implement the interface, all servers are encouraged to implement
+this interface.
+
+However, if you implement a PSGI server using an Perl XS interface for
+the ultimate performance or integration with web servers like Apache
+or nginx, or implement a sandbox like environment (like Google
+AppEngine or Heroku) or distributed platform using tools like Gearman,
+you might not want to implement this interface.
+
+That's fine, and in that case applications relying on the streaming
+interface can still use L<Plack::Middleware::BufferedStreaming> to
+fallback to the buffered write on unsupported servers.
+
 =head3 Why CGI-style environment variables instead of HTTP headers as a hash?
 
 Most existing web application frameworks already have code or a handler
