@@ -324,8 +324,8 @@ Returns true if successful.
 
 =head3 The Response
 
-Applications B<SHOULD> return a response as either a three element
-array reference, or a code reference for a delayed/streaming response.
+Applications B<MUST> return a response as either a three element array
+reference, or a code reference for a delayed/streaming response.
 
 The response array reference consists of the following elements:
 
