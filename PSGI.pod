@@ -588,6 +588,7 @@ order):
   Masahiro Chiba
   Patrick Donelan
   Paul Driver
+  Florian Ragwitz
 
 =head1 COPYRIGHT AND LICENSE
 
