@@ -113,8 +113,8 @@ can always later switch to PSGI with the L<CGI::PSGI> wrapper.
 =head3 What should I do to support PSGI?
 
 If you're a web server developer, write a PSGI implementation that
-calls a PSGI application. Or join the development on Plack, the
-reference implementation of PSGI, to add backends for more web servers.
+calls a PSGI application. Also join the development on Plack, the PSGI
+toolkit and utilities, to add a server adapter for your web server.
 
 If you're a web application framework developer, write an adapter for
 PSGI. Now you're freed from supporting all different server
@@ -138,8 +138,9 @@ and embedded perl that supports PSGI, or a plain-old CGI.pm based
 backend that doesn't load any modules at all and runs pretty quickly
 without eating so much memory under the CGI environment.
 
-The reference implementation Plack already has very fast backends like
-Standalone::Prefork and Coro.
+There are HTTP::Server::PSGI::Prefork and Coro based PSGI servers
+which are pretty fast, and they include adapters for Plack so you can
+run with the L<plackup> utility.
 
 Users of your framework can choose which backend is the best for their
 needs.  You, as a web application framework developer, don't need to
@@ -150,10 +151,10 @@ think about lots of different users with different needs.
 =head3 What is Plack? What is the difference between PSGI and Plack?
 
 PSGI is a specification, so there's no software or module called PSGI.
-End users will need to choose one of PSGI server implementations to
-run PSGI applications on. Plack is a reference PSGI implementation
-that supports environments like prefork standalone server, CGI,
-FastCGI, mod_perl, AnyEvent and Coro.
+End users will need to choose one of the PSGI server implementations
+to run PSGI applications on. Plack is a set of PSGI utilities and
+contains the reference PSGI server L<HTTP::Server::PSGI>, as well as
+Web server adapters for CGI, FastCGI and mod_perl.
 
 Plack also has useful APIs and helpers on top of PSGI, such as
 L<Plack::Request> to provide a nice object-oriented API on request
@@ -165,12 +166,12 @@ mocked HTTP or live HTTP servers. See L<Plack> for details.
 
 =head3 What kind of server backends would be available?
 
-In Plack, we already support most web servers like Apache2, and also the
-ones that supports standard CGI or FastCGI, but also want to support
-special web servers that can embed perl, like nginx. We think it would
-be really nice if Apache module mod_perlite and Google AppEngine
-supported PSGI too, so that you could run your PSGI/Plack based perl app
-in the cloud.
+In Plack, we already support most web servers like Apache2, and also
+the ones that supports standard CGI or FastCGI, but also try to
+support special web servers that can embed perl, like Perlbal or
+nginx. We think it would be really nice if Apache module mod_perlite
+and Google AppEngine supported PSGI too, so that you could run your
+PSGI/Plack based perl app in the cloud.
 
 =head3 Ruby is Rack and JavaScript is Jack. Why is it not called Pack?
 
@@ -192,7 +193,7 @@ such as C<Camper::Engine::PSGI>.
 
 If you write a web server that supports PSGI interface, then name it
 however you want. You can optionally support L<Plack::Server>'s
-abstract interface, which is:
+abstract interface or write an adapter for it, which is:
 
   my $server = Plack::Server::FooBar->new(%opt);
   $server->run($app);
