@@ -192,10 +192,10 @@ If you write a plugin or an extension to support PSGI for an
 such as C<Camper::Engine::PSGI>.
 
 If you write a web server that supports PSGI interface, then name it
-however you want. You can optionally support L<Plack::Server>'s
+however you want. You can optionally support L<Plack::Handler>'s
 abstract interface or write an adapter for it, which is:
 
-  my $server = Plack::Server::FooBar->new(%opt);
+  my $server = Plack::Handler::FooBar->new(%opt);
   $server->run($app);
 
 By supporting this C<new> and C<run> in your server, it becomes
@@ -255,7 +255,7 @@ interface (the C<request_handler> interface) with implementations, and
 the monolithic class hierarchy and role based interfaces make it really
 hard to write a new backend. We kept the existing HTTP::Engine and broke
 it into three parts: The interface specification (PSGI), Reference
-server implementations (Plack::Server) and Standard APIs and Tools
+server implementations (Plack::Handler) and Standard APIs and Tools
 (Plack).
 
 =head3 Will HTTP::Engine be dead?
