@@ -234,11 +234,41 @@ style delayed response and streaming writer object.
 
 =back
 
-The server or the application can store its own data in the environment as
-well. These keys B<MUST> contain at least one dot, and B<SHOULD> be prefixed
-uniquely. The C<psgi.> prefix is reserved for use with the PSGI core
-implementation and officially blessed extensions. This prefix B<MUST NOT> be
-used by other servers or application.
+The PSGI environment B<MAY> also include the following additional
+extensions. They are B<OPTIONAL> and applications and middleware
+components B<SHOULD> check if they exist in the environment before
+using it.
+
+=over 4
+
+=item *
+
+C<psgix.logger>: A code reference to log messages. The code reference
+is passed one argument as a hash reference that represents a message
+to be logged. The hash reference B<MUST> include at least two keys:
+C<level> and C<message> where C<level> B<MUST> be one of the following
+strings: C<debug>, C<warn>, C<info>, C<error> and C<fatal>. C<message>
+B<SHOULD> be a plain string or a scalar variable that stringifies.
+
+=item *
+
+C<psgix.session>: A hash reference for storing and retrieving session
+data.
+
+C<psgix.session.options>: A hash reference to tell Middleware
+components how to manipulate session data after the
+request. Acceptable keys and values are implementation specific.
+
+=back
+
+The server or the application can store its own data in the
+environment as well. These keys B<MUST> contain at least one dot, and
+B<SHOULD> be prefixed uniquely.
+
+The C<psgi.> prefix is reserved for use with the PSGI core
+specification, and C<psgix.> prefix is reserved for officially blessed
+extensions. These prefixes B<MUST NOT> be used by other servers or
+application.
 
 The environment B<MUST NOT> contain keys named C<HTTP_CONTENT_TYPE> or
 C<HTTP_CONTENT_LENGTH>.
@@ -514,6 +544,10 @@ understand.
 1.1: 2010.02.xx
 
 =over 4
+
+=item *
+
+Added optional PSGI keys as extensions: C<psgix.logger> and C<psgix.session>.
 
 =item *
 
