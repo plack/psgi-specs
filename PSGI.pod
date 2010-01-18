@@ -253,11 +253,14 @@ B<SHOULD> be a plain string or a scalar variable that stringifies.
 =item *
 
 C<psgix.session>: A hash reference for storing and retrieving session
-data.
+data. Updates made on this hash reference B<SHOULD> be persisted by
+middleware components and B<SHOULD> be restored in the succeeding
+requests. How to persist and restore session data, as well as how to
+identify the requesting clients are implementation specific.
 
 C<psgix.session.options>: A hash reference to tell Middleware
-components how to manipulate session data after the
-request. Acceptable keys and values are implementation specific.
+components how to manipulate session data after the request.
+Acceptable keys and values are implementation specific.
 
 =back
 
