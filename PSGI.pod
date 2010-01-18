@@ -187,7 +187,7 @@ PSGI-specific keys:
 
 =item *
 
-C<psgi.version>: An array reference [1,0] representing this version of
+C<psgi.version>: An array reference [1,1] representing this version of
 PSGI. The first number is the major version and the second it the minor
 version.
 
