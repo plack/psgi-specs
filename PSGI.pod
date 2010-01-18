@@ -13,11 +13,10 @@ framework developers.
 
 Please keep in mind that PSGI is not Yet Another web application
 framework. PSGI is a specification to decouple web server environments
-from web application framework code. Nor is PSGI a web
-application API. Web application developers (end users) will not
-run their web applications directly using the PSGI
-interface, but instead are encouraged to use frameworks that
-support PSGI. There is also a reference PSGI implementation called Plack.
+from web application framework code. Nor is PSGI a web application
+API. Web application developers (end users) will not run their web
+applications directly using the PSGI interface, but instead are
+encouraged to use frameworks that support PSGI.
 
 =head1 TERMINOLOGY
 
@@ -215,12 +214,6 @@ process, false otherwise.
 C<psgi.multiprocess>: This is a boolean value, which B<MUST> be true if an
 equivalent application object may be simultaneously invoked by another
 process, false otherwise.
-
-=back
-
-The PSGI environment B<MAY> also include these optional PSGI keys:
-
-=over 4
 
 =item *
 
@@ -515,6 +508,27 @@ Middleware B<MUST> behave exactly like a PSGI application from the perspective
 of a server. Middleware B<MAY> decide not to support the streaming interface
 discussed earlier, but B<SHOULD> pass through the response types that it doesn't
 understand.
+
+=head1 CHANGELOGS
+
+1.1: 2010.02.xx
+
+=over 4
+
+=item *
+
+C<psgi.streaming> B<SHOULD> be implemented by PSGI servers, rather than B<MAY>.
+
+=item *
+
+PSGI keys C<psgi.run_once>, C<psgi.nonblocking> and C<psgi.streaming>
+B<MUST> be set by PSGI servers.
+
+=item *
+
+Removed C<poll_cb> from writer methods.
+
+=back
 
 =head1 ACKNOWLEDGEMENTS
 
