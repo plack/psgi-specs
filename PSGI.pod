@@ -276,9 +276,10 @@ application.
 The environment B<MUST NOT> contain keys named C<HTTP_CONTENT_TYPE> or
 C<HTTP_CONTENT_LENGTH>.
 
-One of C<SCRIPT_NAME> or C<PATH_INFO> B<MUST> be set. C<PATH_INFO> should be
-C</> if C<SCRIPT_NAME> is empty. C<SCRIPT_NAME> B<MUST NOT> be C</>, but
-B<MAY> be empty.
+One of C<SCRIPT_NAME> or C<PATH_INFO> B<MUST> be set. When
+C<REQUEST_URI> is C</>, C<PATH_INFO> should be C</> and C<SCRIPT_NAME>
+should be empty. C<SCRIPT_NAME> B<MUST NOT> be C</>, but B<MAY> be
+empty.
 
 =head3 The Input Stream
 
