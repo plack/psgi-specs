@@ -31,9 +31,6 @@ inside an HTTP server (e.g. mod_perl in Apache), a daemon process
 called from a web server (e.g. FastCGI daemon) or a pure perl HTTP
 server.
 
-Servers are also called I<PSGI implementations> as well as
-I<Backends>.
-
 =item Applications
 
 I<Applications> are web applications that accept an HTTP request
