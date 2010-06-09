@@ -658,7 +658,7 @@ order):
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright Tatsuhiko Miyagawa, 2009.
+Copyright Tatsuhiko Miyagawa, 2009-2010.
 
 This document is licensed under the Creative Commons license by-sa.
 
