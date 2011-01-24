@@ -138,9 +138,11 @@ and embedded perl that supports PSGI, or a plain-old CGI.pm based
 backend that doesn't load any modules at all and runs pretty quickly
 without eating so much memory under the CGI environment.
 
-There are HTTP::Server::PSGI::Prefork and Coro based PSGI servers
-which are pretty fast, and they include adapters for Plack so you can
-run with the L<plackup> utility.
+There are prefork web server implementations such as L<Starman> and
+L<Starlet>, as well as fully asynchronous event based implementations
+such as L<Twiggy>, L<Corona> or L<Feersum>. They're pretty fast and
+they include adapters for Plack so you can run with the L<plackup>
+utility.
 
 Users of your framework can choose which backend is the best for their
 needs.  You, as a web application framework developer, don't need to
