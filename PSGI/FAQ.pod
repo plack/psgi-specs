@@ -286,19 +286,6 @@ L<HTTP::Engine::Response>:
 
 And this C<request_handler> is a PSGI application now.
 
-=head3 What's the benefit of converting my HTTP::Engine app to run on PSGI?
-
-As of today most web server implementations and middlewares
-implemented by Plack are mostly available on HTTP::Engine as well, so
-there might not be direct immediate benefit of switching to PSGI. But
-PSGI is more future proof, and there are high hope that in the near
-future we'll have a pretty fast server environments (think of Passenger
-for Ruby Rack) and/or plenty of useful middlewares that HTTP::Engine
-doesn't have today.
-
-See the question I<My framework already does CGI, FCGI and
-mod_perl. Why do I want to support PSGI?> for more details.
-  
 =head2 API Design
 
 Keep in mind that most design choices made in the PSGI spec are to
