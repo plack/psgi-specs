@@ -1,3 +1,13 @@
+1.09_1 Mon Mar 28 11:35:44 PDT 2011
+      - 1.1 beta
+      - Upped psgi.version to be [1,1]
+      - Lots of grammar and style fixes
+      - Removed poll_cb from writer spec
+      - Streaming interface now SHOULD be implemented, rather than MAY
+      - Promoted psgi.streaming, nonblocking and run_once keys to be MUST
+      - Added psgix.logger and psgix.session extensions
+      - Updated FAQ
+
 1.03  Tue Oct 27 13:44:01 PDT 2009
       - Added an optional callback interface to allow delayed response and streaming
 
