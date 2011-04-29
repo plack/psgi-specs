@@ -163,11 +163,11 @@ application would make more sense.
 
 Again, PSGI is not an implementation, but there's a potential for a
 very fast PSGI implementation that preloads everything and runs fully
-optimized code as a preforked standalone with XS parsers and
-sendfile(2) kernel call, an event-based tiny web server written in C
-and embedded perl that supports PSGI, or a plain-old CGI.pm based
-backend that doesn't load any modules at all and runs pretty quickly
-without eating so much memory under the CGI environment.
+optimized code as a preforked standalone with XS parsers, an
+event-based tiny web server written in C and embedded perl that
+supports PSGI, or a plain-old CGI.pm based backend that doesn't load
+any modules at all and runs pretty quickly without eating so much
+memory under the CGI environment.
 
 There are prefork web server implementations such as L<Starman> and
 L<Starlet>, as well as fully asynchronous event based implementations
