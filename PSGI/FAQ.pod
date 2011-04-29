@@ -69,16 +69,47 @@ application as an array reference.
 
 =head3 My framework already does CGI, FCGI and mod_perl. Why do I want to support PSGI?
 
-If your web application framework already supports most server
-environments, performance is good, and the backends are well tested,
-there may not be a direct benefit for you to support PSGI immediately
--- though you would be able to remove any code that overlaps with PSGI
-backends. But if only CGI environment is currently supported,
-supporting PSGI in addition should be extremely easy, and the benefit
-you and your framework users will enjoy is huge: being able to run
-your application on new PSGI compatible servers, being able to use
-utilitles like I<plackup> and I<Plack::Test> and plenty of
-L<Plack::Middleware> components.
+There are many benefits for the web application framework to support PSGI.
+
+=over 4
+
+=item *
+
+You can stop writing code to support many web server
+environments.
+
+Plack has a lot of well-tested server adapters to environments such as
+CGI, FastCGI and mod_perl. There are also many new web servers built
+to support the PSGI standard interface, such as L<Starman>, L<Starlet>
+and L<Twiggy>. Once your framework supports PSGI, there's nothing you
+need to do to run your application on these new web servers. You can
+get that I<for free>.
+
+Also, even if your framework already supports most server environments
+like discussed above, you can now drop these code in favor of only
+supporting PSGI. This is what L<Jifty> and L<Catalyst> have done, when
+they implemented the PSGI support. Less code means less bugs :)
+
+=item *
+
+Your framework can now use all of Plack middleware components.
+
+Just search for C<Plack::Middleware> on CPAN and you'll see hundreds
+of PSGI compatible middleware components. They're often newly created,
+but also extracted from plugins for certain web frameworks such as
+L<Catalyst>. By supporting PSGI interface, your framework can make use
+of all of these useful middleware, such as session management, content
+caching, URL rewriting and debug panel to name just a few.
+
+=item *
+
+You can test the application using the consistent L<Plack::Test> interface.
+
+Any PSGI application can be tested using L<Plack::Test>, either
+through a mock request or a live server implementation. There's also
+L<Test::WWW::Mechanize::PSGI> to allow Mechanize-style testing.
+
+=back
 
 =head3 I'm writing a web application. What's the benefit of PSGI for me?
 
