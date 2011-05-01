@@ -328,7 +328,9 @@ undef if there was an error.
 
 =back
 
-It may also implement an optional C<seek> method.
+It may also implement an optional C<seek> method. If
+C<psgix.input.buffered> environment is true, it <MUST> implement the
+C<seek> method.
 
 =over 4
 
