@@ -471,7 +471,8 @@ L<IO::Handle>-like object.
   open my $body, "<:via(SomePerlIO)", ...;
   my $body = IO::File->new("/path/to/file");
 
-  my $body = SomeClass->new(); # mock class that implements getline() and close()
+  # mock class that implements getline() and close()
+  my $body = SomeClass->new();
 
 Servers B<SHOULD NOT> check the type or class of the body. Instead, they should
 simply call C<getline> to iterate over the body, and
@@ -541,7 +542,8 @@ methods. Again, an example illustrates this best.
       # immediately starts the response and stream the content
       return sub {
           my $responder = shift;
-          my $writer = $responder->([ 200, [ 'Content-Type', 'application/json' ]]);
+          my $writer = $responder->(
+              [ 200, [ 'Content-Type', 'application/json' ]]);
 
           wait_for_events(sub {
               my $new_event = shift;
@@ -574,7 +576,9 @@ I<X-PSGI-Used> to any PSGI application.
   # $app is a simple PSGI application
   my $app = sub {
       my $env = shift;
-      return [ '200', [ 'Content-Type' => 'text/plain' ], [ "Hello World" ] ];
+      return [ '200',
+               [ 'Content-Type' => 'text/plain' ],
+               [ "Hello World" ] ];
   };
 
   # $xheader is a piece of middleware that wraps $app
