@@ -1,3 +1,8 @@
+1.09_2 Tue Jun  7 15:21:47 PDT 2011
+      - Fixed a dumb mistake about allowed characters in header values
+      - Updated FAQ document
+      - psgi.input MUST have seek() only if psgix.input.buffered is true
+
 1.09_1 Mon Mar 28 11:35:44 PDT 2011
       - 1.1 beta
       - Upped psgi.version to be [1,1]
