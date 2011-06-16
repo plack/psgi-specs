@@ -22,19 +22,50 @@ encouraged to use frameworks that support PSGI.
 
 =over 4
 
+=item Web Servers
+
+I<Web servers> accept HTTP requests issued by web clients,
+dispatching those requests to web applications if configured to do so,
+and return HTTP responses to the request-initiating clients.
+
+=item PSGI Application Containers
+
+A I<PSGI application container> is a Perl process providing an environment
+for a I<PSGI application> to run in.
+(A I<PSGI application container> is similar to a I<Java Servlet container>,
+which is Java process providing an environment for I<Java Servlets>.)
+
+PSGI specifying an interface for web applications
+and the main purpose of web applications being to be served to the Internet,
+a I<PSGI application container> will most likely
+be part of a web server (as in Apache mod_perl),
+connected to a web server (as in FastCGI),
+invoked by a web server (as in plain old CGI),
+or be a web server itself, written entirely or partly in Perl.
+
+There is, however, no requirement for a I<PSGI application container>
+to actually be a web server or part of one,
+as I<PSGI> only defines an interface
+between the container and the application,
+not between the container and the world.
+
 =item Servers
 
-A I<Server> is a web server that accepts HTTP requests, dispatches the
-request to web applications, and returns the HTTP response to the
-client. In the context of PSGI the server could be a Perl process running
-inside an HTTP server (e.g. mod_perl in Apache), a daemon process
-called from a web server (e.g. FastCGI daemon) or a pure perl HTTP
-server.
+Considering their main purpose as I<Web Servers> or part thereof,
+I<PSGI Application Containers> will simply be referred to as I<Servers>
+in the remainder of this document.
 
 =item Applications
 
-I<Applications> are web applications that accept an HTTP request
-and return an HTTP response. In PSGI an application is a code reference.
+I<Web applications> accept HTTP requests and return HTTP responses.
+
+I<PSGI applications> are web applications conforming to the PSGI interface,
+prescribing they take the form of a code reference
+with defined input and output.
+
+For simplicity,
+I<PSGI Applications> will also be referred to as I<Applications>
+for the remainder of this document.
 
 =item Middleware
 
@@ -440,7 +471,8 @@ L<IO::Handle>-like object.
   open my $body, "<:via(SomePerlIO)", ...;
   my $body = IO::File->new("/path/to/file");
 
-  my $body = SomeClass->new(); # mock class that implements getline() and close()
+  # mock class that implements getline() and close()
+  my $body = SomeClass->new();
 
 Servers B<SHOULD NOT> check the type or class of the body. Instead, they should
 simply call C<getline> to iterate over the body, and
@@ -510,7 +542,8 @@ methods. Again, an example illustrates this best.
       # immediately starts the response and stream the content
       return sub {
           my $responder = shift;
-          my $writer = $responder->([ 200, [ 'Content-Type', 'application/json' ]]);
+          my $writer = $responder->(
+              [ 200, [ 'Content-Type', 'application/json' ]]);
 
           wait_for_events(sub {
               my $new_event = shift;
@@ -543,7 +576,9 @@ I<X-PSGI-Used> to any PSGI application.
   # $app is a simple PSGI application
   my $app = sub {
       my $env = shift;
-      return [ '200', [ 'Content-Type' => 'text/plain' ], [ "Hello World" ] ];
+      return [ '200',
+               [ 'Content-Type' => 'text/plain' ],
+               [ "Hello World" ] ];
   };
 
   # $xheader is a piece of middleware that wraps $app
