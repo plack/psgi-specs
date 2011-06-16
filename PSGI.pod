@@ -276,6 +276,16 @@ C<psgix.session.options>: A hash reference to tell Middleware
 components how to manipulate session data after the request.
 Acceptable keys and values are implementation specific.
 
+=item *
+
+C<psgix.harakiri>: A boolean which is true if the PSGI server supports
+harakiri mode, that kills a worker (typically a forked child process)
+after the current request is complete.
+
+C<psgix.harakiri.commit>: A boolean which is set to true by the PSGI
+application or middleware when it wants the server to kill the worker
+after the current request.
+
 =back
 
 The server or the application can store its own data in the
