@@ -28,32 +28,26 @@ I<Web servers> accept HTTP requests issued by web clients,
 dispatching those requests to web applications if configured to do so,
 and return HTTP responses to the request-initiating clients.
 
-=item PSGI Application Containers
+=item PSGI Server
 
-A I<PSGI application container> is a Perl process providing an environment
-for a I<PSGI application> to run in.
-(A I<PSGI application container> is similar to a I<Java Servlet container>,
-which is Java process providing an environment for I<Java Servlets>.)
+A I<PSGI Server> is a Perl program providing an environment for a
+I<PSGI application> to run in.
 
-PSGI specifying an interface for web applications
-and the main purpose of web applications being to be served to the Internet,
-a I<PSGI application container> will most likely
-be part of a web server (as in Apache mod_perl),
-connected to a web server (as in FastCGI),
-invoked by a web server (as in plain old CGI),
-or be a web server itself, written entirely or partly in Perl.
+PSGI specifying an interface for web applications and the main purpose
+of web applications being to be served to the Internet, a I<PSGI
+Server> will most likely be either: part of a web server (like Apache
+mod_perl), connected to a web server (with FastCGI, SCGI), invoked by
+a web server (as in plain old CGI), or be a standalone web server
+itself, written entirely or partly in Perl.
 
-There is, however, no requirement for a I<PSGI application container>
-to actually be a web server or part of one,
-as I<PSGI> only defines an interface
-between the container and the application,
-not between the container and the world.
+There is, however, no requirement for a I<PSGI Server> to actually be
+a web server or part of one, as I<PSGI> only defines an interface
+between the server and the application, not between the server and the
+world.
 
-=item Servers
-
-Considering their main purpose as I<Web Servers> or part thereof,
-I<PSGI Application Containers> will simply be referred to as I<Servers>
-in the remainder of this document.
+A I<PSGI Server> is often also called I<PSGI Application Container>
+because it is similar to a I<Java Servlet container>, which is Java
+process providing an environment for I<Java Servlets>.
 
 =item Applications
 
