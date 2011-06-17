@@ -437,8 +437,10 @@ value can then be appended to the list of headers returned by the application.
 
 =head4 Body
 
-The response body B<MUST> be returned from the application as either an array
-reference or a handle.
+The response body B<MUST> be returned from the application as either
+an array reference or a handle containing the response body as byte
+strings. The body B<MUST> be encoded into appropriate encodings and
+B<MUST NOT> contain wide characters (> 255).
 
 =over 4
 
