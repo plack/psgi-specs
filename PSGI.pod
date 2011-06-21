@@ -413,9 +413,9 @@ or newlines in their name. It B<MUST NOT> contain any keys that end in C<-> or
 C<_>.
 
 All keys B<MUST> consist only of letters, digits, C<_> or C<->. All
-keys B<MUST> start with a letter. The value of the header must be a
-scalar string. The value string B<MUST NOT> contain characters below
-octal 037 i.e. chr(31).
+keys B<MUST> start with a letter. The value of the header B<MUST> be a
+scalar string and defined. The value string B<MUST NOT> contain
+characters below octal 037 i.e. chr(31).
 
 If the same key name appears multiple times in an array ref, those
 header lines B<MUST> be sent to the client separately (e.g. multiple
