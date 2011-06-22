@@ -1,3 +1,10 @@
+1.09_3 Wed Jun 22 13:48:31 PDT 2011
+      - Separated extensions into PSGI::Extensions
+      - Added psgix.harakiri and psgix.harakiri.commit
+      - Updated terminology section
+      - Clarified that body should be encoded byte strings and do not contain wide characters
+      - Clarified that header values must be defined
+
 1.09_2 Tue Jun  7 15:21:47 PDT 2011
       - Fixed a dumb mistake about allowed characters in header values
       - Updated FAQ document

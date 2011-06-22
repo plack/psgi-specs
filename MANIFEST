@@ -15,4 +15,5 @@ META.yml
 PSGI.pm
 PSGI.pod
 PSGI/FAQ.pod
+PSGI/Extentions.pod
 README.md
