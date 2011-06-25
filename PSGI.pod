@@ -196,6 +196,11 @@ HTTP request headers. The presence or absence of these keys should
 correspond to the presence or absence of the appropriate HTTP header
 in the request.
 
+The key is obtained converting the HTTP header field name to upper
+case, replacing all occurrences of hyphens C<-> with
+underscores C<_> and prepending C<HTTP_>, as in
+L<RFC 3875|http://www.ietf.org/rfc/rfc3875>.
+
 If there are multiple header lines sent with the same key, the server
 should treat them as if they were sent in one line and combine them
 with C<, >, as in L<RFC 2616|http://www.ietf.org/rfc/rfc2616>.
