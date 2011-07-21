@@ -39,6 +39,16 @@ B<SHOULD> be a plain string or a scalar variable that stringifies.
 
 =item *
 
+C<psgix.env>: A string denoting the deployment environment. It B<SHOULD> be
+one of "development", "testing", or "production", unless none of these
+applies.  An application B<SHOULD> treat a missing or undefined value as
+"development".
+
+Plack initializes this value from the C<PLACK_ENV> environment variable.
+See also L<plackup/OPTIONS>.
+
+=item *
+
 C<psgix.session>: A hash reference for storing and retrieving session
 data. Updates made on this hash reference B<SHOULD> be persisted by
 middleware components and B<SHOULD> be restored in the succeeding
