@@ -338,7 +338,7 @@ objects should be passed and which method they need to implement,
 there will be so much duplicated code in the backends, some of
 which may be buggy.
 
-For instance, PSGI defines C<< $env->{REMOTE_ADDR} >> as a
+For instance, PSGI defines C<< $env->{SERVER_NAME} >> as a
 string. What if the PSGI spec required it to be an instance of Net::IP?
 Backend code would have to depend on the Net::IP module, or have to
 write a mock object that implements ALL of Net::IP's methods.
