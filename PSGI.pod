@@ -268,8 +268,8 @@ B<SHOULD> be prefixed uniquely.
 The C<psgi.> prefix is reserved for use with the PSGI core
 specification, and C<psgix.> prefix is reserved for officially blessed
 extensions. These prefixes B<MUST NOT> be used by other servers or
-application. See L<psgi-extensions|PSGI::Extentions> for the list of
-officially approved extentions.
+application. See L<psgi-extensions|PSGI::Extensions> for the list of
+officially approved extensions.
 
 The environment B<MUST NOT> contain keys named C<HTTP_CONTENT_TYPE> or
 C<HTTP_CONTENT_LENGTH>.

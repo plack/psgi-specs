@@ -1,6 +1,6 @@
 =head1 NAME
 
-PSGI::Extensions - PSGI extentions
+PSGI::Extensions - PSGI extensions
 
 =head1 SPECIFICATION
 
