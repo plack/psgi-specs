@@ -1,3 +1,6 @@
+1.10  Fri Mar  9 08:46:27 PST 2012
+      - Released as PSGI 1.1
+
 1.09_3 Wed Jun 22 13:48:31 PDT 2011
       - Separated extensions into PSGI::Extensions
       - Added psgix.harakiri and psgix.harakiri.commit
