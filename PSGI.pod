@@ -207,6 +207,12 @@ with C<, >, as in L<RFC 2616|http://www.ietf.org/rfc/rfc2616>.
 
 =back
 
+A server should attempt to provide as many other CGI variables as are applicable.
+Note, however, that an application that uses any CGI variables other than the ones
+listed above are necessarily non-portable to web servers that do not support the relevant extensions.
+
+=back
+
 In addition to the keys above, the PSGI environment B<MUST> also include these
 PSGI-specific keys:
 
