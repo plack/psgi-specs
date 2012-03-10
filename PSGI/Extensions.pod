@@ -4,9 +4,9 @@ PSGI::Extensions - PSGI extensions
 
 =head1 SPECIFICATION
 
-The PSGI environment B<MAY> include the following additional
-extensions. They are B<OPTIONAL> and applications and middleware
-components B<SHOULD> check if they exist in the environment before
+The PSGI environment MAY include the following additional
+extensions. They are OPTIONAL and applications and middleware
+components SHOULD check if they exist in the environment before
 using the functionality provided.
 
 =over 4
@@ -32,16 +32,16 @@ the input for the transparent access.
 
 C<psgix.logger>: A code reference to log messages. The code reference
 is passed one argument as a hash reference that represents a message
-to be logged. The hash reference B<MUST> include at least two keys:
-C<level> and C<message> where C<level> B<MUST> be one of the following
+to be logged. The hash reference MUST include at least two keys:
+C<level> and C<message> where C<level> MUST be one of the following
 strings: C<debug>, C<warn>, C<info>, C<error> and C<fatal>. C<message>
-B<SHOULD> be a plain string or a scalar variable that stringifies.
+SHOULD be a plain string or a scalar variable that stringifies.
 
 =item *
 
 C<psgix.session>: A hash reference for storing and retrieving session
-data. Updates made on this hash reference B<SHOULD> be persisted by
-middleware components and B<SHOULD> be restored in the succeeding
+data. Updates made on this hash reference SHOULD be persisted by
+middleware components and SHOULD be restored in the succeeding
 requests. How to persist and restore session data, as well as how to
 identify the requesting clients are implementation specific.
 

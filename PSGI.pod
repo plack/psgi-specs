@@ -101,20 +101,20 @@ three values.
 
 =head3 The Environment
 
-The environment B<MUST> be a hash reference that includes CGI-like headers, as
+The environment MUST be a hash reference that includes CGI-like headers, as
 detailed below. The application is free to modify the environment. The
-environment B<MUST> include these keys (adopted from L<PEP
+environment MUST include these keys (adopted from L<PEP
 333|http://www.python.org/dev/peps/pep-0333/>,
 L<Rack|http://rack.rubyforge.org/doc/files/SPEC.html> and
 L<JSGI|http://jackjs.org/jsgi-spec.html>) except when they would normally be
 empty.
 
-When an environment key is described as a boolean, its value B<MUST> conform
+When an environment key is described as a boolean, its value MUST conform
 to Perl's notion of boolean-ness. This means that an empty string or an
 explicit C<0> are both valid false values. If a boolean key is not present, an
-application B<MAY> treat this as a false value.
+application MAY treat this as a false value.
 
-The values for all CGI keys (named without a period) B<MUST> be a scalar
+The values for all CGI keys (named without a period) MUST be a scalar
 string.
 
 See below for details.
@@ -134,7 +134,7 @@ corresponding to the application. This tells the application its
 virtual "location". This may be an empty string if the application
 corresponds to the server's root URI.
 
-If this key is not empty, it B<MUST> start with a forward slash (C</>).
+If this key is not empty, it MUST start with a forward slash (C</>).
 
 =item *
 
@@ -144,7 +144,7 @@ application. This may be an empty string if the request URL targets
 the application root and does not have a trailing slash. This value
 should be URI decoded by servers in order to be compatible with L<RFC 3875|http://www.ietf.org/rfc/rfc3875>.
 
-If this key is not empty, it B<MUST> start with a forward slash (C</>).
+If this key is not empty, it MUST start with a forward slash (C</>).
 
 =item *
 
@@ -159,7 +159,7 @@ application handlers if they choose to use this key instead of C<PATH_INFO>.
 =item *
 
 C<QUERY_STRING>: The portion of the request URL that follows the C<?>,
-if any. This key B<MAY> be empty, but B<MUST> always be present, even if empty.
+if any. This key MAY be empty, but B<MUST> always be present, even if empty.
 
 =item *
 
@@ -207,7 +207,7 @@ with C<, >, as in L<RFC 2616|http://www.ietf.org/rfc/rfc2616>.
 
 =back
 
-In addition to the keys above, the PSGI environment B<MUST> also include these
+In addition to the keys above, the PSGI environment MUST also include these
 PSGI-specific keys:
 
 =over 4
@@ -232,13 +232,13 @@ C<psgi.errors>: the error stream. See below for details.
 
 =item *
 
-C<psgi.multithread>: This is a boolean value, which B<MUST> be true if the
+C<psgi.multithread>: This is a boolean value, which MUST be true if the
 application may be simultaneously invoked by another thread in the same
 process, false otherwise.
 
 =item *
 
-C<psgi.multiprocess>: This is a boolean value, which B<MUST> be true if an
+C<psgi.multiprocess>: This is a boolean value, which MUST be true if an
 equivalent application object may be simultaneously invoked by another
 process, false otherwise.
 
@@ -262,8 +262,8 @@ style delayed response and streaming writer object.
 =back
 
 The server or the application can store its own data in the
-environment as well. These keys B<MUST> contain at least one dot, and
-B<SHOULD> be prefixed uniquely.
+environment as well. These keys MUST contain at least one dot, and
+SHOULD be prefixed uniquely.
 
 The C<psgi.> prefix is reserved for use with the PSGI core
 specification, and C<psgix.> prefix is reserved for officially blessed
@@ -274,21 +274,21 @@ officially approved extensions.
 The environment B<MUST NOT> contain keys named C<HTTP_CONTENT_TYPE> or
 C<HTTP_CONTENT_LENGTH>.
 
-One of C<SCRIPT_NAME> or C<PATH_INFO> B<MUST> be set. When
+One of C<SCRIPT_NAME> or C<PATH_INFO> MUST be set. When
 C<REQUEST_URI> is C</>, C<PATH_INFO> should be C</> and C<SCRIPT_NAME>
-should be empty. C<SCRIPT_NAME> B<MUST NOT> be C</>, but B<MAY> be
+should be empty. C<SCRIPT_NAME> B<MUST NOT> be C</>, but MAY be
 empty.
 
 =head3 The Input Stream
 
 The input stream in C<psgi.input> is an L<IO::Handle>-like object which
 streams the raw HTTP POST or PUT data. If it is a file handle then it
-B<MUST> be opened in binary mode. The input stream B<MUST> respond to
-C<read> and B<MAY> implement C<seek>.
+MUST be opened in binary mode. The input stream B<MUST> respond to
+C<read> and MAY implement C<seek>.
 
 Perl's built-in filehandles or L<IO::Handle> based objects should work as-is
 in a PSGI server. Application developers B<SHOULD NOT> inspect the type or
-class of the stream. Instead, they B<SHOULD> simply call C<read> on the object.
+class of the stream. Instead, they SHOULD simply call C<read> on the object.
 
 Application developers B<SHOULD NOT> use Perl's built-in C<read> or iterator
 (C<< <$fh> >>) to read from the input stream. Instead, application
@@ -296,7 +296,7 @@ developers should call C<read> as a method (C<< $fh->read >>) to allow for
 duck typing.
 
 Framework developers, if they know the input stream will be used with the
-built-in read() in any upstream code they can't touch, B<SHOULD> use PerlIO or
+built-in read() in any upstream code they can't touch, SHOULD use PerlIO or
 a tied handle to work around with this problem.
 
 The input stream objet is expected to provide a C<read> method:
@@ -313,7 +313,7 @@ undef if there was an error.
 =back
 
 It may also implement an optional C<seek> method. If
-C<psgix.input.buffered> environment is true, it B<MUST> implement the
+C<psgix.input.buffered> environment is true, it MUST implement the
 C<seek> method.
 
 =over 4
@@ -336,7 +336,7 @@ print errors. The error stream must implement a C<print> method.
 
 As with the input stream, Perl's built-in filehandles or L<IO::Handle> based
 objects should work as-is in a PSGI server. Application developers B<SHOULD
-NOT> inspect the type or class of the stream. Instead, they B<SHOULD> simply
+NOT> inspect the type or class of the stream. Instead, they SHOULD simply
 call C<print> on the object.
 
 =over 4
@@ -351,38 +351,38 @@ Returns true if successful.
 
 =head3 The Response
 
-Applications B<MUST> return a response as either a three element array
+Applications MUST return a response as either a three element array
 reference, or a code reference for a delayed/streaming response.
 
 The response array reference consists of the following elements:
 
 =head4 Status
 
-An HTTP status code. This B<MUST> be an integer greater than or equal to 100,
-and B<SHOULD> be an HTTP status code as documented in L<RFC
+An HTTP status code. This MUST be an integer greater than or equal to 100,
+and SHOULD be an HTTP status code as documented in L<RFC
 2616|http://www.w3.org/Protocols/rfc2616>.
 
 =head4 Headers
 
-The headers B<MUST> be an array reference (B<not> a hash reference)
-of key/value pairs. This means it B<MUST> contain an even number of elements.
+The headers MUST be an array reference (B<not> a hash reference)
+of key/value pairs. This means it MUST contain an even number of elements.
 
 The header B<MUST NOT> contain a key named C<Status>, nor any keys with C<:>
 or newlines in their name. It B<MUST NOT> contain any keys that end in C<-> or
 C<_>.
 
-All keys B<MUST> consist only of letters, digits, C<_> or C<->. All
-keys B<MUST> start with a letter. The value of the header B<MUST> be a
+All keys MUST consist only of letters, digits, C<_> or C<->. All
+keys MUST start with a letter. The value of the header B<MUST> be a
 scalar string and defined. The value string B<MUST NOT> contain
 characters below octal 037 i.e. chr(31).
 
 If the same key name appears multiple times in an array ref, those
-header lines B<MUST> be sent to the client separately (e.g. multiple
+header lines MUST be sent to the client separately (e.g. multiple
 C<Set-Cookie> lines).
 
 =head4 Content-Type
 
-There B<MUST> be a C<Content-Type> except when the C<Status> is 1xx, 204
+There MUST be a C<Content-Type> except when the C<Status> is 1xx, 204
 or 304, in which case there B<MUST NOT> be a content type.
 
 =head4 Content-Length
@@ -391,14 +391,14 @@ There B<MUST NOT> be a C<Content-Length> header when the C<Status> is
 1xx, 204 or 304.
 
 If the Status is not 1xx, 204 or 304 and there is no C<Content-Length> header,
-a PSGI server B<MAY> calculate the content length by looking at the Body. This
+a PSGI server MAY calculate the content length by looking at the Body. This
 value can then be appended to the list of headers returned by the application.
 
 =head4 Body
 
-The response body B<MUST> be returned from the application as either
+The response body MUST be returned from the application as either
 an array reference or a handle containing the response body as byte
-strings. The body B<MUST> be encoded into appropriate encodings and
+strings. The body MUST be encoded into appropriate encodings and
 B<MUST NOT> contain wide characters (> 255).
 
 =over 4
@@ -411,7 +411,7 @@ which make up the body.
   my $body = [ "Hello\n", "World\n" ];
 
 Note that the elements in an array reference are B<NOT REQUIRED> to end
-in a newline. A server B<SHOULD> write each elements as-is to the
+in a newline. A server SHOULD write each elements as-is to the
 client, and B<SHOULD NOT> care if the line ends with newline or not.
 
 An array reference with a single value is valid. So C<[ $html ]> is a valid
@@ -433,22 +433,22 @@ Servers B<SHOULD NOT> check the type or class of the body. Instead, they should
 simply call C<getline> to iterate over the body, and
 call C<close> when done.
 
-Servers B<MAY> check if the body is a real filehandle using C<fileno> and
-C<Scalar::Util::reftype>. If the body is real filehandle, the server B<MAY>
+Servers MAY check if the body is a real filehandle using C<fileno> and
+C<Scalar::Util::reftype>. If the body is real filehandle, the server MAY
 optimize using techniques like I<sendfile(2)>.
 
-The body object B<MAY> also respond to a C<path> method. This method is
+The body object MAY also respond to a C<path> method. This method is
 expected to return the path to a file accessible by the server. This allows
 the server to use this information instead of a file descriptor number to
 serve the file.
 
-Servers B<SHOULD> set the C<$/> special variable to the buffer size when
+Servers SHOULD set the C<$/> special variable to the buffer size when
 reading content from C<$body> using the C<getline> method. This is done by
 setting C<$/> with a reference to an integer (C<$/ = \8192>).
 
 If the body filehandle is a Perl built-in filehandle L<IO::Handle> object,
 they will respect this value. Similarly, an object which provides the same API
-B<MAY> also respect this special variable, but are not required to do so.
+MAY also respect this special variable, but are not required to do so.
 
 =back
 
@@ -459,11 +459,11 @@ callback-style response instead of the three-element array
 reference. This allows for a delayed response and a streaming body
 (server push).
 
-This interface B<SHOULD> be implemented by PSGI servers, and
-C<psgi.streaming> environment B<MUST> be set to true in such servers.
+This interface SHOULD be implemented by PSGI servers, and
+C<psgi.streaming> environment MUST be set to true in such servers.
 
-To enable a delayed response, the application B<SHOULD> return a
-callback as its response. An application B<MAY> check if the
+To enable a delayed response, the application SHOULD return a
+callback as its response. An application MAY check if the
 C<psgi.streaming> environment is true and falls back to the direct
 response if it isn't.
 
@@ -486,8 +486,8 @@ response. This is best illustrated with an example:
       };
   };
 
-An application B<MAY> omit the third element (the body) when calling
-the I<responder>. If the body is omitted, the I<responder> B<MUST>
+An application MAY omit the third element (the body) when calling
+the I<responder>. If the body is omitted, the I<responder> MUST
 return I<yet another> object which implements C<write> and C<close>
 methods. Again, an example illustrates this best.
 
@@ -544,9 +544,9 @@ I<X-PSGI-Used> to any PSGI application.
       return $res;
   };
 
-Middleware B<MUST> behave exactly like a PSGI application from the perspective
-of a server. Middleware B<MAY> decide not to support the streaming interface
-discussed earlier, but B<SHOULD> pass through the response types that it doesn't
+Middleware MUST behave exactly like a PSGI application from the perspective
+of a server. Middleware MAY decide not to support the streaming interface
+discussed earlier, but SHOULD pass through the response types that it doesn't
 understand.
 
 =head1 CHANGELOGS
@@ -561,12 +561,12 @@ Added optional PSGI keys as extensions: C<psgix.logger> and C<psgix.session>.
 
 =item *
 
-C<psgi.streaming> B<SHOULD> be implemented by PSGI servers, rather than B<MAY>.
+C<psgi.streaming> SHOULD be implemented by PSGI servers, rather than B<MAY>.
 
 =item *
 
 PSGI keys C<psgi.run_once>, C<psgi.nonblocking> and C<psgi.streaming>
-B<MUST> be set by PSGI servers.
+MUST be set by PSGI servers.
 
 =item *
 
