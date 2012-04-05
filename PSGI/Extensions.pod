@@ -34,7 +34,7 @@ C<psgix.logger>: A code reference to log messages. The code reference
 is passed one argument as a hash reference that represents a message
 to be logged. The hash reference MUST include at least two keys:
 C<level> and C<message> where C<level> MUST be one of the following
-strings: C<debug>, C<warn>, C<info>, C<error> and C<fatal>. C<message>
+strings: C<debug>, C<info>, C<warn>, C<error> and C<fatal>. C<message>
 SHOULD be a plain string or a scalar variable that stringifies.
 
 =item *
