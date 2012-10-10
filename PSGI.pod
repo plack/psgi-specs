@@ -305,7 +305,7 @@ Framework developers, if they know the input stream will be used with the
 built-in read() in any upstream code they can't touch, SHOULD use PerlIO or
 a tied handle to work around with this problem.
 
-The input stream objet is expected to provide a C<read> method:
+The input stream object is expected to provide a C<read> method:
 
 =over 4
 
