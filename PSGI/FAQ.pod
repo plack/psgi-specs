@@ -496,9 +496,10 @@ return a callback to delay the response.
 
 C<wait_for_new_message> can be blocking or non-blocking: it's up to
 you. Most of the case you want to run it non-blockingly and should use
-event loops like L<AnyEvent>. You may also check C<psgi.nonblocking>
-value to see that it's possible and fallback to a blocking call
-otherwise.
+L<AnyEvent> event loop (if you use another event loop your application
+will be compatible only with PSGI servers using same event loop).
+You may also check C<psgi.nonblocking> value to see that it's possible and
+fallback to a blocking call otherwise.
 
 Also, to stream the content body (like streaming messages over the
 Flash socket or multipart XMLHTTPRequest):
