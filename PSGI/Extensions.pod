@@ -61,27 +61,6 @@ after the current request.
 
 =item *
 
-Cleanup handlers
-
-Some servers such as Apache support an execution phase that happens
-after all content has been sent to the client and the connection has
-been closed. These should only be set if the server supports such a
-mode of execution that the client doesn't have to wait on, e.g. you
-could C<sleep 10> in a cleanup handler but return a response to the
-client in 10ms.
-
-This can be used e.g. to close database connections, set keys in a
-cache whose values were generated during the request, send a logging
-event describing the request etc. It can even be used as a poor man's
-job queue (for e.g. resizing and converting uploaded images).
-
-For most servers the implementation is straightforward, calling the
-callbacks once a request is complete but before C<$env> is
-destroyed.
-
-A CGI handler could run the callbacks after closing C<STDOUT>,
-mod_perl handlers can use C<PerlCleanupHandlers> mechanism.
-
 C<psgix.cleanup> - A boolean flag indicating whether a PSGI server
 supports cleanup handlers. Absence of the key assumes false
 (i.e. unsupported). Middleware and applications MUST check this key
