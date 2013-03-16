@@ -105,7 +105,7 @@ The environment MUST be a hash reference that includes CGI-like headers, as
 detailed below. The application is free to modify the environment. The
 environment MUST include these keys (adopted from L<PEP
 333|http://www.python.org/dev/peps/pep-0333/>,
-L<Rack|http://rack.rubyforge.org/doc/files/SPEC.html> and
+L<Rack|http://rack.rubyforge.org/doc/SPEC.html> and
 L<JSGI|http://jackjs.org/jsgi-spec.html>) except when they would normally be
 empty.
 
