@@ -609,7 +609,7 @@ Tatsuhiko Miyagawa E<lt>miyagawa@bulknews.netE<gt>
 =head1 CONTRIBUTORS
 
 The following people have contributed to the PSGI specification and
-Plack implementation by commiting their code, sending patches,
+Plack implementation by committing their code, sending patches,
 reporting bugs, asking questions, suggesting useful advices,
 nitpicking, chatting on IRC or commenting on my blog (in no particular
 order):
