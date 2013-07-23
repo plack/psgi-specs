@@ -355,7 +355,7 @@ define.
 Requiring an object I<in addition to> a code ref would make EVERY
 backend's code a few lines more tedious, while requiring an object
 I<instead of> a code ref would make application developers write
-another class and instanciate an object.
+another class and instantiate an object.
 
 In other words, yes an object with a C<call> method could work, but
 again PSGI was designed to be as simple as possible, and making a code
