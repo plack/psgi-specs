@@ -610,7 +610,7 @@ Tatsuhiko Miyagawa E<lt>miyagawa@bulknews.netE<gt>
 
 The following people have contributed to the PSGI specification and
 Plack implementation by commiting their code, sending patches,
-reporting bugs, asking questions, suggesting useful advices,
+reporting bugs, asking questions, giving useful advice,
 nitpicking, chatting on IRC or commenting on my blog (in no particular
 order):
 
