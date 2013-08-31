@@ -600,7 +600,7 @@ JSGI Specification L<http://jackjs.org/jsgi-spec.html>
 
 =back
 
-I'd like to thank authors of these great documents.
+I'd like to thank the authors of these great documents.
 
 =head1 AUTHOR
 
