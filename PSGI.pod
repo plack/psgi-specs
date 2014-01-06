@@ -99,7 +99,7 @@ three values.
       ];
   };
 
-=head3 The Environment
+=head2 The Environment
 
 The environment MUST be a hash reference that includes CGI-like headers, as
 detailed below. The application is free to modify the environment. The
@@ -386,12 +386,14 @@ If the same key name appears multiple times in an array ref, those
 header lines MUST be sent to the client separately (e.g. multiple
 C<Set-Cookie> lines).
 
-=head4 Content-Type
+=over 4
+
+=item * Content-Type
 
 There MUST be a C<Content-Type> except when the C<Status> is 1xx, 204
 or 304, in which case there B<MUST NOT> be a content type.
 
-=head4 Content-Length
+=item * Content-Length
 
 There B<MUST NOT> be a C<Content-Length> header when the C<Status> is
 1xx, 204 or 304.
@@ -399,6 +401,8 @@ There B<MUST NOT> be a C<Content-Length> header when the C<Status> is
 If the Status is not 1xx, 204 or 304 and there is no C<Content-Length> header,
 a PSGI server MAY calculate the content length by looking at the Body. This
 value can then be appended to the list of headers returned by the application.
+
+=back
 
 =head4 Body
 
