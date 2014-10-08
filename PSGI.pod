@@ -46,7 +46,7 @@ between the server and the application, not between the server and the
 world.
 
 A I<PSGI Server> is often also called I<PSGI Application Container>
-because it is similar to a I<Java Servlet container>, which is Java
+because it is similar to a I<Java Servlet container>, which is a Java
 process providing an environment for I<Java Servlets>.
 
 =item Applications
@@ -610,7 +610,7 @@ Tatsuhiko Miyagawa E<lt>miyagawa@bulknews.netE<gt>
 
 The following people have contributed to the PSGI specification and
 Plack implementation by commiting their code, sending patches,
-reporting bugs, asking questions, suggesting useful advices,
+reporting bugs, asking questions, providing useful advice,
 nitpicking, chatting on IRC or commenting on my blog (in no particular
 order):
 
