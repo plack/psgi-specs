@@ -355,7 +355,7 @@ define.
 Requiring an object I<in addition to> a code ref would make EVERY
 backend's code a few lines more tedious, while requiring an object
 I<instead of> a code ref would make application developers write
-another class and instanciate an object.
+another class and instantiate an object.
 
 In other words, yes an object with a C<call> method could work, but
 again PSGI was designed to be as simple as possible, and making a code
@@ -495,7 +495,7 @@ return a callback to delay the response.
   };
 
 C<wait_for_new_message> can be blocking or non-blocking: it's up to
-you. Most of the case you want to run it non-blockingly and should use
+you. Most of the time you want it to be non-blocking and should use
 event loops like L<AnyEvent>. You may also check C<psgi.nonblocking>
 value to see that it's possible and fallback to a blocking call
 otherwise.
