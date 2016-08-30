@@ -17,10 +17,10 @@ applications akin to what CGI does for web servers and CGI scripts.
 
 =head3 Why do we need this?
 
-Perl has L<CGI> as a core module that somewhat abstracts the
-difference between CGI, mod_perl and FastCGI. However, most web
-application framework developers (e.g. Catalyst and Jifty) usually
-avoid using it to maximize the performance and to access low-level
+Perl has the L<CGI> module (which used to be in core before Perl 5.20)
+that somewhat abstracts the difference between CGI, mod_perl and FastCGI.
+However, most web application framework developers (e.g. Catalyst and Jifty)
+usually avoid using it to maximize the performance and to access low-level
 APIs. So they end up writing adapters for all of those different
 environments, some of which may be well tested while others are not.
 
