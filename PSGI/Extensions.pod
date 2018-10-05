@@ -17,7 +17,9 @@ C<psgix.io>: The raw IO socket to access the client connection to do
 low-level socket operations. This is only available in PSGI servers
 that run as an HTTP server, and should be used when (and only when)
 you want to I<jailbreak> out of PSGI abstraction, to implement
-protocols over HTTP such as BOSH or WebSocket.
+protocols over HTTP such as BOSH or WebSocket. Application should
+return C<[]> to show clear intention to jailbreak out of PSGI. 
+In this case application is responsible to close the socket.
 
 =item *
 
